@@ -20,7 +20,7 @@ export default function FiltersSearch() {
     isOpen: state.isOpen,
   }));
   return (
-    <div className="mt-8 flex gap-x-3 rounded-3xl shadow-xl  h-fit">
+    <div className="mt-8 flex gap-x-3 rounded-3xl shadow-xl px-4 py-2  h-fit bg-slate-50">
       <Input
         icon={<BsSearch className=" text-paper-dark dark:text-paper-light" />}
         className="w-[200px] xs:w-[360px] sm:w-[500px]"
