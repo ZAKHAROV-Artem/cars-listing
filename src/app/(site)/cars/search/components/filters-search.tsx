@@ -20,12 +20,12 @@ export default function FiltersSearch() {
     isOpen: state.isOpen,
   }));
   return (
-    <div className="mt-8 flex gap-x-3">
+    <div className="mt-8 flex gap-x-3 rounded-3xl shadow-xl  h-fit">
       <Input
         icon={<BsSearch className=" text-paper-dark dark:text-paper-light" />}
         className="w-[200px] xs:w-[360px] sm:w-[500px]"
         placeholder="Type your keywords"
-        wrapperClassName="rounded-3xl shadow-xl  h-fit"
+       // wrapperClassName="rounded-3xl shadow-xl  h-fit"
         value={value}
         type="search"
         onChange={(e) => setValue(e.target.value)}
