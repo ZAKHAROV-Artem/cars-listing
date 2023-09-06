@@ -1,12 +1,11 @@
 import getModels from "@/actions/client/getModels";
 import { useQuery } from "@tanstack/react-query";
 
-const useModels = (brandId: string) => {
+const useModels = () => {
   const query = useQuery({
-    queryFn: async () => await getModels(brandId),
-    queryKey: ["models", `brand-${brandId}`],
+    queryFn: async () => await getModels(),
+    queryKey: ["models"],
     retry: false,
-
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });

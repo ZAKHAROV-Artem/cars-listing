@@ -1,26 +1,30 @@
 "use client";
-
-import CarItemImage from "@/components/cars/car-item-image";
-import useSellerCars from "@/hooks/useSellerCars";
+import useCurrentUserCars from "@/hooks/useCurrentUserCars";
 import { Fragment } from "react";
-import Link from "next/link";
 import { InView } from "react-intersection-observer";
-import CarItem from "@/components/cars/car-item";
+import AccountCarItem from "./account-car-item";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-type Props = { sellerId: string };
-export default function SellerCarsList({ sellerId }: Props) {
+type Props = {
+  userId: string;
+};
+export default function UserCarList({ userId }: Props) {
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
-    useSellerCars(sellerId);
+    useCurrentUserCars(userId);
   const handleNextPage = async (isView: boolean) => {
     if (isView && !isFetchingNextPage) await fetchNextPage();
   };
+  console.log(data);
   return (
-    <div className="relative grid grid-cols-2 gap-2">
+    <div className="relative grid grid-cols-1 gap-2">
       {data?.pages.map((page, i) => (
         <Fragment key={i}>
-          {page.data.data?.map((car) => <CarItem car={car} key={car.id} />)}
+          {page.data.data?.map((car) => (
+            <AccountCarItem car={car} key={car.id} />
+          ))}
         </Fragment>
       ))}
+      
       {hasNextPage && (
         <InView
           as="div"

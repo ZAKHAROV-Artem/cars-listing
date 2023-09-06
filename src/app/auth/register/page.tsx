@@ -134,7 +134,7 @@ export default function RegisterPage() {
         </Button>
         <Separator />
         <GoolgeButton />
-        <FacebookButton />
+        {/* <FacebookButton /> */}
         <div className="mt-3 text-sm">
           Already have an account ?{" "}
           <Link href={LOGIN_ROUTE} className="text-blue-400 underline">

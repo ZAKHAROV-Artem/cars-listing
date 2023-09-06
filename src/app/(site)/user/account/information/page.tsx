@@ -47,7 +47,9 @@ export default function AccountInfoPage() {
         phone: user?.phone || "",
         description: user.description || "",
         location: user?.location || "",
-        dateOfBirth: dayjs(user?.dateOfBirth).format("YYYY-MM-DD"),
+        dateOfBirth: dayjs(user?.dateOfBirth || new Date()).format(
+          "YYYY-MM-DD",
+        ),
       };
     },
     resolver: zodResolver(UpdateAccountValidationSchema),

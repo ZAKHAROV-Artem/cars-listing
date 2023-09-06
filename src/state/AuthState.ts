@@ -12,7 +12,7 @@ type Actions = {
 export const useAuth = create(
   immer<Actions>((set) => ({
     setToken: (token) => {
-      Cookies.set("jwt", token);
+      Cookies.set("jwt", token, { expires: 7 });
     },
     unsetToken: () => {
       Cookies.remove("jwt");

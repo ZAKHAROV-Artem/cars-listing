@@ -23,7 +23,10 @@ export default async function CarDetail({ params: { slug } }: Props) {
   if (dayjs() > dayjs(car.attributes.car_expiration_date)) {
     await setCarStatus(car.id, Status.Inactive);
   }
-  if (car.attributes.car_featured_expiration_date && dayjs() > dayjs(car.attributes.car_featured_expiration_date)) {
+  if (
+    car.attributes.car_featured_expiration_date &&
+    dayjs() > dayjs(car.attributes.car_featured_expiration_date)
+  ) {
     await setCarFatuted(car.id, false);
   }
 

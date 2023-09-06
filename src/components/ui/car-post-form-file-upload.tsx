@@ -18,7 +18,6 @@ export default function CarPostFormFileUpload({
 }: Props) {
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[]) => {
-      console.log(acceptedFiles);
       setAcceptedFiles(acceptedFiles);
     },
     [setAcceptedFiles],

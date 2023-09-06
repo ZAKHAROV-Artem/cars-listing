@@ -115,8 +115,8 @@ export const accountPageRoutes: MenuItemRouteType[] = [
     href: "/user/account/information",
   },
   {
-    label: "Wishlist",
-    href: "/user/account/wishlist",
+    label: "Carlist",
+    href: "/user/account/carlist",
   },
   {
     label: "Change password",

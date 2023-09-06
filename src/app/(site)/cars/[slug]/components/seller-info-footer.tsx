@@ -13,18 +13,14 @@ export default function SellerInfoFooter({ seller }: Props) {
   return (
     <div
       className={cn(
-        `fixed left-0 z-50 w-full rounded-t-3xl bg-primary-main/70 p-4 duration-200 md:hidden`,
-        {
-          "bottom-0": direction === "down",
-          "-bottom-[100px]": direction === "up",
-        },
+        `fixed bottom-0 left-0 z-50 w-full rounded-t-xl bg-primary-main/70 p-2 duration-200 md:hidden`,
       )}
     >
       <div className="flex items-center gap-x-5">
         <AiOutlinePhone size={40} className="text-dark-main" />
         <div className="text-dark-main">
-          <div className="text-xl md:text-3xl ">{seller?.name}</div>
           <div className="text-md md:text-xl">{seller?.phone}</div>
+          <div className="text-xl md:text-3xl ">{seller?.name}</div>
         </div>
       </div>
     </div>

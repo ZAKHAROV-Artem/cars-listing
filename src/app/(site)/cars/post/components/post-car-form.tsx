@@ -27,11 +27,7 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import useModels from "@/hooks/useModels";
 import usePriceTypes from "@/hooks/usePriceTypes";
 import useSellerTypes from "@/hooks/useSellerTypes";
-import {
-  generateFilename,
-  range,
-  slugify,
-} from "@/lib/utils";
+import { cn, generateFilename, range, slugify } from "@/lib/utils";
 import { Car } from "@/types/api/car";
 import { Payload } from "@/types/api/common";
 import {
@@ -41,7 +37,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import dayjs from "dayjs";
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FileWithPath } from "react-dropzone";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -84,8 +80,11 @@ export default function PostCarForm() {
     resolver: zodResolver(PostCarAuthValidationSchema),
   });
   const [acceptedFiles, setAcceptedFiles] = useState<FileWithPath[]>([]);
-  console.log(acceptedFiles);
   const onSubmit: SubmitHandler<PostCarAuthFields> = async (data) => {
+    if (!acceptedFiles.length) {
+      toast.error("Upload at least one image !");
+      return;
+    }
     setLoading(true);
     const res = await axios.post<Payload<Car>>(
       `${process.env.NEXT_PUBLIC_API_URL}/cars`,
@@ -163,7 +162,7 @@ export default function PostCarForm() {
   const { data: bodyTypes } = useBodyTypes();
   const { data: brands } = useBrands();
   const { data: categories } = useCategories();
-  const { data: models } = useModels(getValues().brandId);
+  const { data: models } = useModels();
   const { data: sellerTypes } = useSellerTypes();
   const { data: priceTypes } = usePriceTypes();
   return (
@@ -178,7 +177,12 @@ export default function PostCarForm() {
         {/* TITLE */}
         <div className="h-fit">
           <Label>Title:</Label>
-          <Input {...register("title")} />{" "}
+          <Input
+            {...register("title")}
+            wrapperClassName={cn({
+              "border border-primary-light": errors.title,
+            })}
+          />{" "}
           {errors.title && (
             <span className="ml-3 text-sm text-primary-light">
               {errors.title?.message}
@@ -291,7 +295,12 @@ export default function PostCarForm() {
             disabled={!getValues().brandId.length}
           >
             <Label>Models</Label>
-            <SelectTrigger>
+            <SelectTrigger
+              className={cn({
+                "border border-primary-light dark:border-primary-light":
+                  errors.modelId,
+              })}
+            >
               <SelectValue placeholder="Select model" />
             </SelectTrigger>
 
@@ -315,7 +324,11 @@ export default function PostCarForm() {
                 ))}
             </SelectContent>
           </Select>
-          <span>{errors.modelId?.message}</span>
+          {errors.modelId && (
+            <span className="ml-3 text-sm text-primary-light">
+              {errors.modelId?.message}
+            </span>
+          )}
         </div>
         {/* YEAR */}
         <div>
@@ -402,7 +415,12 @@ export default function PostCarForm() {
             }
           >
             <Label>ቀለም | Color</Label>
-            <SelectTrigger>
+            <SelectTrigger
+              className={cn({
+                "border border-primary-light dark:border-primary-light":
+                  errors.color,
+              })}
+            >
               <SelectValue placeholder="Select color" />
             </SelectTrigger>
             <SelectContent>
@@ -414,6 +432,11 @@ export default function PostCarForm() {
               ))}
             </SelectContent>
           </Select>
+          {errors.color && (
+            <span className="ml-3 text-sm text-primary-light">
+              {errors.color?.message}
+            </span>
+          )}
         </div>
         {/* FUEL */}
         <div>
@@ -469,7 +492,19 @@ export default function PostCarForm() {
         {/* MILEAGE */}
         <div className="h-fit">
           <Label>Mileage:</Label>
-          <Input {...register("mileage")} />{" "}
+          <Input
+            name="mileage"
+            value={getValues().mileage}
+            onChange={(e) =>
+              setValue("mileage", e.target.value.replace(/[,.\D]/g, ""), {
+                shouldValidate: true,
+              })
+            }
+            min={0}
+            wrapperClassName={cn({
+              "border border-primary-light": errors.mileage,
+            })}
+          />{" "}
           {errors.mileage && (
             <span className="ml-3 text-sm text-primary-light">
               {errors.mileage?.message}
@@ -482,7 +517,18 @@ export default function PostCarForm() {
         {/* PRICE */}
         <div className="h-fit">
           <Label>ዋጋ | Price</Label>
-          <Input {...register("price")} />
+          <Input
+            name="price"
+            value={getValues().price}
+            onChange={(e) =>
+              setValue("price", e.target.value.replace(/[,.\D]/g, ""), {
+                shouldValidate: true,
+              })
+            }
+            wrapperClassName={cn({
+              "border border-primary-light": errors.price,
+            })}
+          />
           {errors.price && (
             <span className="ml-3 text-sm text-primary-light">
               {errors.price?.message}
@@ -498,7 +544,12 @@ export default function PostCarForm() {
             }
           >
             <Label>Price type</Label>
-            <SelectTrigger>
+            <SelectTrigger
+              className={cn({
+                "border border-primary-light dark:border-primary-light":
+                  errors.priceTypeId,
+              })}
+            >
               <SelectValue placeholder="Select price type" />
             </SelectTrigger>
             <SelectContent>
@@ -512,6 +563,11 @@ export default function PostCarForm() {
               ))}
             </SelectContent>
           </Select>
+          {errors.priceTypeId && (
+            <span className="ml-3 text-sm text-primary-light">
+              {errors.priceTypeId?.message}
+            </span>
+          )}
         </div>
         {/* CURRENCY */}
         <div>
@@ -574,7 +630,12 @@ export default function PostCarForm() {
             {/* SELLER NAME */}
             <div className="h-fit">
               <Label>Name:</Label>
-              <Input {...register("sellerName")} />
+              <Input
+                {...register("sellerName")}
+                wrapperClassName={cn({
+                  "border border-primary-light": errors.sellerName,
+                })}
+              />
               {errors.sellerName && (
                 <span className="ml-3 text-sm text-primary-light">
                   {errors.sellerName?.message}
@@ -586,8 +647,13 @@ export default function PostCarForm() {
         {/* SELLER PHONE */}
         <div className="h-fit">
           <Label>Phone:</Label>
-          <Input {...register("sellerPhone")} />
-          {errors.currency && (
+          <Input
+            {...register("sellerPhone")}
+            wrapperClassName={cn({
+              "border border-primary-light": errors.sellerPhone,
+            })}
+          />
+          {errors.sellerPhone && (
             <span className="ml-3 text-sm text-primary-light">
               {errors.sellerPhone?.message}
             </span>

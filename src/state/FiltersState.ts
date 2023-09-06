@@ -72,7 +72,6 @@ export const useFilters = create(
     setFilter: (key, value) =>
       set((state) => {
         const index = state.filters.findIndex((filter) => filter.key === key);
-        console.log(index);
         if (index === -1) {
           state.addFilter(key, value);
         } else {
@@ -84,12 +83,10 @@ export const useFilters = create(
       }),
     addFilter: (key, value) =>
       set((state) => {
-        console.log("Add filder ", key);
         state.filters.push({
           key,
           value,
         });
-        console.log(JSON.stringify(state.filters));
       }),
     removeFilter: (key) =>
       set((state) => {

@@ -1,4 +1,4 @@
-import { cn, formatNumberWithCommas} from "@/lib/utils";
+import { cn, formatNumberWithCommas } from "@/lib/utils";
 import { Currency } from "@/types/api/price";
 import Image from "next/image";
 
@@ -35,16 +35,21 @@ export default function CarItemImage({
           Featured
         </div>
       )}
-      <div className={cn("max-h-[200px] overflow-hidden", imgWrapperClassname)}>
+      <div
+        className={cn(
+          "max-h-[120px] overflow-hidden xs:max-h-[150px] md:max-h-[200px]",
+          imgWrapperClassname,
+        )}
+      >
         <Image
           src={image}
           alt={alt || ""}
           width={width || 230}
           height={height || 150}
-          className="h-[200px] w-full object-cover"
+          className="h-[120px] w-full object-cover xs:h-[150px] md:h-[200px]"
         />
       </div>
-      <div className="flex flex-col justify-between bg-primary-main px-[10px] py-3 font-bold text-white">
+      <div className="flex flex-col justify-between bg-primary-main px-2 py-1 font-bold text-white md:px-[10px] md:py-3">
         {model && brand && <div>{`${brand} ${model}`}</div>}
         <div>
           {`${currency} ${formatNumberWithCommas(price || 0)}`}{" "}

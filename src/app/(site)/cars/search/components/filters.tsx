@@ -58,9 +58,8 @@ export default function Filters({ fromMain = false }: Props) {
   const router = useRouter();
   const { data: bodyTypes } = useBodyTypes();
   const { data: brands } = useBrands();
-  const { data: models } = useModels(brand);
+  const { data: models } = useModels();
   const { data: sellerTypes } = useSellerTypes();
-  console.log(maxPrice);
   const handleSearch = () => {
     setIsOpen(false);
     if (fromMain) router.push("/cars/search");
@@ -182,7 +181,7 @@ export default function Filters({ fromMain = false }: Props) {
                   <SelectItem value={"all"}>All brands</SelectItem>
                   {brands?.data.data.map((brand) => (
                     <SelectItem
-                      value={String(brand.id)}
+                      value={String(brand.attributes.slug)}
                       key={brand.attributes.slug}
                     >
                       {brand.attributes.name}

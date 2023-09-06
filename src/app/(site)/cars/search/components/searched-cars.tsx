@@ -10,7 +10,6 @@ type Props = {
 };
 export default function SearchedCars({ initialFilters = [] }: Props) {
   const filters = useFilters((state) => state.filters);
-  console.log(JSON.stringify(filters));
   const { data, refetch, isLoading } = useSearchedCars([
     ...initialFilters,
     ...filters,

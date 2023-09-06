@@ -7,7 +7,6 @@ const useSellers = (sellerType: string) => {
     queryFn: async ({ pageParam = 1 }) =>
       await getSellers(sellerType, pageParam),
     getNextPageParam: (res, pages) => {
-      console.log(pages.length);
       return res.data.length < 10 ? undefined : pages.length + 1;
     },
     refetchOnMount: false,

@@ -1,8 +1,13 @@
+import { cn } from "@/lib/utils";
 import ContentLoader from "react-content-loader";
 
-export default function CarSkeleton() {
+type Props = {
+  className?: string;
+};
+export default function CarSkeleton({ className }: Props) {
   return (
     <ContentLoader
+      className={cn(className)}
       speed={2}
       viewBox="0 0 200 220"
       backgroundColor="#bdbdbd"

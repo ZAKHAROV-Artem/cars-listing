@@ -24,7 +24,6 @@ export default function SearchPage() {
   const [initialFilters, setInitialFilters] = useState<Filter[]>([]);
   useEffect(() => {
     const filters: Filter[] = [];
-    console.log("Search params ", JSON.stringify(searchParams));
     if (searchParams.has("bodyType")) {
       filters.push({
         key: "filters[car_ch][body_type][slug][$eq]",
@@ -54,14 +53,12 @@ export default function SearchPage() {
       });
       setQuery(searchParams.get("q") || "");
     }
-    console.log("Initial filters ", filters);
     setInitialFilters(filters);
     setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
   return (
     <div>
-     
       <div className="relative flex w-full items-center justify-center">
         <FiltersSearch />
       </div>

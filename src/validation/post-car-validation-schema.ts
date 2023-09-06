@@ -19,9 +19,7 @@ export const PostCarAuthValidationSchema = z.object({
     .regex(/[0-9]/, "Only numbers"),
   color: z.string().nonempty("Color is required"),
   mileage: z
-    .string()
-    .nonempty("Mileage is required")
-    .regex(/[0-9]/, "Only numbers"),
+    .string(),
   priceTypeId: z.string().nonempty("Price type is required"),
   currency: z.string().nonempty("Currency type is required"),
   sellerTypeId: z.string().nonempty("Seller type is required"),
