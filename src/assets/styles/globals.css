@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  @apply mt-20 bg-default-light text-light-main dark:bg-default-dark dark:text-dark-main;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-slate-400;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply rounded-md bg-slate-500;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-700;
+}
+
+@layer base {
+  .car-details-slider-wrapper-big
+    .swiper-pagination
+    .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    @apply bg-primary-light;
+  }
+  .car-details-slider-wrapper-big .swiper-pagination .swiper-pagination-bullet {
+    @apply bg-gray-500 text-gray-500 opacity-100;
+  }
+  .car-details-slider-wrapper-big .swiper-button-prev {
+    @apply left-[-100px] text-primary-light duration-300;
+  }
+  .car-details-slider-wrapper-big:hover .swiper-button-prev {
+    @apply left-[10px];
+  }
+  .car-details-slider-wrapper-big .swiper-button-next {
+    @apply right-[-100px] text-primary-light duration-300;
+  }
+  .car-details-slider-wrapper-big:hover .swiper-button-next {
+    @apply right-[10px];
+  }
+  .car-details-slider-slide-small.swiper-slide.swiper-slide-thumb-active {
+    @apply blur-none;
+  }
+  .car-details-slider-slide-small.swiper-slide {
+    @apply blur-sm;
+  }
+
+  .top-cars-slider .swiper-button-prev {
+    @apply h-14 w-14 rounded-full border-2 border-primary-light p-3;
+  }
+  .top-cars-slider .swiper-button-next {
+    @apply h-14 w-14 rounded-full border-2 border-primary-light p-3;
+  }
+}
