@@ -1,5 +1,6 @@
 "use client";
 
+import postCar from "@/actions/client/postCar";
 import { Button } from "@/components/ui/button";
 import CarPostFormFileUpload from "@/components/ui/car-post-form-file-upload";
 import { Input } from "@/components/ui/input";
@@ -27,25 +28,26 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import useModels from "@/hooks/useModels";
 import usePriceTypes from "@/hooks/usePriceTypes";
 import useSellerTypes from "@/hooks/useSellerTypes";
+import { fetcherAuth } from "@/lib/api-client";
 import { cn, generateFilename, range, slugify } from "@/lib/utils";
 import { Car } from "@/types/api/car";
 import { Payload } from "@/types/api/common";
 import {
-  PostCarAuthFields,
-  PostCarAuthValidationSchema,
+  PostCarFields,
+  PostCarValidationSchema,
 } from "@/validation/post-car-validation-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FileWithPath } from "react-dropzone";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { RiseLoader } from "react-spinners";
 export default function PostCarForm() {
   const [loading, setLoading] = useState<boolean>(false);
-  const { data: user } = useCurrentUser();
+  const { data: user, refetch } = useCurrentUser();
   const router = useRouter();
   const {
     register,
@@ -53,13 +55,13 @@ export default function PostCarForm() {
     getValues,
     setValue,
     formState: { errors, isValid },
-  } = useForm<PostCarAuthFields>({
+  } = useForm<PostCarFields>({
     mode: "onBlur",
     defaultValues: {
       title: "",
       description: "",
       location: "Addis Ababa",
-      category: "used-in-ethiopia",
+      categoryId: "4",
       transmission: "Manual",
       year: "2020",
       fuel: "Benzine",
@@ -77,87 +79,72 @@ export default function PostCarForm() {
       sellerName: "",
     },
 
-    resolver: zodResolver(PostCarAuthValidationSchema),
+    resolver: zodResolver(PostCarValidationSchema),
   });
-  const [acceptedFiles, setAcceptedFiles] = useState<FileWithPath[]>([]);
-  const onSubmit: SubmitHandler<PostCarAuthFields> = async (data) => {
-    if (!acceptedFiles.length) {
-      toast.error("Upload at least one image !");
-      return;
+  useEffect(() => {
+    if (user) {
+      setValue("sellerName", user.name || user.username);
     }
-    setLoading(true);
-    const res = await axios.post<Payload<Car>>(
-      `${process.env.NEXT_PUBLIC_API_URL}/cars`,
-      {
-        data: {
-          status: "inactive",
-          car_expiration_date: dayjs().add(30, "day").toDate(),
-          car_featured_expiration_date: null,
-          title: data.title,
-          location: data.location,
-          description: data.description,
-          slug: slugify(data.title),
-          car_ch: {
-            year_made: data.year,
-            engine_size: data.engineSize,
-            fuel: data.fuel,
-            transmission: data.transmission,
-            mileage: data.mileage,
-            brand: {
-              connect: [data.brandId],
-            },
-            model: {
-              connect: [data.modelId],
-            },
-            body_type: {
-              connect: [data.bodyTypeId],
-            },
-            color: data.color,
-          },
-          price: {
-            price: data.price,
-            price_type: {
-              connect: [data.priceTypeId],
-            },
-            currency: data.currency,
-          },
-          seller: {
-            name: user ? user.name || user.username : data.sellerName,
-            phone: data.sellerPhone,
-            seller_type: {
-              connect: [data.sellerTypeId],
-            },
-          },
-        },
-      },
-    );
-    const uploadFormData = new FormData();
-    uploadFormData.append("ref", "api::car.car");
-    uploadFormData.append("refId", `${res.data.data.id}`);
-    uploadFormData.append("field", "images");
-    uploadFormData.append(
-      "path",
-      `cars/${user ? `private/${user.username}` : "public"}/${
-        res.data.data.id
-      }`,
-    );
+  }, [user, setValue]);
+  const [acceptedFiles, setAcceptedFiles] = useState<FileWithPath[]>([]);
+  const onSubmit: SubmitHandler<PostCarFields> = async (data) => {
+    try {
+      if (!acceptedFiles.length) {
+        toast.error("Upload at least one image !");
+        return;
+      }
+      if (user && (Number(user?.points) || 0) < 1) {
+        toast.error("Not enough points on the balance !");
+        return;
+      }
+      setLoading(true);
 
-    acceptedFiles.forEach((file, i) => {
-      uploadFormData.append(
-        "files",
-        file,
-        generateFilename(res.data.data.id, i + 1),
-      );
-    });
-    await axios
-      .post(`${process.env.NEXT_PUBLIC_API_URL}/upload`, uploadFormData)
-      .then(() => {
-        toast.success("Car submitted successfully");
-        router.push(`/order/${res.data.data.id}`);
-      })
-      .finally(() => {
-        setLoading(false);
+      const res = await postCar({
+        ...data,
+        sellerTypeId: user ? String(user?.seller_type?.id) : data.sellerTypeId,
       });
+      const uploadFormData = new FormData();
+
+      uploadFormData.append("ref", "api::car.car");
+      uploadFormData.append("refId", `${res.data.data.id}`);
+      uploadFormData.append("field", "images");
+      uploadFormData.append(
+        "path",
+        `cars/${user ? `private/${user.username}` : "public"}/${
+          res.data.data.id
+        }`,
+      );
+
+      acceptedFiles.forEach((file, i) => {
+        uploadFormData.append(
+          "files",
+          file,
+          generateFilename(res.data.data.id, i + 1),
+        );
+      });
+      await axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/upload`, uploadFormData, {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_UPLOAD_API_TOKEN}`,
+          },
+        })
+        .then(() => {
+          toast.success("Car submitted successfully");
+          if ((Number(user?.points) || 0) < 1) {
+            router.push(`/order/${res.data.data.id}`);
+          }
+        });
+      if (user) {
+        await fetcherAuth.put(`/user/me`, {
+          points: Number(user.points) - 1,
+        });
+        await refetch();
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
   const { data: bodyTypes } = useBodyTypes();
   const { data: brands } = useBrands();
@@ -193,7 +180,7 @@ export default function PostCarForm() {
         <div>
           <Select
             {...register("location")}
-            defaultValue="Addis Ababa"
+            defaultValue={getValues().location}
             onValueChange={(value) =>
               setValue("location", value, { shouldValidate: true })
             }
@@ -235,10 +222,10 @@ export default function PostCarForm() {
         {/* CATEGORY */}
         <div>
           <Select
-            {...register("category")}
-            defaultValue="used-in-ethiopia"
+            {...register("categoryId")}
+            defaultValue={getValues().categoryId}
             onValueChange={(value) =>
-              setValue("category", value, { shouldValidate: true })
+              setValue("categoryId", value, { shouldValidate: true })
             }
           >
             <Label>የመኪናው ሁኔታ | Category</Label>
@@ -248,7 +235,7 @@ export default function PostCarForm() {
             <SelectContent>
               {categories?.data.data.map((brand) => (
                 <SelectItem
-                  value={brand.attributes.slug}
+                  value={String(brand.id)}
                   key={brand.attributes.slug}
                 >
                   {brand.attributes.name}
@@ -424,10 +411,20 @@ export default function PostCarForm() {
               <SelectValue placeholder="Select color" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={"all"}>All colors</SelectItem>
-              {colors?.map((color) => (
-                <SelectItem value={color} key={color}>
-                  {color}
+              <SelectItem value={"all"} disabled>
+                All colors
+              </SelectItem>
+              {colors?.map(({ value, hex }) => (
+                <SelectItem value={value} key={value}>
+                  <div className="flex items-center gap-x-3">
+                    {hex && (
+                      <div
+                        className="h-4 w-4 rounded-full border"
+                        style={{ background: hex }}
+                      />
+                    )}
+                    <div>{value}</div>
+                  </div>
                 </SelectItem>
               ))}
             </SelectContent>
@@ -573,7 +570,7 @@ export default function PostCarForm() {
         <div>
           <Select
             {...register("currency")}
-            defaultValue="ETB"
+            defaultValue={getValues().currency}
             onValueChange={(value) =>
               setValue("currency", value, { shouldValidate: true })
             }
@@ -600,33 +597,33 @@ export default function PostCarForm() {
       </div>
       <h3 className="pt-5 text-xl">Informaiton about seller</h3>
       <div className="grid grid-cols-1 gap-x-5 xs:grid-cols-2">
-        {/* SELLER TYPE */}
-        <div>
-          <Select
-            {...register("sellerTypeId")}
-            defaultValue={getValues().sellerTypeId}
-            onValueChange={(value) =>
-              setValue("sellerTypeId", value, { shouldValidate: true })
-            }
-          >
-            <Label>Seller type:</Label>
-            <SelectTrigger>
-              <SelectValue placeholder="Select seller type" />
-            </SelectTrigger>
-            <SelectContent>
-              {sellerTypes?.data.data.map((sellerType) => (
-                <SelectItem
-                  value={String(sellerType.id)}
-                  key={sellerType.attributes.slug}
-                >
-                  {sellerType.attributes.type}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
         {!user && (
           <>
+            {/* SELLER TYPE */}
+            <div>
+              <Select
+                {...register("sellerTypeId")}
+                defaultValue={getValues().sellerTypeId}
+                onValueChange={(value) =>
+                  setValue("sellerTypeId", value, { shouldValidate: true })
+                }
+              >
+                <Label>Seller type:</Label>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select seller type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {sellerTypes?.data.data.map((sellerType) => (
+                    <SelectItem
+                      value={String(sellerType.id)}
+                      key={sellerType.attributes.slug}
+                    >
+                      {sellerType.attributes.type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
             {/* SELLER NAME */}
             <div className="h-fit">
               <Label>Name:</Label>
@@ -644,6 +641,7 @@ export default function PostCarForm() {
             </div>
           </>
         )}
+
         {/* SELLER PHONE */}
         <div className="h-fit">
           <Label>Phone:</Label>

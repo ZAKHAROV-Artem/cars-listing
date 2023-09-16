@@ -15,7 +15,7 @@ export default function SellerCarsList({ sellerId }: Props) {
     if (isView && !isFetchingNextPage) await fetchNextPage();
   };
   return (
-    <div className="relative grid grid-cols-2 gap-2">
+    <div className="relative grid grid-cols-2 lg:grid-cols-3 gap-2">
       {data?.pages.map((page, i) => (
         <Fragment key={i}>
           {page.data.data?.map((car) => <CarItem car={car} key={car.id} />)}

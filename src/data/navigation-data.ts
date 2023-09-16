@@ -3,7 +3,8 @@ import twitter from "@/../public/imgs/socials/twitter.svg";
 import telegram from "@/../public/imgs/socials/telegram.svg";
 import youtube from "@/../public/imgs/socials/youtube.svg";
 import { IconType } from "react-icons";
-import { AiOutlineUser, AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineUser } from "react-icons/ai";
+import { BsFillCarFrontFill } from "react-icons/bs";
 import { HiOutlineClipboardList } from "react-icons/hi";
 export type MenuItemRouteType = {
   label: string;
@@ -60,19 +61,19 @@ const sellMenuItemRoutes: MenuItemRouteType[] = [
 const servicesMenuItemRoutes: MenuItemRouteType[] = [
   {
     label: "Loans / Financing",
-    href: "/services?service=loans-financing",
+    href: "/services/loans-and-financing",
   },
   {
     label: "Insurance",
-    href: "/services?service=insurance",
+    href: "/services/insurance",
   },
   {
     label: "Spare Parts",
-    href: "/services?service=spare-parts",
+    href: "/services/spare-parts",
   },
   {
     label: "Import Services",
-    href: "/services?service=import",
+    href: "/services/import",
   },
 ];
 export const menuRoutes = {
@@ -103,9 +104,9 @@ export const menuPopoverItemsMain: MenuPopoverItemType[] = [
     icon: HiOutlineClipboardList,
   },
   {
-    href: "/account-savelists",
-    label: "Wishlist",
-    icon: AiOutlineHeart,
+    href: "/user/account/carlist",
+    label: "My cars",
+    icon: BsFillCarFrontFill,
   },
 ];
 

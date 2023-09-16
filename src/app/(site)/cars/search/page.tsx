@@ -11,18 +11,27 @@ import FiltersSearch from "./components/filters-search";
 export default function SearchPage() {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { setBodyType, setSellerType, setBrand, setQuery, setIsOpen, isOpen } =
-    useFilters((state) => ({
-      setBodyType: state.setBodyType,
-      setSellerType: state.setSellerType,
-      setBrand: state.setBrand,
-      setQuery: state.setQuery,
-      setIsOpen: state.setIsOpen,
-      isOpen: state.isOpen,
-    }));
+  const {
+    setBodyType,
+    setSellerType,
+    setBrand,
+    setModel,
+    setQuery,
+    setIsOpen,
+    isOpen,
+  } = useFilters((state) => ({
+    setBodyType: state.setBodyType,
+    setSellerType: state.setSellerType,
+    setBrand: state.setBrand,
+    setModel: state.setModel,
+    setQuery: state.setQuery,
+    setIsOpen: state.setIsOpen,
+    isOpen: state.isOpen,
+  }));
 
   const [initialFilters, setInitialFilters] = useState<Filter[]>([]);
   useEffect(() => {
+    setIsLoading(true);
     const filters: Filter[] = [];
     if (searchParams.has("bodyType")) {
       filters.push({
@@ -32,6 +41,7 @@ export default function SearchPage() {
 
       setBodyType(searchParams.get("bodyType") || "");
     }
+
     if (searchParams.has("sellerType")) {
       filters.push({
         key: "filters[seller][seller_type][slug][$eq]",
@@ -45,6 +55,13 @@ export default function SearchPage() {
         value: searchParams.get("brand") || "",
       });
       setBrand(searchParams.get("brand") || "");
+    }
+    if (searchParams.has("model")) {
+      filters.push({
+        key: "filters[car_ch][model][slug][$eq]",
+        value: searchParams.get("model") || "",
+      });
+      setModel(searchParams.get("model") || "");
     }
     if (searchParams.has("q")) {
       filters.push({
@@ -64,7 +81,7 @@ export default function SearchPage() {
       </div>
       <div className="grid gap-x-5 space-y-5 pb-10 sm:container">
         {isLoading ? (
-          <CarSkeletonLayout />
+          <CarSkeletonLayout className="mt-5" />
         ) : (
           <>
             {" "}

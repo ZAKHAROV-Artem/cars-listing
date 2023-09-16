@@ -10,22 +10,16 @@ import { Button } from "./button";
 import Image from "next/image";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  setAcceptedFile: (file: FileWithPath) => void;
+  setAcceptedFiles: (files: FileWithPath[]) => void;
   currentImgUrl: string;
 }
 export default function AccountImageFileUpload({
   disabled,
-  setAcceptedFile,
+  setAcceptedFiles,
   currentImgUrl,
   ...rest
 }: Props) {
   const [base64, setBase64] = useState<string>();
-  const handleChange = useCallback(
-    (file: FileWithPath) => {
-      setAcceptedFile(file);
-    },
-    [setAcceptedFile],
-  );
 
   const handleDrop = useCallback(
     (files: FileWithPath[]) => {
@@ -33,11 +27,11 @@ export default function AccountImageFileUpload({
       const reader = new FileReader();
       reader.onload = (event: any) => {
         setBase64(event.target.result);
-        handleChange(file);
+        setAcceptedFiles(files);
       };
       reader.readAsDataURL(file);
     },
-    [handleChange],
+    [setAcceptedFiles],
   );
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,

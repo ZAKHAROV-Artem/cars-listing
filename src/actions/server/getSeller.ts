@@ -1,8 +1,8 @@
+import { fetcherServer } from "@/lib/api-server";
 import { User } from "@/types/collections";
-import axios from "axios";
 
 export default async function getSeller(id: string) {
-  return await axios.get<User>(`${process.env.API_URL}/users/${id}`, {
+  return await fetcherServer.get<User>(`/users/${id}`, {
     params: {
       "populate[cars][populate][price][populate]": "*",
       "populate[cars][populate][car_ch][populate][brand]": "*",

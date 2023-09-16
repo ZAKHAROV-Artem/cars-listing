@@ -1,5 +1,6 @@
 import { CarPlain, Location } from "./api/car";
 import { MediaPlain } from "./api/media";
+import { SellerType } from "./api/seller";
 
 export interface User {
   id: number;
@@ -12,10 +13,11 @@ export interface User {
   updatedAt: Date;
   name: string;
   phone: string;
-  seller_type?: string;
+  seller_type?: SellerType;
   location?: Location;
   description?: string;
   dateOfBirth?: string;
   image?: MediaPlain;
   cars?: CarPlain[];
+  points: number;
 }

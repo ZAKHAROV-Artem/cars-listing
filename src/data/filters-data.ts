@@ -7,6 +7,9 @@ export const fuels = [
   "Gazoline/Benzine",
 ];
 export const engineSizes = [
+  "0,8",
+  "0,9",
+  "1,0",
   "1,1",
   "1,2",
   "1,3",
@@ -63,17 +66,22 @@ export const transmissions = [
   "Automated Manual",
   "Continuously Variable",
 ];
-export const colors = [
-  "Red",
-  "Blue",
-  "Green",
-  "Black",
-  "White",
-  "Silver",
-  "Gray",
-  "Yellow",
-  "Orange",
-  "Purple",
-  "Multi",
-  "Another",
+export const colors: {
+  value: string;
+  hex?: string;
+}[] = [
+  { value: "Red", hex: "#FF0000" },
+  { value: "Blue", hex: "#0000FF" },
+  { value: "Green", hex: "#00FF00" },
+  { value: "Black", hex: "#000000" },
+  { value: "White", hex: "#FFFFFF" },
+  { value: "Silver", hex: "#C0C0C0" },
+  { value: "Gray", hex: "#808080" },
+  { value: "Yellow", hex: "#FFFF00" },
+  { value: "Orange", hex: "#FFA500" },
+  { value: "Purple", hex: "#800080" },
+  { value: "Multi", hex: "linear-gradient(195deg, #00DBDE 0%, #FC00FF 100%)" }, // Adjust hex value accordingly
+  {
+    value: "Another",
+  }, // Adjust hex value accordingly
 ];

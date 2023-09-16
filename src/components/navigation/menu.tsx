@@ -4,8 +4,7 @@ import { BsChevronDown } from "react-icons/bs";
 import RouteItem from "./route-item";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import useTopCars from "@/hooks/useTopCars";
-import useFeaturedCars from "@/hooks/useFeaturedCars";
+import useNavbarPopular from "@/hooks/useNavbarPopular";
 
 const menuItemWrappperClass = `
 group 
@@ -46,10 +45,8 @@ const menuItemClassPopupHuge = `
     w-full
 `;
 export default function Menu() {
-  const { data: topCars } = useTopCars({
-    "pagination[limit]": "16",
-  });
-  const { data: featuredCars } = useFeaturedCars({ "pagination[limit]": "8" });
+  const { data } = useNavbarPopular();
+
   return (
     <div className="hidden h-full items-center lg:flex">
       <div className={menuItemWrappperClass}>
@@ -57,55 +54,38 @@ export default function Menu() {
           Popular <BsChevronDown size={18} />
         </div>
         <div className={cn(menuItemClassPopupDefault, menuItemClassPopupHuge)}>
-          <div className="mx-auto grid max-w-3xl grid-cols-3 gap-x-5 pb-5">
+          <div className="container grid grid-cols-[1fr,1fr,1fr,2fr] gap-x-5 pb-5">
             <div>
               <div className="my-4 text-2xl text-light-main dark:text-dark-main">
-                Popular cars
+                Popular brands
               </div>
               <div>
-                {topCars?.data.data.slice(0, 8).map((car) => (
-                  <RouteItem
-                    route={{
-                      label: `${car.attributes.car_ch?.brand?.data.attributes.name} ${car.attributes.car_ch?.model?.data.attributes.name}`,
-                      href: `/cars/${car.attributes.slug}-${car.id}`,
-                    }}
-                    key={car.id}
-                  />
+                {data?.data.data.attributes.brands.map((routeItem) => (
+                  <RouteItem route={routeItem} key={routeItem.href} />
                 ))}
               </div>
             </div>
             <div>
               <div className="my-4 text-2xl text-light-main dark:text-dark-main">
-                Featured cars
+                Popular models
               </div>
               <div>
-                {featuredCars?.data.data.map((car) => (
-                  <RouteItem
-                    route={{
-                      label: `${car.attributes.car_ch?.brand?.data.attributes.name} ${car.attributes.car_ch?.model?.data.attributes.name}`,
-                      href: `/cars/${car.attributes.slug}-${car.id}`,
-                    }}
-                    key={car.id}
-                  />
+                {data?.data.data.attributes.models.map((routeItem) => (
+                  <RouteItem route={routeItem} key={routeItem.href} />
                 ))}
               </div>
             </div>
             <div>
               <div className="my-4 text-2xl text-light-main dark:text-dark-main">
-                Other popular cars
+                Top dealership
               </div>
               <div>
-                {topCars?.data.data.slice(8, 16).map((car) => (
-                  <RouteItem
-                    route={{
-                      label: `${car.attributes.car_ch?.brand?.data.attributes.name} ${car.attributes.car_ch?.model?.data.attributes.name}`,
-                      href: `/cars/${car.attributes.slug}-${car.id}`,
-                    }}
-                    key={car.id}
-                  />
+                {data?.data.data.attributes.dealerships.map((routeItem) => (
+                  <RouteItem route={routeItem} key={routeItem.href} />
                 ))}
               </div>
             </div>
+            <div className="hidden bg-paper-light p-4 dark:bg-paper-dark md:block md:rounded-2xl lg:p-8 "></div>
           </div>
         </div>
       </div>

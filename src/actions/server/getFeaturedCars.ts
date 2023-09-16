@@ -1,9 +1,9 @@
 import { Car } from "@/types/api/car";
 import { Payload } from "@/types/api/common";
-import axios from "axios";
+import { fetcherServer } from "@/lib/api-server";
 
 export default async function getFeaturedCars() {
-  return await axios.get<Payload<Car[]>>(`${process.env.API_URL}/cars`, {
+  return await fetcherServer.get<Payload<Car[]>>(`/cars`, {
     params: {
       "filters[featured][$eq]": "true",
       "filters[status][$eq]": "active",

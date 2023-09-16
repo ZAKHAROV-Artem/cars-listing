@@ -1,9 +1,17 @@
-import axios from "axios";
+import { fetcherServer } from "@/lib/api-server";
 
 export default async function setCarFatuted(id: number, featured: boolean) {
-  return await axios.put(`${process.env.API_URL}/cars/${id}`, {
-    data: {
-      featured,
+  return await fetcherServer.put(
+    `/cars/${id}`,
+    {
+      data: {
+        featured,
+      },
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.POST_CAR_API_TOKEN}`,
+      },
+    },
+  );
 }

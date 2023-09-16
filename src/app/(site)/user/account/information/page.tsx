@@ -27,10 +27,11 @@ import {
 import { useState } from "react";
 import { FileWithPath } from "react-dropzone";
 import { toast } from "react-hot-toast";
+import { fetcherAuth } from "@/lib/api-client";
 
 export default function AccountInfoPage() {
   const { data: user, isLoading, refetch } = useCurrentUser();
-  const [acceptedFile, setAcceptedFile] = useState<FileWithPath>();
+  const [acceptedFiles, setAcceptedFiles] = useState<FileWithPath[]>([]);
   const {
     register,
     handleSubmit,
@@ -55,23 +56,29 @@ export default function AccountInfoPage() {
     resolver: zodResolver(UpdateAccountValidationSchema),
   });
   const onSubmit: SubmitHandler<UpdateAccountFields> = async (data) => {
-    const jwt = Cookies.get("jwt");
-    await axios.put(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/${user?.id}`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      },
-    );
+    await fetcherAuth.put(`/user/me`, data);
+    if (acceptedFiles.length) {
+      const imageFormData = new FormData();
+      acceptedFiles.forEach((file, i) => {
+        imageFormData.append("files", file, `profile-image-${user?.id}`);
+      });
+      imageFormData.append("ref", "plugin::users-permissions.user");
+      imageFormData.append("refId", `${user?.id}`);
+      imageFormData.append("field", "image");
+      imageFormData.append("path", `users/${user?.id}`);
+      if (user?.image) {
+        await fetcherAuth.delete(`/upload/files/${user?.image?.id}`);
+      }
+      await fetcherAuth.post(`/upload`, imageFormData);
+    }
+
     toast.success("Account updated successfully !");
     await refetch();
   };
   return (
     <div className="grid grid-cols-[1fr_2fr] gap-x-5">
       <AccountImageFileUpload
-        setAcceptedFile={setAcceptedFile}
+        setAcceptedFiles={setAcceptedFiles}
         currentImgUrl={user?.image?.url || ""}
       />
       <div className="space-y-3">

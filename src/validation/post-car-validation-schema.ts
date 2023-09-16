@@ -1,11 +1,11 @@
 import { z } from "zod";
-export const PostCarAuthValidationSchema = z.object({
+export const PostCarValidationSchema = z.object({
   title: z.string().nonempty("Title is required"),
   location: z.string().nonempty("Location is required"),
   description: z
     .string()
     .max(3000, { message: "Must be 1000 or fewer characters long" }),
-  category: z.string().nonempty("Category is required"),
+  categoryId: z.string().nonempty("Category is required"),
   brandId: z.string().nonempty("Model is required"),
   modelId: z.string().nonempty("Model is required"),
   bodyTypeId: z.string().nonempty("Body type is required"),
@@ -18,12 +18,11 @@ export const PostCarAuthValidationSchema = z.object({
     .nonempty("Price is required")
     .regex(/[0-9]/, "Only numbers"),
   color: z.string().nonempty("Color is required"),
-  mileage: z
-    .string(),
+  mileage: z.string(),
   priceTypeId: z.string().nonempty("Price type is required"),
   currency: z.string().nonempty("Currency type is required"),
   sellerTypeId: z.string().nonempty("Seller type is required"),
   sellerName: z.string().nonempty("Seller name is required"),
   sellerPhone: z.string().nonempty("Phone is required"),
 });
-export type PostCarAuthFields = z.infer<typeof PostCarAuthValidationSchema>;
+export type PostCarFields = z.infer<typeof PostCarValidationSchema>;

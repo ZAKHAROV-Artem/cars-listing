@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function register(values: RegisterFields) {
   const data = {
+    username: uuidv4(),
     email: values.email,
     name: values.name,
     phone: values.phone,
@@ -12,9 +13,10 @@ export async function register(values: RegisterFields) {
       connect: [values.sellerTypeId],
     },
     password: values.password,
+    points: 0,
   };
   return await axios.post<AuthResponse>(
     `${process.env.NEXT_PUBLIC_API_URL}/auth/local/register`,
-    { ...data, username: uuidv4() },
+    data,
   );
 }

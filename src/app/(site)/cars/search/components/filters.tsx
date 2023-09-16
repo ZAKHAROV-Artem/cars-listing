@@ -1,12 +1,10 @@
 "use client";
 import { cn, range } from "@/lib/utils";
-import { MouseEvent, useEffect, useState } from "react";
-import { BsChevronDown, BsSearch } from "react-icons/bs";
+import { BsSearch } from "react-icons/bs";
 import {
   Select,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -21,6 +19,7 @@ import { Filter, useFilters } from "@/state/FiltersState";
 import useSellerTypes from "@/hooks/useSellerTypes";
 import RangeSlider from "@/components/ui/range-slider";
 import { useRouter } from "next/navigation";
+import useCategories from "@/hooks/useCategories";
 
 type Props = {
   fromMain?: boolean;
@@ -28,6 +27,7 @@ type Props = {
 export default function Filters({ fromMain = false }: Props) {
   const {
     isOpen,
+    category,
     bodyType,
     brand,
     model,
@@ -41,6 +41,7 @@ export default function Filters({ fromMain = false }: Props) {
     minMileage,
     maxMileage,
     setIsOpen,
+    setCategory,
     setBodyType,
     setBrand,
     setModel,
@@ -60,11 +61,16 @@ export default function Filters({ fromMain = false }: Props) {
   const { data: brands } = useBrands();
   const { data: models } = useModels();
   const { data: sellerTypes } = useSellerTypes();
+  const { data: categories } = useCategories();
   const handleSearch = () => {
     setIsOpen(false);
     if (fromMain) router.push("/cars/search");
     const filtersArr: Filter[] = [];
-
+    if (category)
+      filtersArr.push({
+        key: "filters[category][slug][$eq]",
+        value: category,
+      });
     if (bodyType)
       filtersArr.push({
         key: "filters[car_ch][body_type][slug][$eq]",
@@ -133,7 +139,7 @@ export default function Filters({ fromMain = false }: Props) {
       className={cn(
         "overflow-hidden rounded-xl duration-500 dark:border-slate-700",
         {
-          "h-[950px]  xs:h-[580px]  lg:h-[340px]": isOpen,
+          "h-[1100px]  xs:h-[580px]  lg:h-[340px]": isOpen,
           "h-0": !isOpen,
         },
       )}
@@ -141,30 +147,32 @@ export default function Filters({ fromMain = false }: Props) {
       <div className="space-y-5 p-8">
         <div className="grid gap-x-10 gap-y-5 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           <div className="w-full  space-y-3">
+            {/* CATEGORY */}
             <div>
               <Select
-                defaultValue={bodyType || "all"}
+                defaultValue={category || "all"}
                 onValueChange={(value) =>
-                  setBodyType(value === "all" ? "" : value)
+                  setCategory(value === "all" ? "" : value)
                 }
               >
-                <Label>Body type:</Label>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select body type" />
+                <Label>የመኪናው ሁኔታ | Category</Label>
+                <SelectTrigger className="">
+                  <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={"all"}>All types</SelectItem>
-                  {bodyTypes?.data.data.map((bodyType) => (
+                  <SelectItem value={"all"}>All categories</SelectItem>
+                  {categories?.data.data.map((brand) => (
                     <SelectItem
-                      value={bodyType.attributes.slug}
-                      key={bodyType.attributes.slug}
+                      value={brand.attributes.slug}
+                      key={brand.attributes.slug}
                     >
-                      {bodyType.attributes.type}
+                      {brand.attributes.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
+
             {/* BRAND */}
             <div>
               <Select
@@ -181,7 +189,7 @@ export default function Filters({ fromMain = false }: Props) {
                   <SelectItem value={"all"}>All brands</SelectItem>
                   {brands?.data.data.map((brand) => (
                     <SelectItem
-                      value={String(brand.attributes.slug)}
+                      value={brand.attributes.slug}
                       key={brand.attributes.slug}
                     >
                       {brand.attributes.name}
@@ -211,11 +219,12 @@ export default function Filters({ fromMain = false }: Props) {
                   {models?.data.data
                     .filter(
                       (model) =>
-                        String(model.attributes.brand?.data.id) === brand,
+                        String(model.attributes.brand?.data.attributes.slug) ===
+                        brand,
                     )
                     .map((model) => (
                       <SelectItem
-                        value={String(model.id)}
+                        value={model.attributes.slug}
                         key={model.attributes.slug}
                       >
                         {model.attributes.name}
@@ -239,9 +248,17 @@ export default function Filters({ fromMain = false }: Props) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={"all"}>All colors</SelectItem>
-                  {colors?.map((color) => (
-                    <SelectItem value={color} key={color}>
-                      {color}
+                  {colors?.map(({ value, hex }) => (
+                    <SelectItem value={value} key={value}>
+                      <div className="flex items-center gap-x-3">
+                        {hex && (
+                          <div
+                            className="h-4 w-4 rounded-full border"
+                            style={{ background: hex }}
+                          />
+                        )}
+                        <div>{value}</div>
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -342,6 +359,30 @@ export default function Filters({ fromMain = false }: Props) {
                       key={sellerType.attributes.slug}
                     >
                       {sellerType.attributes.type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Select
+                defaultValue={bodyType || "all"}
+                onValueChange={(value) =>
+                  setBodyType(value === "all" ? "" : value)
+                }
+              >
+                <Label>Body type:</Label>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select body type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={"all"}>All types</SelectItem>
+                  {bodyTypes?.data.data.map((bodyType) => (
+                    <SelectItem
+                      value={bodyType.attributes.slug}
+                      key={bodyType.attributes.slug}
+                    >
+                      {bodyType.attributes.type}
                     </SelectItem>
                   ))}
                 </SelectContent>

@@ -1,10 +1,18 @@
+import { fetcherServer } from "@/lib/api-server";
 import { Status } from "@/types/api/car";
-import axios from "axios";
 
 export default async function setCarStatus(id: number, status: Status) {
-  return await axios.put(`${process.env.API_URL}/cars/${id}`, {
-    data: {
-      status,
+  return await fetcherServer.put(
+    `/cars/${id}`,
+    {
+      data: {
+        status,
+      },
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.POST_CAR_API_TOKEN}`,
+      },
+    },
+  );
 }

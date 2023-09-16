@@ -52,5 +52,5 @@ export interface CarCharacteristicsPlain {
   engine_size: string;
   body_type?: BodyType;
   color: Color;
-  mileage: number;
+  mileage?: number;
 }

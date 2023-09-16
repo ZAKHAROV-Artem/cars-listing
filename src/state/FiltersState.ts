@@ -9,6 +9,7 @@ type State = {
   isOpen: boolean;
   filters: Filter[];
   query: string;
+  category: string;
   bodyType: string;
   brand: string;
   model: string;
@@ -30,6 +31,7 @@ type Actions = {
   setFilter: (key: string, value: string) => void;
   removeFilter: (key: string) => void;
   setQuery: (value: string) => void;
+  setCategory: (value: string) => void;
   setBodyType: (value: string) => void;
   setBrand: (value: string) => void;
   setModel: (value: string) => void;
@@ -49,6 +51,7 @@ export const useFilters = create(
     isOpen: false,
     filters: [],
     query: "",
+    category: "",
     bodyType: "",
     brand: "",
     model: "",
@@ -91,6 +94,10 @@ export const useFilters = create(
     removeFilter: (key) =>
       set((state) => {
         state.filters = state.filters.filter((filter) => filter.key != key);
+      }),
+    setCategory: (value) =>
+      set((state) => {
+        state.category = value;
       }),
     setBodyType: (value) =>
       set((state) => {

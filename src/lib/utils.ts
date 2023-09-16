@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import dayjs from "dayjs";
+import axios from "axios";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -39,9 +40,26 @@ export function formatNumberWithCommas(number: number): string {
   return finalStr;
 }
 export function slugify(data: string) {
-  return data.toLocaleLowerCase().split(" ").join("-");
+  return data
+    .toLocaleLowerCase()
+    .split(" ")
+    .join("-")
+    .replaceAll(/[,.?!]/g, "");
 }
 
 export function addDomain(name?: string) {
   return name ? `${process.env.NEXT_PUBLIC_API}${name}` : "";
+}
+export function convertBlobToFile(blob: any, fileName: string) {
+  blob.lastModified = new Date();
+  blob.name = fileName;
+  return blob;
+}
+export async function getImageFromURL(url: string) {
+  const res = await axios.get(url, {
+    responseType: "arraybuffer",
+  });
+  const blob = new Blob([res.data, { type: "image/png" }]);
+
+  return blob;
 }

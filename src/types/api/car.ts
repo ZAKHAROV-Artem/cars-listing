@@ -3,6 +3,7 @@ import {
   CarCharacteristics,
   CarCharacteristicsPlain,
 } from "./car-characteristics";
+import { Category, CategoryPlain } from "./category";
 import { Media, MediaPlain } from "./media";
 import { Price, PricePlain } from "./price";
 import { Seller } from "./seller";
@@ -36,13 +37,13 @@ export interface Car {
     price?: Price;
     seller?: Seller;
     images: { data: Media[] };
-    at_top?: boolean;
     visits: number;
     slug: string;
     user?: { data: User };
     status: Status;
     car_expiration_date: Date;
     car_featured_expiration_date: Date;
+    category?: { data: Category };
   };
 }
 
@@ -59,11 +60,11 @@ export interface CarPlain {
   price?: PricePlain;
   seller?: Seller;
   images: MediaPlain[];
-  at_top?: boolean;
   visits: number;
   slug: string;
   user?: { data: User };
   status: Status;
   car_expiration_date: Date;
   car_featured_expiration_date?: Date;
+  category?: CategoryPlain;
 }

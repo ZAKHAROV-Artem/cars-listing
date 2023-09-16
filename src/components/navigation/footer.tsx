@@ -3,6 +3,7 @@ import { MenuItemRouteType } from "@/data/navigation-data";
 import React from "react";
 import SocialMediaList from "./social-media-list";
 import Logo from "../data-display/logo";
+import Link from "next/link";
 
 export interface WidgetFooterMenu {
   id: string;
@@ -15,40 +16,40 @@ const widgetMenus: WidgetFooterMenu[] = [
     id: "5",
     title: "Getting started",
     menus: [
-      { href: "/", label: "Release Notes" },
-      { href: "/", label: "Upgrade Guide" },
-      { href: "/", label: "Browser Support" },
-      { href: "/", label: "Dark Mode" },
+      { href: "/getting-started/release-notes", label: "Release Notes" },
+      { href: "/getting-started/upgrade-guide", label: "Upgrade Guide" },
+      { href: "/getting-started/browser-support", label: "Browser Support" },
+      { href: "/getting-started/help", label: "Help" },
     ],
   },
   {
     id: "1",
     title: "Explore",
     menus: [
-      { href: "/", label: "Prototyping" },
-      { href: "/", label: "Design systems" },
-      { href: "/", label: "Pricing" },
-      { href: "/", label: "Security" },
+      { href: "/explore/prototyping", label: "Prototyping" },
+      { href: "/explore/design-systems", label: "Design systems" },
+      { href: "/explore/pricing", label: "Pricing" },
+      { href: "/explore/security", label: "Security" },
     ],
   },
   {
     id: "2",
     title: "Resources",
     menus: [
-      { href: "/", label: "Best practices" },
-      { href: "/", label: "Support" },
-      { href: "/", label: "Developers" },
-      { href: "/", label: "Learn design" },
+      { href: "/resources/best-practices", label: "Best practices" },
+      { href: "/resources/support", label: "Support" },
+      { href: "/resources/developers", label: "Developers" },
+      { href: "/resources/learn-design", label: "Learn design" },
     ],
   },
   {
     id: "4",
     title: "Community",
     menus: [
-      { href: "/", label: "Discussion Forums" },
-      { href: "/", label: "Code of Conduct" },
-      { href: "/", label: "Contributing" },
-      { href: "/", label: "API Reference" },
+      { href: "/community/discussion-forums", label: "Discussion Forums" },
+      { href: "/community/code-of-conduct", label: "Code of Conduct" },
+      { href: "/community/contributing", label: "Contributing" },
+      { href: "/community/api-reference", label: "API Reference" },
     ],
   },
 ];
@@ -63,15 +64,14 @@ const Footer: React.FC = () => {
         <ul className="mt-5 space-y-4">
           {menu.menus.map((item, index) => (
             <li key={index}>
-              <a
+              <Link
                 key={index}
                 className="text-neutral-6000 hover:text-black dark:text-neutral-300 dark:hover:text-white"
                 href={item.href}
-                target="_blank"
                 rel="noopener noreferrer"
               >
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

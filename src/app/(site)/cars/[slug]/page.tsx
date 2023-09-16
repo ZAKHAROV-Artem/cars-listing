@@ -6,11 +6,12 @@ import SellerInfoFooter from "./components/seller-info-footer";
 import incrementVisits from "@/actions/server/incrementVisits";
 import { formatNumberWithCommas } from "@/lib/utils";
 import ClientOnly from "@/components/client-only";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import dayjs from "dayjs";
 import setCarStatus from "@/actions/server/setCarStatus";
 import { Status } from "@/types/api/car";
 import setCarFatuted from "@/actions/server/setCarFatuted";
+import CarDetailSliderSkeleton from "@/components/ui/car-detail-slider-skeleton";
 
 type Props = {
   params: { slug: string };
@@ -18,8 +19,10 @@ type Props = {
 export default async function CarDetail({ params: { slug } }: Props) {
   const id = slug.split("-").at(-1);
   if (!id) return redirect("/");
-  const car = await getCar(id);
-  if (!car) return redirect("/");
+  const car = await getCar(id).catch(() => {
+    notFound();
+  });
+  if (!car) notFound();
   if (dayjs() > dayjs(car.attributes.car_expiration_date)) {
     await setCarStatus(car.id, Status.Inactive);
   }
@@ -39,7 +42,7 @@ export default async function CarDetail({ params: { slug } }: Props) {
         </div>
       </div>
       <div className="grid grid-cols-1 md:gap-4 lg:grid-cols-[65%_35%]">
-        <ClientOnly>
+        <ClientOnly fallback={<CarDetailSliderSkeleton />}>
           <CarImagesSlider images={car.attributes.images.data} />
         </ClientOnly>
         <div className="bg-paper-light p-4 dark:bg-paper-dark md:rounded-2xl lg:h-full lg:p-8">

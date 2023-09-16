@@ -10,7 +10,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FreeMode, Navigation, Thumbs, Pagination } from "swiper/modules";
 import { Swiper as SwType } from "swiper/types";
-import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Media } from "@/types/api/media";
 import { IoMdClose } from "react-icons/io";
@@ -38,8 +37,7 @@ export default function CarImagesSlider({ images }: { images: Media[] }) {
           loop={true}
           spaceBetween={10}
           navigation
-          thumbs={{ swiper: thumbsSwiper }}
-          modules={[FreeMode, Navigation, Thumbs]}
+          modules={[FreeMode, Navigation]}
           className={
             "car-details-slider-wrapper-big flex h-screen w-screen items-center justify-center"
           }
@@ -96,8 +94,9 @@ export default function CarImagesSlider({ images }: { images: Media[] }) {
           onSwiper={setThumbsSwiper}
           slidesPerView={sm ? 4 : 3}
           spaceBetween={10}
+          freeMode={true}
           watchSlidesProgress={true}
-          modules={[Navigation, Thumbs]}
+          modules={[FreeMode, Navigation, Thumbs]}
         >
           {images.map((image) => (
             <SwiperSlide

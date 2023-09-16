@@ -1,10 +1,10 @@
-import axios from "axios";
 import { QueryParams } from "../client/getSearchedCars";
 import { Payload } from "@/types/api/common";
 import { Car } from "@/types/api/car";
+import { fetcherServer } from "@/lib/api-server";
 
 export default async function getTopCars(filters?: QueryParams) {
-  return await axios.get<Payload<Car[]>>(`${process.env.API_URL}/cars`, {
+  return await fetcherServer.get<Payload<Car[]>>(`/cars`, {
     params: {
       "sort[0]": "visits:desc",
       "filters[status][$eq]": "active",

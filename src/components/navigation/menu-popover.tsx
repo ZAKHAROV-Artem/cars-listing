@@ -49,7 +49,7 @@ export default function MenuPopover() {
                   <h4 className="font-semibold">
                     {user.name || user.username}
                   </h4>
-                  <p className="mt-0.5 text-xs">{user?.location}</p>
+                  <p className="mt-0.5 text-xs">Points: {user?.points}</p>
                 </div>
               </div>
               <Separator className="my-3" />
