@@ -39,7 +39,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type}
           className={cn(
-            `w-full border-none bg-transparent py-2 text-sm text-light-main focus:outline-none focus:ring-0 dark:text-dark-main `,
+            `w-full border-none bg-transparent py-2 text-sm text-light-main focus:outline-none focus:ring-0 disabled:cursor-not-allowed dark:text-dark-main `,
             className,
           )}
           autoFocus={false}

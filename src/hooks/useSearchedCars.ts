@@ -5,13 +5,12 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 const useSearchedCars = (filters: Filter[]) => {
   const query = useInfiniteQuery({
     queryKey: [`searched-cars-infinity`],
-    queryFn: async ({ pageParam = 1 }) => {
-      const res = await getSearchedCars({
+    queryFn: async ({ pageParam = 1 }) =>
+      await getSearchedCars({
         filters,
         page: pageParam,
-      });
-      return res;
-    },
+      }),
+
     getNextPageParam: (res, pages) => {
       return res.data.meta.pagination?.page ===
         res.data.meta.pagination?.pageCount ||
@@ -19,8 +18,8 @@ const useSearchedCars = (filters: Filter[]) => {
         ? undefined
         : pages.length + 1;
     },
-    refetchOnWindowFocus: false,
     refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
   return query;
 };

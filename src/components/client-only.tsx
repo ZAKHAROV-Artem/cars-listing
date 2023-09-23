@@ -1,6 +1,7 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
+import { useEffectOnce } from "usehooks-ts";
 
 type Props = {
   fallback?: ReactNode;
@@ -8,9 +9,9 @@ type Props = {
 };
 export default function ClientOnly({ fallback, children }: Props) {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  useEffect(() => {
+  useEffectOnce(() => {
     setIsLoaded(true);
-  }, []);
+  });
   if (!isLoaded) return fallback || null;
   return children;
 }

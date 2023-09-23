@@ -14,7 +14,10 @@ declare module "next-auth" {
       updatedAt: Date;
       name: string;
       phone: string;
-      seller_type?: string;
+      seller_type?: {
+        slug: string;
+        name: string;
+      };
     };
   }
   interface Session {
@@ -42,7 +45,10 @@ declare module "next-auth/jwt" {
       updatedAt: Date;
       name: string;
       phone: string;
-      seller_type?: string;
+      seller_type?: {
+        slug: string;
+        name: string;
+      };
     };
   }
 }

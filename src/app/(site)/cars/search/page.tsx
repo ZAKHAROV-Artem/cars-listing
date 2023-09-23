@@ -5,7 +5,7 @@ import SearchedCars from "./components/searched-cars";
 import { Filter, useFilters } from "@/state/FiltersState";
 import CarSkeletonLayout from "@/components/ui/car-skeleton-layout";
 import { useSearchParams } from "next/navigation";
-import PostCatFloatingButton from "@/components/ui/post-car-floating-button";
+import PostCarFloatingButton from "@/components/ui/post-car-floating-button";
 import FiltersSearch from "./components/filters-search";
 
 export default function SearchPage() {
@@ -17,17 +17,17 @@ export default function SearchPage() {
     setBrand,
     setModel,
     setQuery,
+    setCategory,
+    setColor,
+    setFuel,
+    setYearMade,
+    setMinPrice,
+    setMaxPrice,
+    setMinMileage,
+    setMaxMileage,
     setIsOpen,
     isOpen,
-  } = useFilters((state) => ({
-    setBodyType: state.setBodyType,
-    setSellerType: state.setSellerType,
-    setBrand: state.setBrand,
-    setModel: state.setModel,
-    setQuery: state.setQuery,
-    setIsOpen: state.setIsOpen,
-    isOpen: state.isOpen,
-  }));
+  } = useFilters();
 
   const [initialFilters, setInitialFilters] = useState<Filter[]>([]);
   useEffect(() => {
@@ -41,8 +41,42 @@ export default function SearchPage() {
 
       setBodyType(searchParams.get("bodyType") || "");
     }
-
     if (searchParams.has("sellerType")) {
+      filters.push({
+        key: "filters[seller][seller_type][slug][$eq]",
+        value: searchParams.get("sellerType") || "",
+      });
+      setSellerType(searchParams.get("sellerType") || "");
+    }
+    if (searchParams.has("category") || "") {
+      filters.push({
+        key: "filters[category][slug][$eq]",
+        value: searchParams.get("category") || "",
+      });
+      setCategory(searchParams.get("category") || "");
+    }
+    if (searchParams.has("color") || "") {
+      filters.push({
+        key: "filters[car_ch][color][$eq]",
+        value: searchParams.get("color") || "",
+      });
+      setColor(searchParams.get("color") || "");
+    }
+    if (searchParams.has("fuel") || "") {
+      filters.push({
+        key: "filters[car_ch][fuel][$eq]",
+        value: searchParams.get("fuel") || "",
+      });
+      setFuel(searchParams.get("fuel") || "");
+    }
+    if (searchParams.has("yearMade") || "") {
+      filters.push({
+        key: "filters[car_ch][year_made][$eq]",
+        value: searchParams.get("yearMade") || "",
+      });
+      setYearMade(searchParams.get("yearMade") || "");
+    }
+    if (searchParams.has("sellerType") || "") {
       filters.push({
         key: "filters[seller][seller_type][slug][$eq]",
         value: searchParams.get("sellerType") || "",
@@ -63,9 +97,37 @@ export default function SearchPage() {
       });
       setModel(searchParams.get("model") || "");
     }
+    if (searchParams.has("minPrice")) {
+      filters.push({
+        key: "filters[price][price][$gt]",
+        value: searchParams.get("minPrice") || "",
+      });
+      setMinPrice(Number(searchParams.get("minPrice")) || 0);
+    }
+    if (searchParams.has("maxPrice")) {
+      filters.push({
+        key: "filters[price][price][$lt]",
+        value: searchParams.get("maxPrice") || "",
+      });
+      setMaxPrice(Number(searchParams.get("maxPrice")) || 0);
+    }
+    if (searchParams.has("minMileage")) {
+      filters.push({
+        key: "filters[car_ch][mileage][$gt]",
+        value: searchParams.get("minMileage") || "",
+      });
+      setMinMileage(Number(searchParams.get("minMileage")) || 0);
+    }
+    if (searchParams.has("maxMileage")) {
+      filters.push({
+        key: "filters[car_ch][mileage][$lt]",
+        value: searchParams.get("maxMileage") || "",
+      });
+      setMaxMileage(Number(searchParams.get("maxMileage")) || 0);
+    }
     if (searchParams.has("q")) {
       filters.push({
-        key: "filters[title][$contains]",
+        key: "filters[title][$containsi]",
         value: searchParams.get("q") || "",
       });
       setQuery(searchParams.get("q") || "");
@@ -90,7 +152,7 @@ export default function SearchPage() {
           </>
         )}
       </div>
-      <PostCatFloatingButton />
+      <PostCarFloatingButton />
     </div>
   );
 }

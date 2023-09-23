@@ -17,12 +17,17 @@ export default async function postCar(data: PostCarFields) {
         location: data.location,
         description: data.description,
         slug: slugify(`${data.title} ${Date.now()}`),
+        ...(data.userId && {
+          user: {
+            connect: [data.userId],
+          },
+        }),
         car_ch: {
           year_made: data.year,
           engine_size: data.engineSize,
           fuel: data.fuel,
           transmission: data.transmission,
-          mileage: data.mileage || null,
+          mileage: data.mileage || -1,
           brand: {
             connect: [data.brandId],
           },
@@ -35,7 +40,7 @@ export default async function postCar(data: PostCarFields) {
           color: data.color,
         },
         price: {
-          price: data.price,
+          price: data.price || -1,
           price_type: {
             connect: [data.priceTypeId],
           },

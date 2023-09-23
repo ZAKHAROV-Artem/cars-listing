@@ -2,6 +2,7 @@ import { QueryParams } from "../client/getSearchedCars";
 import { Payload } from "@/types/api/common";
 import { Car } from "@/types/api/car";
 import { fetcher } from "@/lib/api-client";
+import dayjs from "dayjs";
 
 export default async function getTopCars(filters?: QueryParams) {
   return await fetcher.get<Payload<Car[]>>(`/cars`, {
@@ -19,6 +20,9 @@ export default async function getTopCars(filters?: QueryParams) {
       "populate[seller][populate]": "*",
       "populate[price][populate]": "*",
       "populate[images][fields][0]": "url",
+      "filters[createdAt][$gte]": dayjs()
+        .set("day", dayjs().get("day") - 7)
+        .toDate(),
       ...filters,
     },
   });

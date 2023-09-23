@@ -52,8 +52,14 @@ export default function CarItemImage({
       <div className="flex flex-col justify-between bg-primary-main px-2 py-1 font-bold text-white md:px-[10px] md:py-3">
         {model && brand && <div>{`${brand} ${model}`}</div>}
         <div>
-          {`${currency} ${formatNumberWithCommas(price || 0)}`}{" "}
-          <span className="hidden xs:inline">{`(${priceType})`}</span>
+          {priceType === "On call" ? (
+            <>{priceType}</>
+          ) : (
+            <>
+              {`${currency} ${formatNumberWithCommas(price || 0)}`}{" "}
+              <span className="hidden xs:inline">{`(${priceType})`}</span>
+            </>
+          )}
         </div>
       </div>
     </div>

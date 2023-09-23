@@ -7,7 +7,6 @@ export interface NavbarPopular {
     updatedAt: Date;
     publishedAt?: Date;
     brands: MenuItemRouteType[];
-    models: MenuItemRouteType[];
     dealerships: MenuItemRouteType[];
   };
 }
@@ -17,6 +16,5 @@ export interface NavbarPopularPlain {
   updatedAt: Date;
   publishedAt?: Date;
   brands: MenuItemRouteType[];
-  models: MenuItemRouteType[];
   dealerships: MenuItemRouteType[];
 }

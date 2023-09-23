@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { User } from "./collections";
+import { User } from "./api/user";
 
 export interface AuthResponse {
   jwt: string;

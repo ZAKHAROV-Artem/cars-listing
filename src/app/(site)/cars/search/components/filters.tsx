@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Filter, useFilters } from "@/state/FiltersState";
 import useSellerTypes from "@/hooks/useSellerTypes";
 import RangeSlider from "@/components/ui/range-slider";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import useCategories from "@/hooks/useCategories";
 
 type Props = {
@@ -54,7 +54,6 @@ export default function Filters({ fromMain = false }: Props) {
     setMaxPrice,
     setMinMileage,
     setMaxMileage,
-    setFilters,
   } = useFilters();
   const router = useRouter();
   const { data: bodyTypes } = useBodyTypes();
@@ -62,77 +61,25 @@ export default function Filters({ fromMain = false }: Props) {
   const { data: models } = useModels();
   const { data: sellerTypes } = useSellerTypes();
   const { data: categories } = useCategories();
+  const searchParams = useSearchParams();
   const handleSearch = () => {
     setIsOpen(false);
-    if (fromMain) router.push("/cars/search");
-    const filtersArr: Filter[] = [];
-    if (category)
-      filtersArr.push({
-        key: "filters[category][slug][$eq]",
-        value: category,
-      });
-    if (bodyType)
-      filtersArr.push({
-        key: "filters[car_ch][body_type][slug][$eq]",
-        value: bodyType,
-      });
-    if (brand)
-      filtersArr.push({
-        key: "filters[car_ch][brand][slug][$eq]",
-        value: brand,
-      });
-    if (model)
-      filtersArr.push({
-        key: "filters[car_ch][model][slug][$eq]",
-        value: model,
-      });
-    if (color)
-      filtersArr.push({
-        key: "filters[car_ch][color][$eq]",
-        value: color,
-      });
-    if (fuel)
-      filtersArr.push({
-        key: "filters[car_ch][fuel][$eq]",
-        value: fuel,
-      });
-    if (yearMade)
-      filtersArr.push({
-        key: "filters[car_ch][year_made][$eq]",
-        value: yearMade,
-      });
-    if (transmission)
-      filtersArr.push({
-        key: "filters[car_ch][transmission][$eq]",
-        value: transmission,
-      });
-    if (sellerType)
-      filtersArr.push({
-        key: "filters[seller][seller_type][slug][$eq]",
-        value: sellerType,
-      });
-    if (minPrice)
-      filtersArr.push({
-        key: "filters[price][price][$gt]",
-        value: String(minPrice),
-      });
-    if (maxPrice)
-      filtersArr.push({
-        key: "filters[price][price][$lt]",
-        value: String(maxPrice),
-      });
-    if (minMileage)
-      filtersArr.push({
-        key: "filters[car_ch][mileage][$gt]",
-        value: String(minMileage),
-      });
-    if (maxMileage)
-      filtersArr.push({
-        key: "filters[car_ch][mileage][$lt]",
-        value: String(maxMileage),
-      });
-
-    setFilters(filtersArr);
+    let query = `/cars/search?`;
+    if (category) query += `category=${category}`;
+    if (bodyType) query += `&bodyType=${bodyType}`;
+    if (brand) query += `&brand=${brand}`;
+    if (model) query += `&model=${model}`;
+    if (color) query += `&color=${color}`;
+    if (fuel) query += `&fuel=${fuel}`;
+    if (yearMade) query += `&yearMade=${yearMade}`;
+    if (transmission) query += `&transmission=${transmission}`;
+    if (sellerType) query += `&sellerType=${sellerType}`;
+    if (minPrice) query += `&minPrice=${minPrice}`;
+    if (maxPrice) query += `&maxPrice=${maxPrice}`;
+    if (minMileage) query += `&minMileage=${minMileage}`;
+    if (maxMileage) query += `&maxMileage=${maxMileage}`;
+    if (searchParams.has("q")) query += `&q=${searchParams.get("q")}`;
+    router.push(query);
   };
   return (
     <div
@@ -161,12 +108,12 @@ export default function Filters({ fromMain = false }: Props) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={"all"}>All categories</SelectItem>
-                  {categories?.data.data.map((brand) => (
+                  {categories?.data.data.map((category) => (
                     <SelectItem
-                      value={brand.attributes.slug}
-                      key={brand.attributes.slug}
+                      value={category.attributes.slug}
+                      key={category.attributes.slug}
                     >
-                      {brand.attributes.name}
+                      {category.attributes.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -176,7 +123,7 @@ export default function Filters({ fromMain = false }: Props) {
             {/* BRAND */}
             <div>
               <Select
-                defaultValue={brand || "all"}
+                value={brand || "all"}
                 onValueChange={(value) =>
                   setBrand(value === "all" ? "" : value)
                 }
@@ -201,7 +148,7 @@ export default function Filters({ fromMain = false }: Props) {
             {/* MODEL */}
             <div>
               <Select
-                defaultValue={model || "all"}
+                value={model || "all"}
                 onValueChange={(value) =>
                   setModel(value === "all" ? "" : value)
                 }
@@ -213,9 +160,7 @@ export default function Filters({ fromMain = false }: Props) {
                 </SelectTrigger>
 
                 <SelectContent>
-                  <SelectItem value={"all"} className="mt-3">
-                    All models
-                  </SelectItem>
+                  <SelectItem value={"all"}>All models</SelectItem>
                   {models?.data.data
                     .filter(
                       (model) =>
@@ -237,7 +182,7 @@ export default function Filters({ fromMain = false }: Props) {
           <div className="w-full space-y-3">
             <div>
               <Select
-                defaultValue={color || "all"}
+                value={color || "all"}
                 onValueChange={(value) =>
                   setColor(value === "all" ? "" : value)
                 }
@@ -266,7 +211,7 @@ export default function Filters({ fromMain = false }: Props) {
             </div>
             <div>
               <Select
-                defaultValue={fuel || "all"}
+                value={fuel || "all"}
                 onValueChange={(value) => setFuel(value === "all" ? "" : value)}
               >
                 <Label>Fuel:</Label>
@@ -289,7 +234,7 @@ export default function Filters({ fromMain = false }: Props) {
             <div>
               {" "}
               <Select
-                defaultValue={yearMade || "all"}
+                value={yearMade || "all"}
                 onValueChange={(value) =>
                   setYearMade(value === "all" ? "" : value)
                 }
@@ -321,7 +266,7 @@ export default function Filters({ fromMain = false }: Props) {
           <div className="w-full space-y-3">
             <div>
               <Select
-                defaultValue={transmission || "all"}
+                value={transmission || "all"}
                 onValueChange={(value) =>
                   setTransmission(value === "all" ? "" : value)
                 }
@@ -342,7 +287,7 @@ export default function Filters({ fromMain = false }: Props) {
             </div>
             <div>
               <Select
-                defaultValue={sellerType || "all"}
+                value={sellerType || "all"}
                 onValueChange={(value) =>
                   setSellerType(value === "all" ? "" : value)
                 }
@@ -366,7 +311,7 @@ export default function Filters({ fromMain = false }: Props) {
             </div>
             <div>
               <Select
-                defaultValue={bodyType || "all"}
+                value={bodyType || "all"}
                 onValueChange={(value) =>
                   setBodyType(value === "all" ? "" : value)
                 }
@@ -403,17 +348,21 @@ export default function Filters({ fromMain = false }: Props) {
               <div className="flex gap-x-3">
                 <Input
                   placeholder="Min price"
-                  type="number"
-                  min={0}
+                  type="text"
+                  maxLength={10}
                   value={minPrice}
-                  onChange={(e) => setMinPrice(Number(e.target.value))}
+                  onChange={(e) =>
+                    setMinPrice(Number(e.target.value.replace(/[,.\D]/g, "")))
+                  }
                 />
                 <Input
                   placeholder="Max price"
-                  type="number"
-                  min={0}
+                  type="text"
+                  maxLength={10}
                   value={maxPrice}
-                  onChange={(e) => setMaxPrice(Number(e.target.value))}
+                  onChange={(e) =>
+                    setMaxPrice(Number(e.target.value.replace(/[,.\D]/g, "")))
+                  }
                 />
               </div>
             </div>
@@ -430,17 +379,21 @@ export default function Filters({ fromMain = false }: Props) {
               <div className="flex gap-x-3">
                 <Input
                   placeholder="Min mileage"
-                  type="number"
-                  min={0}
+                  type="text"
+                  maxLength={10}
                   value={minMileage}
-                  onChange={(e) => setMinMileage(Number(e.target.value))}
+                  onChange={(e) =>
+                    setMinMileage(Number(e.target.value.replace(/[,.\D]/g, "")))
+                  }
                 />
                 <Input
                   placeholder="Max mileage"
-                  type="number"
-                  min={0}
+                  type="text"
+                  maxLength={10}
                   value={maxMileage}
-                  onChange={(e) => setMaxMileage(Number(e.target.value))}
+                  onChange={(e) =>
+                    setMaxMileage(Number(e.target.value.replace(/[,.\D]/g, "")))
+                  }
                 />
               </div>
             </div>

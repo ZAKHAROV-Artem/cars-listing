@@ -9,8 +9,9 @@ import { FreeMode, Thumbs, Autoplay } from "swiper/modules";
 import { Car } from "@/types/api/car";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import CarItem from "@/components/cars/car-item";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CarSkeleton from "@/components/ui/car-skeleton";
+import { useEffectOnce } from "usehooks-ts";
 
 type Props = {
   cars: Car[];
@@ -19,9 +20,9 @@ export default function CarsSlider({ cars }: Props) {
   const lg = useMediaQuery("(min-width:1280px)");
   const sm = useMediaQuery("(min-width:648px)");
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  useEffect(() => {
+  useEffectOnce(() => {
     setIsLoading(false);
-  }, []);
+  });
   return (
     <>
       {isLoading ? (

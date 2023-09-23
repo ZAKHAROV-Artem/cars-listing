@@ -1,30 +1,36 @@
 "use client";
 import useCurrentUserCars from "@/hooks/useCurrentUserCars";
-import { Fragment } from "react";
 import { InView } from "react-intersection-observer";
 import AccountCarItem from "./account-car-item";
-import { ScrollArea } from "@/components/ui/scroll-area";
-
+import { Separator } from "@/components/ui/separator";
+import { Fragment } from "react";
 type Props = {
   userId: string;
 };
 export default function UserCarList({ userId }: Props) {
-  const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
+  const { data, hasNextPage, isFetchingNextPage, fetchNextPage, refetch } =
     useCurrentUserCars(userId);
   const handleNextPage = async (isView: boolean) => {
     if (isView && !isFetchingNextPage) await fetchNextPage();
   };
-  console.log(data);
   return (
     <div className="relative grid grid-cols-1 gap-2">
       {data?.pages.map((page, i) => (
         <Fragment key={i}>
           {page.data.data?.map((car) => (
-            <AccountCarItem car={car} key={car.id} />
+            <div key={car.id}>
+              <AccountCarItem
+                car={car}
+                refetch={() =>
+                  refetch({ refetchPage: (page, index) => index === i })
+                }
+              />
+              <Separator className="my-2" />
+            </div>
           ))}
         </Fragment>
       ))}
-      
+
       {hasNextPage && (
         <InView
           as="div"

@@ -3,9 +3,8 @@ import twitter from "@/../public/imgs/socials/twitter.svg";
 import telegram from "@/../public/imgs/socials/telegram.svg";
 import youtube from "@/../public/imgs/socials/youtube.svg";
 import { IconType } from "react-icons";
-import { AiOutlineUser } from "react-icons/ai";
+import { AiOutlineUser, AiOutlinePlusCircle } from "react-icons/ai";
 import { BsFillCarFrontFill } from "react-icons/bs";
-import { HiOutlineClipboardList } from "react-icons/hi";
 export type MenuItemRouteType = {
   label: string;
   href: string;
@@ -91,6 +90,7 @@ export const socialsLinks = [
 ];
 export type MenuPopoverItemType = {
   icon: IconType;
+  onClick?: () => void;
 } & MenuItemRouteType;
 export const menuPopoverItemsMain: MenuPopoverItemType[] = [
   {
@@ -99,9 +99,9 @@ export const menuPopoverItemsMain: MenuPopoverItemType[] = [
     icon: AiOutlineUser,
   },
   {
-    href: "/checkout",
-    label: "My Order",
-    icon: HiOutlineClipboardList,
+    href: "/cars/post",
+    label: "Post a car",
+    icon: AiOutlinePlusCircle,
   },
   {
     href: "/user/account/carlist",
@@ -118,10 +118,6 @@ export const accountPageRoutes: MenuItemRouteType[] = [
   {
     label: "Carlist",
     href: "/user/account/carlist",
-  },
-  {
-    label: "Change password",
-    href: "/user/account/change-password",
   },
 ];
 

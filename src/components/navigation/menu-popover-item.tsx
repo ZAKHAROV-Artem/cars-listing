@@ -5,9 +5,11 @@ export default function MenuPopoverItem({
   href,
   label,
   icon: Icon,
+  onClick
 }: MenuPopoverItemType) {
   return (
     <Link
+    onClick={onClick}
       href={href}
       className=" dark:hover:bg-accent-dark` flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-accent-light focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 dark:hover:bg-accent-dark"
     >

@@ -1,15 +1,14 @@
+import { fetcher } from "@/lib/api-client";
 import { Car } from "@/types/api/car";
 import { Payload } from "@/types/api/common";
 
-import axios from "axios";
-
 export default async function getCurrentUserCars(id: string, page?: number) {
-  return axios.get<Payload<Car[]>>(`${process.env.NEXT_PUBLIC_API_URL}/cars`, {
+  return fetcher<Payload<Car[]>>(`/cars`, {
     params: {
       "filters[user][id]": id,
+      "sort[0]": "status",
       "pagination[page]": page,
       "pagination[pageSize]": 12,
-      "filters[status][$eq]": "active",
       "fields[0]": "title",
       "fields[1]": "createdAt",
       "fields[2]": "featured",

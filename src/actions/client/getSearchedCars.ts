@@ -31,6 +31,7 @@ export default async function getSearchedCars({
       "populate[price][populate]": "*",
       "populate[seller][populate]": "*",
       "populate[images][fields][0]": "url",
+      "sort[1]": "createdAt:desc",
       ...queryParams,
     },
   });

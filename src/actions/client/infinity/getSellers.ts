@@ -1,4 +1,4 @@
-import { User } from "@/types/collections";
+import { User } from "@/types/api/user";
 import axios from "axios";
 
 export default async function getSellers(sellerType: string, page: number) {

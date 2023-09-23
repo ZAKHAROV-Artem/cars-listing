@@ -8,7 +8,14 @@ export interface SellerType {
     slug: string;
   };
 }
-
+export interface SellerTypePlain {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt?: Date;
+  type: string;
+  slug: string;
+}
 export interface Seller {
   name: string;
   phone?: string;

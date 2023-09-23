@@ -1,8 +1,9 @@
 import { Car } from "@/types/api/car";
 import { Payload } from "@/types/api/common";
 import { fetcherServer } from "@/lib/api-server";
+import { QueryParams } from "../client/getSearchedCars";
 
-export default async function getFeaturedCars() {
+export default async function getFeaturedCars(filters?: QueryParams) {
   return await fetcherServer.get<Payload<Car[]>>(`/cars`, {
     params: {
       "filters[featured][$eq]": "true",
@@ -16,6 +17,8 @@ export default async function getFeaturedCars() {
       "populate[seller][populate]": "*",
       "populate[price][populate]": "*",
       "populate[images][fields][0]": "url",
+      "sort[1]": "createdAt:desc",
+      ...filters,
     },
   });
 }

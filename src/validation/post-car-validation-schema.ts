@@ -13,16 +13,14 @@ export const PostCarValidationSchema = z.object({
   year: z.string().nonempty("Year is required"),
   fuel: z.string().nonempty("Fuel is required"),
   engineSize: z.string().nonempty("Engine size is required"),
-  price: z
-    .string()
-    .nonempty("Price is required")
-    .regex(/[0-9]/, "Only numbers"),
+  price: z.string(),
   color: z.string().nonempty("Color is required"),
   mileage: z.string(),
   priceTypeId: z.string().nonempty("Price type is required"),
   currency: z.string().nonempty("Currency type is required"),
   sellerTypeId: z.string().nonempty("Seller type is required"),
   sellerName: z.string().nonempty("Seller name is required"),
-  sellerPhone: z.string().nonempty("Phone is required"),
+  sellerPhone: z.string(),
+  userId: z.string().optional(),
 });
 export type PostCarFields = z.infer<typeof PostCarValidationSchema>;

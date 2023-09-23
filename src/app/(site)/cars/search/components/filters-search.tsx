@@ -3,18 +3,23 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useFilters } from "@/state/FiltersState";
 import { BsSearch, BsChevronDown } from "react-icons/bs";
-import useKeyPress from "@/hooks/useKeyPress";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function FiltersSearch() {
   const [value, setValue] = useState<string>("");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const handleSearch = () => {
     setIsOpen(false);
-    router.push(`/cars/search?q=${value}`);
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+    if (!value) current.delete("q");
+    else current.set("q", value.trim());
+
+    const search = current.toString();
+    const query = search ? `?${search}` : "";
+    router.push(query);
   };
-  useKeyPress("Enter", handleSearch);
   const { setIsOpen, isOpen } = useFilters((state) => ({
     setIsOpen: state.setIsOpen,
     isOpen: state.isOpen,
@@ -28,6 +33,9 @@ export default function FiltersSearch() {
         wrapperClassName="rounded-3xl shadow-xl  h-fit"
         value={value}
         type="search"
+        onKeyDown={(e) => {
+          e.key === "Enter" && handleSearch();
+        }}
         onChange={(e) => setValue(e.target.value)}
       />
       <div

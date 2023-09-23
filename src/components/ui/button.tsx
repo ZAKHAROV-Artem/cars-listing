@@ -32,6 +32,8 @@ const buttonVariants = cva(
         hover:bg-gray-100 dark:hover:bg-slate-800 border border-slate-100 
         dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 
         focus:ring-primary-6000 dark:focus:ring-offset-0 `,
+        red: `h-auto  rounded-xl sm:text-base bg-primary-light text-white 
+       `,
       },
       size: {
         default: "h-10 px-5 py-2",

@@ -87,7 +87,7 @@ export default function RangeSlider({
         min={min}
         max={max}
         value={minVal}
-        step={100}
+        step={1000}
         ref={minValRef}
         onChange={(event) => {
           const value = Math.min(+event.target.value, maxVal - gap);

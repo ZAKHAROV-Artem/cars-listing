@@ -19,6 +19,7 @@ export default async function getDealershipCars(page?: number) {
       "populate[price][populate]": "*",
       "populate[seller][populate]": "*",
       "populate[images][fields][0]": "url",
+      "sort[1]": "createdAt:desc",
     },
   });
 }

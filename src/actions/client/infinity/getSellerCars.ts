@@ -21,6 +21,7 @@ export default async function getSellerCars(sellerId: string, page?: number) {
       "populate[price][populate]": "*",
       "populate[seller][populate]": "*",
       "populate[images][fields][0]": "url",
+      "sort[1]": "createdAt:desc",
     },
   });
 }

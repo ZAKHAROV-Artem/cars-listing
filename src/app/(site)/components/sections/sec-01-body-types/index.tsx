@@ -2,6 +2,7 @@ import getBodyTypes from "@/actions/server/getBodyTypes";
 import Image from "next/image";
 import Link from "next/link";
 
+export const revalidate = 86400;
 export default async function Sec01BodyTypes() {
   const bodyTypes = await getBodyTypes();
   return (

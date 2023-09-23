@@ -28,23 +28,22 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import useModels from "@/hooks/useModels";
 import usePriceTypes from "@/hooks/usePriceTypes";
 import useSellerTypes from "@/hooks/useSellerTypes";
-import { fetcherAuth } from "@/lib/api-client";
-import { cn, generateFilename, range, slugify } from "@/lib/utils";
-import { Car } from "@/types/api/car";
-import { Payload } from "@/types/api/common";
+import { cn, generateFilename, range } from "@/lib/utils";
 import {
   PostCarFields,
   PostCarValidationSchema,
 } from "@/validation/post-car-validation-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FileWithPath } from "react-dropzone";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { RiseLoader } from "react-spinners";
+import dayjs from "dayjs";
+import { fetcher, fetcherAuth } from "@/lib/api-client";
+
 export default function PostCarForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const { data: user, refetch } = useCurrentUser();
@@ -72,7 +71,7 @@ export default function PostCarForm() {
       color: "",
       mileage: "",
       price: "",
-      priceTypeId: "",
+      priceTypeId: "2",
       currency: "ETB",
       sellerTypeId: "2",
       sellerPhone: "",
@@ -81,11 +80,43 @@ export default function PostCarForm() {
 
     resolver: zodResolver(PostCarValidationSchema),
   });
+  console.log(errors);
   useEffect(() => {
-    if (user) {
-      setValue("sellerName", user.name || user.username);
+    if (
+      user &&
+      (Number(user?.points) || 0) < 1 &&
+      user?.seller_type?.slug !== "private"
+    ) {
+      router.push("/payment");
     }
-  }, [user, setValue]);
+    if (
+      user?.seller_type?.slug === "dealership" ||
+      user?.seller_type?.slug === "broker"
+    )
+      setValue("sellerPhone", user.phone);
+    if (user) setValue("sellerName", user.name || user.username);
+
+    if (
+      !((Number(user?.points) || 0) < 1) &&
+      user?.pointsExpirationDate &&
+      dayjs() > dayjs(user.pointsExpirationDate)
+    ) {
+      fetcherAuth
+        .put(`/user/me`, {
+          points: 0,
+        })
+        .then(() => {
+          refetch();
+        });
+
+      toast.error("Points have expired !");
+      if (user?.seller_type?.slug !== "private") {
+        router.push("/payment");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   const [acceptedFiles, setAcceptedFiles] = useState<FileWithPath[]>([]);
   const onSubmit: SubmitHandler<PostCarFields> = async (data) => {
     try {
@@ -93,15 +124,13 @@ export default function PostCarForm() {
         toast.error("Upload at least one image !");
         return;
       }
-      if (user && (Number(user?.points) || 0) < 1) {
-        toast.error("Not enough points on the balance !");
-        return;
-      }
+
       setLoading(true);
 
       const res = await postCar({
         ...data,
         sellerTypeId: user ? String(user?.seller_type?.id) : data.sellerTypeId,
+        userId: String(user?.id || ""),
       });
       const uploadFormData = new FormData();
 
@@ -122,15 +151,15 @@ export default function PostCarForm() {
           generateFilename(res.data.data.id, i + 1),
         );
       });
-      await axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/upload`, uploadFormData, {
+      await fetcher
+        .post(`/upload`, uploadFormData, {
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_UPLOAD_API_TOKEN}`,
           },
         })
         .then(() => {
           toast.success("Car submitted successfully");
-          if ((Number(user?.points) || 0) < 1) {
+          if (!user || user?.seller_type?.slug === "private") {
             router.push(`/order/${res.data.data.id}`);
           }
         });
@@ -185,7 +214,7 @@ export default function PostCarForm() {
               setValue("location", value, { shouldValidate: true })
             }
           >
-            <Label>የሲሊንደር መጠን | Location</Label>
+            <Label>ከተማ | Location</Label>
             <SelectTrigger>
               <SelectValue placeholder="Select location" />
             </SelectTrigger>
@@ -233,12 +262,12 @@ export default function PostCarForm() {
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent>
-              {categories?.data.data.map((brand) => (
+              {categories?.data.data.map((category) => (
                 <SelectItem
-                  value={String(brand.id)}
-                  key={brand.attributes.slug}
+                  value={String(category.id)}
+                  key={category.attributes.slug}
                 >
-                  {brand.attributes.name}
+                  {category.attributes.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -511,27 +540,6 @@ export default function PostCarForm() {
       </div>
       <h3 className="pt-5 text-xl">Price</h3>
       <div className="grid grid-cols-1 gap-x-5 gap-y-2 xs:grid-cols-2">
-        {/* PRICE */}
-        <div className="h-fit">
-          <Label>ዋጋ | Price</Label>
-          <Input
-            name="price"
-            value={getValues().price}
-            onChange={(e) =>
-              setValue("price", e.target.value.replace(/[,.\D]/g, ""), {
-                shouldValidate: true,
-              })
-            }
-            wrapperClassName={cn({
-              "border border-primary-light": errors.price,
-            })}
-          />
-          {errors.price && (
-            <span className="ml-3 text-sm text-primary-light">
-              {errors.price?.message}
-            </span>
-          )}
-        </div>
         {/* PRICE TYPES */}
         <div>
           <Select
@@ -566,6 +574,30 @@ export default function PostCarForm() {
             </span>
           )}
         </div>
+        {/* PRICE */}
+        {getValues().priceTypeId !== "5" && (
+          <div className="h-fit">
+            <Label>ዋጋ | Price</Label>
+            <Input
+              name="price"
+              value={getValues().price}
+              onChange={(e) =>
+                setValue("price", e.target.value.replace(/[,.\D]/g, ""), {
+                  shouldValidate: true,
+                })
+              }
+              wrapperClassName={cn({
+                "border border-primary-light": errors.price,
+              })}
+            />
+            {errors.price && (
+              <span className="ml-3 text-sm text-primary-light">
+                {errors.price?.message}
+              </span>
+            )}
+          </div>
+        )}
+
         {/* CURRENCY */}
         <div>
           <Select
@@ -647,6 +679,12 @@ export default function PostCarForm() {
           <Label>Phone:</Label>
           <Input
             {...register("sellerPhone")}
+            disabled={
+              user &&
+              (user?.seller_type?.slug === "dealership" ||
+                user?.seller_type?.slug === "broker")
+            }
+            defaultValue={getValues().sellerPhone}
             wrapperClassName={cn({
               "border border-primary-light": errors.sellerPhone,
             })}

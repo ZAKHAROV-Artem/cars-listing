@@ -1,4 +1,4 @@
-import { User } from "../collections";
+import { User } from "./user";
 import {
   CarCharacteristics,
   CarCharacteristicsPlain,

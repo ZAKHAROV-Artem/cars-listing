@@ -1,4 +1,5 @@
 import getStaticPage from "@/actions/server/getStaticPage";
+import getWidget from "@/actions/server/getWidget";
 import { notFound } from "next/navigation";
 
 // export const revalidate = 3600;
@@ -8,10 +9,24 @@ type Props = {
 };
 export default async function Community({ params: { slug } }: Props) {
   const page = await getStaticPage(slug);
-  if (!page) notFound();
+  if (!page.data.data.length) return notFound();
+  const widget = await getWidget("static-page");
+
   return (
-    <div
-      dangerouslySetInnerHTML={{ __html: page.data.data[0].attributes.html }}
-    />
+    <div className="container flex py-3">
+      <div
+        className="grow"
+        dangerouslySetInnerHTML={{
+          __html: page.data.data[0]?.attributes.html || "<div/>",
+        }}
+      />
+      {widget.data.data[0]?.attributes.html && (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: widget.data.data[0].attributes.html,
+          }}
+        />
+      )}
+    </div>
   );
 }

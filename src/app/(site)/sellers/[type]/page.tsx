@@ -1,8 +1,6 @@
 "use client";
-import getSellers from "@/actions/server/getSellers";
 import SellerItem from "./components/seller-item";
 import useSellers from "@/hooks/useSellers";
-import { Fragment } from "react";
 import { PropagateLoader } from "react-spinners";
 import { InView } from "react-intersection-observer";
 
@@ -29,7 +27,7 @@ export default function SellersPage({ params: { type } }: Props) {
       ) : (
         <div className="relative space-y-5">
           {data?.pages.map((page, i) => (
-            <div className="grid grid-cols-2 gap-5" key={i}>
+            <div className="grid gap-5 sm:grid-cols-2" key={i}>
               {page.data.map((seller) => (
                 <SellerItem seller={seller} key={seller.id} />
               ))}

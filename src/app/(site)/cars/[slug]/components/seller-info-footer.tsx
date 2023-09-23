@@ -1,15 +1,14 @@
 "use client";
 
-import { useDirection } from "@/hooks/useDirection";
 import { cn } from "@/lib/utils";
 import { Seller } from "@/types/api/seller";
+import Link from "next/link";
 import { AiOutlinePhone } from "react-icons/ai";
 
 type Props = {
   seller: Seller | undefined;
 };
 export default function SellerInfoFooter({ seller }: Props) {
-  const direction = useDirection();
   return (
     <div
       className={cn(
@@ -19,7 +18,9 @@ export default function SellerInfoFooter({ seller }: Props) {
       <div className="flex items-center gap-x-5">
         <AiOutlinePhone size={40} className="text-dark-main" />
         <div className="text-dark-main">
-          <div className="text-md md:text-xl">{seller?.phone}</div>
+          <div className="text-md md:text-xl">
+            <Link href={`tel:$ {seller?.phone}`}>{seller?.phone}</Link>
+          </div>
           <div className="text-xl md:text-3xl ">{seller?.name}</div>
         </div>
       </div>

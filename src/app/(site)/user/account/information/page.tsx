@@ -41,14 +41,14 @@ export default function AccountInfoPage() {
   } = useForm<UpdateAccountFields>({
     mode: "onBlur",
     defaultValues: async () => {
-      const { data: user } = await getCurrentUser();
+      const data = await getCurrentUser();
       return {
-        name: user?.name || user?.username || "",
-        email: user?.email || "",
-        phone: user?.phone || "",
-        description: user.description || "",
-        location: user?.location || "",
-        dateOfBirth: dayjs(user?.dateOfBirth || new Date()).format(
+        name: data?.data?.name || "",
+        email: data?.data?.email || "",
+        phone: data?.data?.phone || "",
+        description: data?.data?.description || "",
+        location: data?.data?.location || "",
+        dateOfBirth: dayjs(data?.data?.dateOfBirth || new Date()).format(
           "YYYY-MM-DD",
         ),
       };
@@ -76,74 +76,74 @@ export default function AccountInfoPage() {
     await refetch();
   };
   return (
-    <div className="grid grid-cols-[1fr_2fr] gap-x-5">
-      <AccountImageFileUpload
-        setAcceptedFiles={setAcceptedFiles}
-        currentImgUrl={user?.image?.url || ""}
-      />
-      <div className="space-y-3">
-        <div>
-          <Label>Name</Label>
-          <Input {...register("name")} />
-        </div>
-        <div>
-          <Label>Email</Label>
-          <Input {...register("email")} />
-        </div>
-        <div>
-          <Label>Phone</Label>
-          <Input {...register("phone")} />
-        </div>
-        <div className="flex flex-col gap-y-1">
-          <Label>Date of birth</Label>
-          <DatePicker
-            value={dayjs(getValues().dateOfBirth).toDate()}
-            onValueChange={(date) =>
-              date &&
-              setValue("dateOfBirth", dayjs(date).format("YYYY-MM-DD"), {
-                shouldValidate: true,
-              })
-            }
-          />
-        </div>
-        {!isLoading && (
+    <div className="flex w-full flex-col items-center">
+      <div className="grid w-full gap-x-5 sm:grid-cols-[1fr_2fr]">
+        <AccountImageFileUpload
+          setAcceptedFiles={setAcceptedFiles}
+          currentImgUrl={user?.image?.url || ""}
+        />
+        <div className="space-y-3">
           <div>
-            <Select
-              {...register("location")}
-              defaultValue={user?.location}
-              onValueChange={(value) =>
-                setValue("location", value, { shouldValidate: true })
-              }
-            >
-              <Label>የሲሊንደር መጠን | Location</Label>
-              <SelectTrigger>
-                <SelectValue placeholder="Select location" />
-              </SelectTrigger>
-
-              <SelectContent>
-                {locations.map((location) => (
-                  <SelectItem value={location} key={location}>
-                    {location}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.location && (
-              <span className="ml-3 text-sm text-primary-light">
-                {errors.location?.message}
-              </span>
-            )}
+            <Label>Name</Label>
+            <Input {...register("name")} />
           </div>
-        )}
-        <div>
-          <Label>Description</Label>
-          <Textarea {...register("description")} />
+          <div>
+            <Label>Email</Label>
+            <Input {...register("email")} />
+          </div>
+          <div>
+            <Label>Phone</Label>
+            <Input {...register("phone")} />
+          </div>
+          <div className="flex flex-col gap-y-1">
+            <Label>Date of birth</Label>
+            <DatePicker
+              value={dayjs(getValues().dateOfBirth).toDate()}
+              onValueChange={(date) =>
+                date &&
+                setValue("dateOfBirth", dayjs(date).format("YYYY-MM-DD"), {
+                  shouldValidate: true,
+                })
+              }
+            />
+          </div>
+          {!isLoading && (
+            <div>
+              <Select
+                {...register("location")}
+                defaultValue={user?.location}
+                onValueChange={(value) =>
+                  setValue("location", value, { shouldValidate: true })
+                }
+              >
+                <Label>ከተማ | Location</Label>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select location" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {locations.map((location) => (
+                    <SelectItem value={location} key={location}>
+                      {location}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.location && (
+                <span className="ml-3 text-sm text-primary-light">
+                  {errors.location?.message}
+                </span>
+              )}
+            </div>
+          )}
+          <div>
+            <Label>Description</Label>
+            <Textarea {...register("description")} />
+          </div>
+          <div>Change password link here</div>
         </div>
       </div>
-      <Button
-        onClick={handleSubmit(onSubmit)}
-        className="col-span-2 mt-5 w-fit justify-self-center"
-      >
+      <Button onClick={handleSubmit(onSubmit)} className="mt-5 w-fit">
         Update account
       </Button>
     </div>

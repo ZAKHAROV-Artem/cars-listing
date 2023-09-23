@@ -14,55 +14,52 @@ import Image from "next/image";
 import { Media } from "@/types/api/media";
 import { IoMdClose } from "react-icons/io";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { cn } from "@/lib/utils";
+import { useToggle } from "usehooks-ts";
 
 export default function CarImagesSlider({ images }: { images: Media[] }) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwType | null>(null);
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [isFullscreen, toggle, setIsFullscreen] = useToggle(false);
   const sm = useMediaQuery("(min-width: 640px)");
 
   return (
     <div className="space-y-[10px]">
-      <div
-        className={`${
-          isFullscreen ? "block" : "hidden"
-        } fixed left-0 top-0 z-[100] bg-black/70`}
-      >
-        <div
-          className="fixed left-[10px] top-[10px] z-[150]"
-          onClick={() => setIsFullscreen(false)}
-        >
-          <IoMdClose size={35} className="text-primary-light" />
+      {isFullscreen && (
+        <div className={`fixed left-0 top-0 z-[100] `}>
+          <div
+            className="fixed left-[10px] top-[10px] z-[150]"
+            onClick={toggle}
+          >
+            <IoMdClose size={35} className="text-primary-light" />
+          </div>
+          <Swiper
+            loop={true}
+            navigation
+            modules={[FreeMode, Navigation]}
+            className={"car-details-slider-wrapper-big h-screen w-screen"}
+          >
+            {images.map((image) => (
+              <SwiperSlide key={image.id}>
+                <div className="flex h-full items-center justify-center">
+                  <div
+                    className="fixed h-screen w-screen bg-black/70"
+                    onClick={toggle}
+                  />
+                  <Image
+                    src={image.attributes.url}
+                    alt={
+                      image.attributes.alternativeText || image.attributes.name
+                    }
+                    width={1020}
+                    height={720}
+                    className="relative z-10 max-h-[90vh] max-w-[80vw]  select-none rounded-2xl object-contain"
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
-        <Swiper
-          loop={true}
-          spaceBetween={10}
-          navigation
-          modules={[FreeMode, Navigation]}
-          className={
-            "car-details-slider-wrapper-big flex h-screen w-screen items-center justify-center"
-          }
-        >
-          {images.map((image) => (
-            <SwiperSlide key={image.id}>
-              <div className=" flex h-full w-full items-center justify-center">
-                <div
-                  className="absolute left-0 top-0 z-0 h-screen w-screen"
-                  onClick={() => setIsFullscreen(false)}
-                />
-                <Image
-                  src={image.attributes.url}
-                  alt={
-                    image.attributes.alternativeText || image.attributes.name
-                  }
-                  width={720}
-                  height={420}
-                  className="z-2  relative h-fit max-h-[90vh] w-full max-w-[80vw]  select-none rounded-2xl object-contain"
-                />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+      )}
       <Swiper
         loop={true}
         spaceBetween={10}
@@ -84,12 +81,13 @@ export default function CarImagesSlider({ images }: { images: Media[] }) {
               alt={image.attributes.alternativeText || image.attributes.name}
               width={720}
               height={420}
-              className="h-full w-full cursor-pointer select-none object-contain sm:object-cover md:rounded-2xl"
+              className="h-full w-full cursor-pointer select-none object-cover md:rounded-2xl"
             />
           </SwiperSlide>
         ))}
       </Swiper>
-      {sm && (
+
+      <div className={`${sm ? "" : "hidden"}`}>
         <Swiper
           onSwiper={setThumbsSwiper}
           slidesPerView={sm ? 4 : 3}
@@ -115,7 +113,7 @@ export default function CarImagesSlider({ images }: { images: Media[] }) {
             </SwiperSlide>
           ))}
         </Swiper>
-      )}
+      </div>
     </div>
   );
 }

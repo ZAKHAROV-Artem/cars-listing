@@ -2,6 +2,7 @@
 
 import CarsList from "@/components/cars/cars-list";
 import SectionHeading from "@/components/data-display/section-heading";
+import { Button } from "@/components/ui/button";
 import CarSkeletonLayout from "@/components/ui/car-skeleton-layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useCarsBroker from "@/hooks/useCarsBroker";
@@ -34,17 +35,15 @@ export default function Sec04Tabs() {
     isInitialLoading: isBrokerCarsInitialLoading,
   } = useCarsBroker();
 
-  const handlePrivateSellerCarsNextPage = async (isView: boolean) => {
-    if (isView && !isFetchingNextPrivateSellerCarsPage)
+  const handlePrivateSellerCarsNextPage = async () => {
+    if (!isFetchingNextPrivateSellerCarsPage)
       await fetchNextPrivateSellerCarsPage();
   };
-  const handleDealershipCarsNextPage = async (isView: boolean) => {
-    if (isView && !isFetchingNextDealershipCarsPage)
-      await fetchNextDealershipCarsPage();
+  const handleDealershipCarsNextPage = async () => {
+    if (!isFetchingNextDealershipCarsPage) await fetchNextDealershipCarsPage();
   };
-  const handleBrokerpCarsNextPage = async (isView: boolean) => {
-    if (isView && !isFetchingNextBrokerCarsPage)
-      await fetchNextBrokerCarsPage();
+  const handleBrokersCarsNextPage = async () => {
+    if (!isFetchingNextBrokerCarsPage) await fetchNextBrokerCarsPage();
   };
 
   return (
@@ -56,7 +55,7 @@ export default function Sec04Tabs() {
           text="cars by seller"
         />
         <Tabs
-          className="px-2 flex flex-col items-center"
+          className="flex flex-col items-center px-2"
           defaultValue={tabsState.tab}
           onValueChange={tabsState.setTab}
         >
@@ -66,46 +65,67 @@ export default function Sec04Tabs() {
             <TabsTrigger value="brokers">Brokers</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="private-sellers" className="relative w-full">
+          <TabsContent
+            value="private-sellers"
+            className="relative w-full space-y-1 sm:space-y-4"
+          >
             {privateSellerCars?.pages.map((page, i) => (
               <CarsList cars={page.data.data} key={i} />
             ))}{" "}
             {isFetchingNextPrivateSellerCarsPage ||
               (isPrivateSellerCarsInitialLoading && <CarSkeletonLayout />)}
             {hasNextPrivateSellerCarsPage && (
-              <InView
-                as="div"
-                className="absolute bottom-[400px] h-2 w-full bg-transparent"
-                onChange={handlePrivateSellerCarsNextPage}
-              />
+              <div className="grid place-content-center">
+                <Button
+                  onClick={handlePrivateSellerCarsNextPage}
+                  className="w-fit"
+                  variant="red"
+                >
+                  More cars
+                </Button>
+              </div>
             )}
           </TabsContent>
-          <TabsContent value="dealerships" className="relative w-full">
+          <TabsContent
+            value="dealerships"
+            className="relative w-full space-y-1 sm:space-y-4"
+          >
             {dealershipCars?.pages.map((page, i) => (
               <CarsList cars={page.data.data} key={i} />
             ))}{" "}
             {isFetchingNextDealershipCarsPage ||
               (isDealershipCarsInitialLoading && <CarSkeletonLayout />)}
             {hasNextDealershipCarsPage && (
-              <InView
-                as="div"
-                className="absolute bottom-[400px] h-2 w-full bg-transparent"
-                onChange={handleDealershipCarsNextPage}
-              />
+              <div className="grid place-content-center">
+                <Button
+                  onClick={handleDealershipCarsNextPage}
+                  className="w-fit"
+                  variant="red"
+                >
+                  More cars
+                </Button>
+              </div>
             )}
           </TabsContent>
-          <TabsContent value="brokers" className="relative w-full">
+          <TabsContent
+            value="brokers"
+            className="relative w-full space-y-1 sm:space-y-4"
+          >
             {brokerCars?.pages.map((page, i) => (
               <CarsList cars={page.data.data} key={i} />
             ))}{" "}
             {isFetchingNextBrokerCarsPage ||
               (isBrokerCarsInitialLoading && <CarSkeletonLayout />)}
             {hasNextBrokerCarsPage && (
-              <InView
-                as="div"
-                className="absolute bottom-[400px] h-2 w-full bg-transparent"
-                onChange={handleBrokerpCarsNextPage}
-              />
+              <div className="grid place-content-center">
+                <Button
+                  onClick={handleBrokersCarsNextPage}
+                  className="w-fit"
+                  variant="red"
+                >
+                  More cars
+                </Button>
+              </div>
             )}
           </TabsContent>
         </Tabs>

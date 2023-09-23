@@ -1,13 +1,18 @@
 import getTopCars from "@/actions/server/getTopCars";
 import CarsSlider from "../../cars-slider";
 import SectionHeading from "@/components/data-display/section-heading";
+import { cn } from "@/lib/utils";
 
-export default async function Sec02TopCars() {
+type Props = {
+  className?: string;
+};
+export const revalidate = 3600;
+export default async function Sec02TopCars({ className }: Props) {
   const topCars = await getTopCars({
-    "pagination[limit]": "8",
+    "pagination[limit]": "12",
   });
   return (
-    <div className="m-1 space-y-10 sm:container ">
+    <div className={cn("m-1 space-y-10 sm:container", className)}>
       <SectionHeading
         className="ml-5 sm:ml-0"
         textAccent="Top cars this week"

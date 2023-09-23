@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@/types/collections";
+import { User } from "@/types/api/user";
 import Link from "next/link";
 
 type Props = {

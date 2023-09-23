@@ -13,13 +13,16 @@ export const useAuth = create(
   immer<Actions>((set) => ({
     setToken: (token) => {
       Cookies.set("jwt", token, { expires: 7 });
+      Cookies.set("authenticated", "true", { expires: 7 });
     },
     unsetToken: () => {
       Cookies.remove("jwt");
+      Cookies.remove("authenticated");
     },
     logout: () => {
       signOut();
       Cookies.remove("jwt");
+      Cookies.remove("authenticated");
       window.location.reload();
     },
   })),

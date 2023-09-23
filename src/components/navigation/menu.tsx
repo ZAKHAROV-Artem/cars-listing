@@ -5,6 +5,9 @@ import RouteItem from "./route-item";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import useNavbarPopular from "@/hooks/useNavbarPopular";
+import useCategories from "@/hooks/useCategories";
+import useWidget from "@/hooks/useWidget";
+import Widget from "../ui/widget";
 
 const menuItemWrappperClass = `
 group 
@@ -46,6 +49,7 @@ const menuItemClassPopupHuge = `
 `;
 export default function Menu() {
   const { data } = useNavbarPopular();
+  const { data: categories } = useCategories();
 
   return (
     <div className="hidden h-full items-center lg:flex">
@@ -55,6 +59,22 @@ export default function Menu() {
         </div>
         <div className={cn(menuItemClassPopupDefault, menuItemClassPopupHuge)}>
           <div className="container grid grid-cols-[1fr,1fr,1fr,2fr] gap-x-5 pb-5">
+            <div>
+              <div className="my-4 text-2xl text-light-main dark:text-dark-main">
+                Categories
+              </div>
+              <div>
+                {categories?.data.data.map((category) => (
+                  <RouteItem
+                    route={{
+                      label: category.attributes.name,
+                      href: `/cars/search?category=${category.attributes.slug}`,
+                    }}
+                    key={category.id}
+                  />
+                ))}
+              </div>
+            </div>
             <div>
               <div className="my-4 text-2xl text-light-main dark:text-dark-main">
                 Popular brands
@@ -67,17 +87,7 @@ export default function Menu() {
             </div>
             <div>
               <div className="my-4 text-2xl text-light-main dark:text-dark-main">
-                Popular models
-              </div>
-              <div>
-                {data?.data.data.attributes.models.map((routeItem) => (
-                  <RouteItem route={routeItem} key={routeItem.href} />
-                ))}
-              </div>
-            </div>
-            <div>
-              <div className="my-4 text-2xl text-light-main dark:text-dark-main">
-                Top dealership
+                Top dealerships
               </div>
               <div>
                 {data?.data.data.attributes.dealerships.map((routeItem) => (
@@ -85,7 +95,7 @@ export default function Menu() {
                 ))}
               </div>
             </div>
-            <div className="hidden bg-paper-light p-4 dark:bg-paper-dark md:block md:rounded-2xl lg:p-8 "></div>
+            <Widget slug="navbar-popular" />
           </div>
         </div>
       </div>

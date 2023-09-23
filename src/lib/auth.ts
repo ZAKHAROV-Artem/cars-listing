@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
       const isSignIn = user ? true : false;
       if (isSignIn) {
         const response = await axios.get(
-          `${process.env.API_URL}/auth/${account?.provider}/callback?access_token=${account?.access_token}`,
+          `${process.env.API_URL}/auth/${account?.provider}/callback?access_token=${account?.access_token}&populate=*`,
         );
         if (token.picture) {
           const image = await getImageFromURL(token.picture);
@@ -45,6 +45,9 @@ export const authOptions: NextAuthOptions = {
           {
             name: token.name,
             username: v4(),
+            seller_type: {
+              connect: [3],
+            },
           },
           {
             headers: {
@@ -52,11 +55,13 @@ export const authOptions: NextAuthOptions = {
             },
           },
         );
-        console.log("Provider ", account?.provider);
-        token.user = response.data.user;
+
+        token.user = {
+          ...response.data.user,
+          seller_type: { slug: "private", name: "Private" },
+        };
         token.jwt = response.data.jwt;
         token.id = response.data.user.id;
-        console.log("Token ", token);
       }
       return token;
     },

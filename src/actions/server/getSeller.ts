@@ -1,5 +1,5 @@
 import { fetcherServer } from "@/lib/api-server";
-import { User } from "@/types/collections";
+import { User } from "@/types/api/user";
 
 export default async function getSeller(id: string) {
   return await fetcherServer.get<User>(`/users/${id}`, {
