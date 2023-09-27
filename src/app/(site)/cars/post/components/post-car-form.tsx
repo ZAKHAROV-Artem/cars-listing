@@ -319,7 +319,7 @@ export default function PostCarForm() {
             </SelectTrigger>
 
             <SelectContent>
-              <SelectItem value={"all"} className="mt-3">
+              <SelectItem value={""} className="mt-3">
                 All models
               </SelectItem>
               {models?.data.data
