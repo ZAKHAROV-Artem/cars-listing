@@ -2,6 +2,10 @@ import { CarPlain, Location } from "./car";
 import { MediaPlain } from "./media";
 import { SellerTypePlain } from "./seller";
 
+export enum UserAuthType {
+  PROVIDER = "provider",
+  CREDENTIALS = "credentials",
+}
 export interface User {
   id: number;
   username: string;
@@ -18,7 +22,7 @@ export interface User {
   description?: string;
   dateOfBirth?: string;
   image?: MediaPlain;
-  cars?: CarPlain[];
   points: number;
   pointsExpirationDate?: Date;
+  auth_type: UserAuthType;
 }

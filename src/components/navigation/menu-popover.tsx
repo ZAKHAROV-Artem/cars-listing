@@ -16,13 +16,15 @@ import { IoMdHelpBuoy } from "react-icons/io";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/state/AuthState";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import { cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 import { useToggle } from "usehooks-ts";
+import { useRouter } from "next/navigation";
 
 export default function MenuPopover() {
   const { data: user } = useCurrentUser();
   const logout = useAuth((state) => state.logout);
   const [value, toggle, setValue] = useToggle(false);
+
   return (
     <>
       <Popover open={value} onOpenChange={setValue}>
@@ -36,9 +38,10 @@ export default function MenuPopover() {
               <Avatar className="h-10 w-10 hover:border-2 dark:border-paper-dark">
                 <AvatarImage src={user.image?.url} />
 
-                <AvatarFallback>{`${user.name?.at(0) || ""}${
-                  user?.name?.split(" ")?.at(-1)?.at(0) || ""
-                }`}</AvatarFallback>
+                <AvatarFallback>
+                  {" "}
+                  {getInitials(user?.name || "")}
+                </AvatarFallback>
               </Avatar>
             ) : (
               <AiOutlineUser

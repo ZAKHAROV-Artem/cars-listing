@@ -16,7 +16,7 @@ declare module "next-auth" {
       phone: string;
       seller_type?: {
         slug: string;
-        name: string;
+        type: string;
       };
     };
   }
@@ -47,7 +47,7 @@ declare module "next-auth/jwt" {
       phone: string;
       seller_type?: {
         slug: string;
-        name: string;
+        type: string;
       };
     };
   }

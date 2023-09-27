@@ -5,7 +5,6 @@ export const UpdateAccountValidationSchema = z.object({
   phone: z.string(),
   location: z.string().nonempty("Location is required"),
   description: z.string(),
-  dateOfBirth: z.string(),
   email: z
     .string()
     .email({ message: "Invalid email" })

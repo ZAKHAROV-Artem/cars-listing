@@ -30,7 +30,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div
         className={cn(
           `
-      flex h-full items-center space-x-3 rounded-xl bg-slate-50 px-4 py-2 dark:bg-slate-800
+      flex h-fit items-center space-x-3 rounded-xl bg-slate-50 px-4 py-2 dark:bg-slate-800
       `,
           wrapperClassName,
         )}

@@ -37,18 +37,20 @@ export default function FiltersSearch() {
           e.key === "Enter" && handleSearch();
         }}
         onChange={(e) => setValue(e.target.value)}
+        rightButton={
+          <div
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex cursor-pointer items-center justify-center rounded-full border bg-slate-50 p-2 dark:bg-slate-800"
+          >
+            <BsChevronDown
+              size={18}
+              className={cn("duration-300", {
+                "rotate-180": isOpen,
+              })}
+            />
+          </div>
+        }
       />
-      <div
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex cursor-pointer items-center justify-center rounded-full bg-slate-50 p-2 shadow-xl dark:bg-slate-800"
-      >
-        <BsChevronDown
-          size={18}
-          className={cn("duration-300", {
-            "rotate-180": isOpen,
-          })}
-        />
-      </div>
     </div>
   );
 }

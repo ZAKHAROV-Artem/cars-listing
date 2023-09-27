@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 import {
   UpdateAccountFields,
   UpdateAccountValidationSchema,
-} from "@/validation/update-account-info-schema";
+} from "@/validation/update-account-info-schema copy";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -28,6 +28,10 @@ import { useState } from "react";
 import { FileWithPath } from "react-dropzone";
 import { toast } from "react-hot-toast";
 import { fetcherAuth } from "@/lib/api-client";
+import { UserAuthType } from "@/types/api/user";
+import { CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export default function AccountInfoPage() {
   const { data: user, isLoading, refetch } = useCurrentUser();
@@ -48,9 +52,6 @@ export default function AccountInfoPage() {
         phone: data?.data?.phone || "",
         description: data?.data?.description || "",
         location: data?.data?.location || "",
-        dateOfBirth: dayjs(data?.data?.dateOfBirth || new Date()).format(
-          "YYYY-MM-DD",
-        ),
       };
     },
     resolver: zodResolver(UpdateAccountValidationSchema),
@@ -78,10 +79,7 @@ export default function AccountInfoPage() {
   return (
     <div className="flex w-full flex-col items-center">
       <div className="grid w-full gap-x-5 sm:grid-cols-[1fr_2fr]">
-        <AccountImageFileUpload
-          setAcceptedFiles={setAcceptedFiles}
-          currentImgUrl={user?.image?.url || ""}
-        />
+        <AccountImageFileUpload setAcceptedFiles={setAcceptedFiles} />
         <div className="space-y-3">
           <div>
             <Label>Name</Label>
@@ -95,18 +93,7 @@ export default function AccountInfoPage() {
             <Label>Phone</Label>
             <Input {...register("phone")} />
           </div>
-          <div className="flex flex-col gap-y-1">
-            <Label>Date of birth</Label>
-            <DatePicker
-              value={dayjs(getValues().dateOfBirth).toDate()}
-              onValueChange={(date) =>
-                date &&
-                setValue("dateOfBirth", dayjs(date).format("YYYY-MM-DD"), {
-                  shouldValidate: true,
-                })
-              }
-            />
-          </div>
+
           {!isLoading && (
             <div>
               <Select
@@ -140,7 +127,29 @@ export default function AccountInfoPage() {
             <Label>Description</Label>
             <Textarea {...register("description")} />
           </div>
-          <div>Change password link here</div>
+          <div className="flex flex-col gap-y-1">
+            <Label>Join date</Label>
+            <Button
+              disabled
+              variant={"outline"}
+              className={cn(
+                "justify-start rounded-xl border-none bg-slate-50 text-left font-normal dark:bg-slate-800",
+                { "text-muted-foreground": !user?.createdAt },
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+
+              {dayjs(user?.createdAt).format("YYYY / MM / DD")}
+            </Button>
+          </div>
+          {user?.auth_type === UserAuthType.CREDENTIALS && (
+            <Link
+              href="/user/account/change-password"
+              className="block underline"
+            >
+              Change password link here
+            </Link>
+          )}
         </div>
       </div>
       <Button onClick={handleSubmit(onSubmit)} className="mt-5 w-fit">

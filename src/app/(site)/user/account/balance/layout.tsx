@@ -1,12 +1,13 @@
 import { getServerAuth } from "@/lib/getServerAuth";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
-export default async function UserLayout({
+export default async function BalanceLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const user = await getServerAuth();
-  if (!user) redirect("/");
+
+  if (user?.seller_type?.slug === "private") return notFound();
   return <>{children}</>;
 }

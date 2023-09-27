@@ -16,12 +16,14 @@ import dayjs from "dayjs";
 type Props = {
   value: Date;
   onValueChange: (date: Date | undefined) => void;
+  disabled?: boolean;
 };
-export function DatePicker({ value, onValueChange }: Props) {
+export function DatePicker({ value, disabled = false, onValueChange }: Props) {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
+          disabled={disabled}
           variant={"outline"}
           className={cn(
             "justify-start rounded-xl border-none bg-slate-50 text-left font-normal dark:bg-slate-800",

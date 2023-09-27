@@ -10,7 +10,7 @@ export default async function setCarFatuted(id: number, featured: boolean) {
     },
     {
       headers: {
-        Authorization: `Bearer ${process.env.POST_CAR_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.UPDATE_CAR_API_TOKEN}`,
       },
     },
   );

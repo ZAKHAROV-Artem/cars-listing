@@ -1,5 +1,6 @@
 import { getServerAuth } from "@/lib/getServerAuth";
 import AccountRoutes from "./components/account-routes";
+import { notFound } from "next/navigation";
 export const dynamic = "force-dynamic";
 export default async function AccountLayout({
   children,
@@ -7,6 +8,7 @@ export default async function AccountLayout({
   children: React.ReactNode;
 }) {
   const user = await getServerAuth();
+  if (!user) return notFound();
   return (
     <div className=" mx-5 max-w-3xl py-10 md:mx-auto">
       <h1 className="text-xl md:text-3xl">Account</h1>

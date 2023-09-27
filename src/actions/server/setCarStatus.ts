@@ -11,7 +11,7 @@ export default async function setCarStatus(id: number, status: Status) {
     },
     {
       headers: {
-        Authorization: `Bearer ${process.env.POST_CAR_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.UPDATE_CAR_API_TOKEN}`,
       },
     },
   );

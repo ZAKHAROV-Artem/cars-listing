@@ -60,20 +60,20 @@ export default function PostCarForm() {
       title: "",
       description: "",
       location: "Addis Ababa",
-      categoryId: "4",
+      categoryId: "1",
       transmission: "Manual",
       year: "2020",
       fuel: "Benzine",
       engineSize: "1,3",
-      bodyTypeId: "3",
+      bodyTypeId: "1",
       brandId: "1",
       modelId: "",
       color: "",
       mileage: "",
       price: "",
-      priceTypeId: "2",
+      priceTypeId: "1",
       currency: "ETB",
-      sellerTypeId: "2",
+      sellerTypeId: "1",
       sellerPhone: "",
       sellerName: "",
     },
@@ -159,9 +159,7 @@ export default function PostCarForm() {
         })
         .then(() => {
           toast.success("Car submitted successfully");
-          if (!user || user?.seller_type?.slug === "private") {
-            router.push(`/order/${res.data.data.id}`);
-          }
+          router.push(`/order/${res.data.data.id}`);
         });
       if (user) {
         await fetcherAuth.put(`/user/me`, {
@@ -544,9 +542,11 @@ export default function PostCarForm() {
         <div>
           <Select
             {...register("priceTypeId")}
-            onValueChange={(value) =>
-              setValue("priceTypeId", value, { shouldValidate: true })
-            }
+            onValueChange={(value) => {
+              if (value === "4") setValue("price", "-1");
+              else setValue("price", "");
+              setValue("priceTypeId", value, { shouldValidate: true });
+            }}
           >
             <Label>Price type</Label>
             <SelectTrigger
@@ -575,7 +575,7 @@ export default function PostCarForm() {
           )}
         </div>
         {/* PRICE */}
-        {getValues().priceTypeId !== "5" && (
+        {getValues().priceTypeId !== "4" && (
           <div className="h-fit">
             <Label>ዋጋ | Price</Label>
             <Input

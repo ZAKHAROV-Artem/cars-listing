@@ -8,19 +8,20 @@ import {
 import { useDropzone, FileWithPath } from "react-dropzone";
 import { Button } from "./button";
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import { getInitials } from "@/lib/utils";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   setAcceptedFiles: (files: FileWithPath[]) => void;
-  currentImgUrl: string;
 }
 export default function AccountImageFileUpload({
   disabled,
   setAcceptedFiles,
-  currentImgUrl,
   ...rest
 }: Props) {
+  const { data: user } = useCurrentUser();
   const [base64, setBase64] = useState<string>();
-
   const handleDrop = useCallback(
     (files: FileWithPath[]) => {
       const file = files[0];
@@ -54,16 +55,22 @@ export default function AccountImageFileUpload({
       >
         <input {...getInputProps({ ...rest })} />
 
-        {base64 || currentImgUrl ? (
+        {base64 ? (
           <Image
             alt="User"
-            src={base64 || currentImgUrl}
+            src={base64}
             width={400}
             height={400}
             className="h-[150px] w-[150px] object-cover"
           />
         ) : (
-          <div></div>
+          <Avatar className="h-[150px] w-[150px] hover:border-2 dark:border-paper-dark">
+            <AvatarImage src={user?.image?.url} />
+
+            <AvatarFallback className="text-2xl">
+              {getInitials(user?.name || "")}
+            </AvatarFallback>
+          </Avatar>
         )}
       </div>
     </div>

@@ -63,3 +63,10 @@ export async function getImageFromURL(url: string) {
 
   return blob;
 }
+
+export function getInitials(fullname: string) {
+  return fullname
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
+}

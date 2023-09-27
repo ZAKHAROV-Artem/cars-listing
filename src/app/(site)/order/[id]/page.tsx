@@ -28,8 +28,8 @@ export default function OrderPage({ params: { id } }: Props) {
       <Separator />
       <div>Send payment slip on viber or whatsapp (0944 333333)</div>
       <div>
-        After payment is done please send payment of proof and your order ID
-        (216309) via one of the following:
+        After payment is done please send payment of proof and your order ID (
+        {id}) via one of the following:
       </div>
       <div>
         email: <span className="font-bold">info@mekina.net</span>

@@ -1,9 +1,9 @@
+import { fetcher } from "@/lib/api-client";
 import { Car } from "@/types/api/car";
 import { Payload } from "@/types/api/common";
-import axios from "axios";
 
 export default async function getSellerCars(sellerId: string, page?: number) {
-  return axios.get<Payload<Car[]>>(`${process.env.NEXT_PUBLIC_API_URL}/cars`, {
+  return fetcher.get<Payload<Car[]>>(`/cars`, {
     params: {
       "filters[user][id]": sellerId,
       "pagination[page]": page,

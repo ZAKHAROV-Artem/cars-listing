@@ -20,10 +20,9 @@ export const useAuth = create(
       Cookies.remove("authenticated");
     },
     logout: () => {
-      signOut();
       Cookies.remove("jwt");
       Cookies.remove("authenticated");
-      window.location.reload();
+      signOut({ callbackUrl: '/' });
     },
   })),
 );
