@@ -5,6 +5,7 @@ const nextConfig = {
       "127.0.0.1",
       "localhost",
       "cars-listing-strapi.onrender.com",
+      "server.mekina.net",
       "mekina.s3.eu-west-1.amazonaws.com",
     ],
   },
