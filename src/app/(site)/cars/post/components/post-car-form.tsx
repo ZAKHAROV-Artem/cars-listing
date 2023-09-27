@@ -102,12 +102,12 @@ export default function PostCarForm() {
       dayjs() > dayjs(user.pointsExpirationDate)
     ) {
       fetcherAuth
-        .put(`/user/me`, {
-          points: 0,
-        })
-        .then(() => {
-          refetch();
-        });
+        //.put(`/user/me`, {
+        //  points: 0,
+        //})
+        //.then(() => {
+        //  refetch();
+        //});
 
       toast.error("Points have expired !");
       if (user?.seller_type?.slug !== "private") {
