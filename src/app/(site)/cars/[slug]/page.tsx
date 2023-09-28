@@ -126,7 +126,7 @@ export default async function CarDetail({ params: { slug } }: Props) {
           </div>
           <div>
             <h2 className="text-xl font-semibold sm:text-2xl">Seller</h2>
-            <div className="flex flex-col gap-x-3">
+            <div className="flex flex-col  gap-x-3">
               <div>Name : {car.attributes.seller?.name}</div>
               <Link href={`tel:${car.attributes.seller?.phone}`}>
                 Phone : {car.attributes.seller?.phone}

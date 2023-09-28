@@ -7,7 +7,7 @@ export const PostCarValidationSchema = z.object({
     .max(3000, { message: "Must be 1000 or fewer characters long" }),
   categoryId: z.string().nonempty("Category is required"),
   brandId: z.string().nonempty("Model is required"),
-  modelId: z.string(),
+  modelId: z.string().nonempty("Model is required"),
   bodyTypeId: z.string().nonempty("Body type is required"),
   transmission: z.string().nonempty("Transmission is required"),
   year: z.string().nonempty("Year is required"),

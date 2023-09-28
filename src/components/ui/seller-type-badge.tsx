@@ -6,6 +6,7 @@ type Props = {
   className?: string;
 };
 
+
 export default function SellerTypeBadge({ type, slug, className }: Props) {
   return (
     <div
