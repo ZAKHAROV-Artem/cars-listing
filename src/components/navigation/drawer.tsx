@@ -30,8 +30,7 @@ export default function Drawer() {
               <Logo />
             </SheetTitle>
             <SheetDescription>
-              Discover the most outstanding articles on all topics of life.
-              Write your stories and share them
+              Find used and new cars for sale in Ethiopia. Compare prices with hundreds of cars available!. www.mekina.net does not take commission from sellers to sell their cars on the platform. 
             </SheetDescription>
             <div className="flex items-center justify-between">
               <SocialMediaList />

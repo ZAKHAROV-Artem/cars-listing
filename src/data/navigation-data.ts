@@ -83,10 +83,10 @@ export const menuRoutes = {
   search: "/cars/search",
 };
 export const socialsLinks = [
-  { name: "Facebook", icon: facebook, href: "#" },
-  { name: "Twitter", icon: twitter, href: "#" },
-  { name: "Youtube", icon: youtube, href: "#" },
-  { name: "Telegram", icon: telegram, href: "#" },
+  { name: "Facebook", icon: facebook, href: "https://www.mekina.net/mekinanet" },
+  { name: "Twitter", icon: twitter, href: "https://twitter.com/mekinanet" },
+  { name: "Youtube", icon: youtube, href: "https://www.youtube.com/@mekinawebsite" },
+  { name: "Telegram", icon: telegram, href: "https://t.me/mekinanet" },
 ];
 export type MenuPopoverItemType = {
   icon: IconType;

@@ -3,7 +3,6 @@ import SectionHeading from "@/components/data-display/section-heading";
 import Image from "next/image";
 import Link from "next/link";
 
-export const revalidate = 3600;
 export default async function Sec05Brands() {
   const brands = await getBrands();
   return (

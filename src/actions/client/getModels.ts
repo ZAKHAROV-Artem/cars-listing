@@ -6,6 +6,7 @@ export default async function getModels() {
   return await fetcher.get<Payload<Model[]>>(`/models`, {
     params: {
       populate: "*",
+      "pagination[pageSize]": "1000",
     },
   });
 }

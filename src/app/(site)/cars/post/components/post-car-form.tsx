@@ -102,12 +102,12 @@ export default function PostCarForm() {
       dayjs() > dayjs(user.pointsExpirationDate)
     ) {
       fetcherAuth
-        //.put(`/user/me`, {
-        //  points: 0,
-        //})
-        //.then(() => {
-        //  refetch();
-        //});
+        .put(`/user/me`, {
+          points: 0,
+        })
+        .then(() => {
+          refetch();
+        });
 
       toast.error("Points have expired !");
       if (user?.seller_type?.slug !== "private") {
@@ -319,9 +319,6 @@ export default function PostCarForm() {
             </SelectTrigger>
 
             <SelectContent>
-              <SelectItem value={""} className="mt-3">
-                All models
-              </SelectItem>
               {models?.data.data
                 .filter(
                   (model) =>
@@ -438,9 +435,6 @@ export default function PostCarForm() {
               <SelectValue placeholder="Select color" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={"all"} disabled>
-                All colors
-              </SelectItem>
               {colors?.map(({ value, hex }) => (
                 <SelectItem value={value} key={value}>
                   <div className="flex items-center gap-x-3">

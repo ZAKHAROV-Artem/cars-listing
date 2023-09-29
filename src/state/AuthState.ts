@@ -22,7 +22,7 @@ export const useAuth = create(
     logout: () => {
       Cookies.remove("jwt");
       Cookies.remove("authenticated");
-      signOut({ callbackUrl: '/' });
+      signOut({ callbackUrl: "/" });
     },
   })),
 );

@@ -5,6 +5,9 @@ import { fetcherServer } from "@/lib/api-server";
 import dayjs from "dayjs";
 
 export default async function getTopCars(filters?: QueryParams) {
+  const date = dayjs()
+    .set("day", dayjs().get("day") - 7)
+    .toDate();
   return await fetcherServer.get<Payload<Car[]>>(`/cars`, {
     params: {
       "sort[0]": "visits:desc",
@@ -23,9 +26,7 @@ export default async function getTopCars(filters?: QueryParams) {
       "populate[price][populate]": "*",
       "populate[images][fields][0]": "url",
       "sort[1]": "createdAt:desc",
-      "filters[createdAt][$gte]": dayjs()
-        .set("day", dayjs().get("day") - 7)
-        .toDate(),
+      "filters[createdAt][$gte]": date,
       ...filters,
     },
   });

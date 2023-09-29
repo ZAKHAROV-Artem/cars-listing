@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useModels = () => {
   const query = useQuery({
-    queryFn: async () => await getModels(),
+    queryFn: getModels,
     queryKey: ["models"],
     retry: false,
     refetchOnMount: false,

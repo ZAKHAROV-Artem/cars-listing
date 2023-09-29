@@ -76,7 +76,8 @@ export default async function CarDetail({ params: { slug } }: Props) {
     await setCarStatus(car.id, Status.Inactive);
   }
   if (
-    car.attributes.car_featured_expiration_date &&
+    car.attributes?.featured &&
+    car?.attributes?.car_featured_expiration_date &&
     dayjs() > dayjs(car.attributes.car_featured_expiration_date)
   ) {
     await setCarFatuted(car.id, false);
@@ -126,7 +127,7 @@ export default async function CarDetail({ params: { slug } }: Props) {
           </div>
           <div>
             <h2 className="text-xl font-semibold sm:text-2xl">Seller</h2>
-            <div className="flex flex-col  gap-x-3">
+            <div className="flex flex-col gap-x-3 md:pl-5">
               <div>Name : {car.attributes.seller?.name}</div>
               <Link href={`tel:${car.attributes.seller?.phone}`}>
                 Phone : {car.attributes.seller?.phone}

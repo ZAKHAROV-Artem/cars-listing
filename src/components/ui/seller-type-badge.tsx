@@ -6,12 +6,11 @@ type Props = {
   className?: string;
 };
 
-
 export default function SellerTypeBadge({ type, slug, className }: Props) {
   return (
     <div
       className={cn(
-        "w-fit px-2 text-white",
+        "w-fit p-2 text-white",
         {
           "bg-green-400": slug === "dealership",
           "bg-primary-light": slug === "broker",
