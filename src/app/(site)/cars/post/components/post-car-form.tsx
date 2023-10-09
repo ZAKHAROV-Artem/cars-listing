@@ -2,7 +2,7 @@
 
 import postCar from "@/actions/client/postCar";
 import { Button } from "@/components/ui/button";
-import CarPostFormFileUpload from "@/components/ui/car-post-form-file-upload";
+import CarPostFormFileUpload from "@/components/ui/post-car-file-input/car-post-form-file-upload";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -43,6 +43,10 @@ import { toast } from "react-hot-toast";
 import { RiseLoader } from "react-spinners";
 import dayjs from "dayjs";
 import { fetcher, fetcherAuth } from "@/lib/api-client";
+import { FileWithPreview } from "@/types/other";
+import { Checkbox } from "@/components/ui/checkbox";
+import { BsTelegram, BsWhatsapp } from "react-icons/bs";
+import { FaViber } from "react-icons/fa";
 
 export default function PostCarForm() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -75,12 +79,14 @@ export default function PostCarForm() {
       currency: "ETB",
       sellerTypeId: "1",
       sellerPhone: "",
+      telegram: false,
+      whatsapp: false,
+      viber: false,
       sellerName: "",
     },
 
     resolver: zodResolver(PostCarValidationSchema),
   });
-  console.log(errors);
   useEffect(() => {
     if (
       user &&
@@ -116,8 +122,7 @@ export default function PostCarForm() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
-
-  const [acceptedFiles, setAcceptedFiles] = useState<FileWithPath[]>([]);
+  const [acceptedFiles, setAcceptedFiles] = useState<FileWithPreview[]>([]);
   const onSubmit: SubmitHandler<PostCarFields> = async (data) => {
     try {
       if (!acceptedFiles.length) {
@@ -176,13 +181,13 @@ export default function PostCarForm() {
   const { data: bodyTypes } = useBodyTypes();
   const { data: brands } = useBrands();
   const { data: categories } = useCategories();
-  const { data: models } = useModels();
+  const { data: models } = useModels({ id: getValues().brandId });
   const { data: sellerTypes } = useSellerTypes();
   const { data: priceTypes } = usePriceTypes();
   return (
     <div className="my-5 space-y-2 rounded-2xl border-slate-400 sm:border sm:p-6 ">
       {loading && (
-        <div className="fixed left-0 top-0 z-10 flex h-screen w-full items-center justify-center backdrop-blur-sm">
+        <div className="fixed left-0 top-0 z-20 flex h-screen w-full items-center justify-center backdrop-blur-sm">
           <RiseLoader color="#ef4444" />
         </div>
       )}
@@ -669,7 +674,7 @@ export default function PostCarForm() {
         )}
 
         {/* SELLER PHONE */}
-        <div className="h-fit">
+        <div className="h-fit ">
           <Label>Phone:</Label>
           <Input
             {...register("sellerPhone")}
@@ -689,9 +694,62 @@ export default function PostCarForm() {
             </span>
           )}
         </div>
+        <div className="mt-5 flex flex-wrap gap-5 xs:col-span-2 ">
+          <div className="flex items-center gap-x-3">
+            <Checkbox
+              onCheckedChange={(value) =>
+                setValue("telegram", value === "indeterminate" ? false : value)
+              }
+              {...register("telegram")}
+              id="telegram"
+              className="h-6 w-6 rounded-md "
+            />
+            <label
+              htmlFor="telegram"
+              className="flex select-none items-center gap-x-3 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              <BsTelegram size={30} className="text-blue-400" /> Telegram
+            </label>
+          </div>
+          <div className="flex items-center gap-x-3">
+            <Checkbox
+              onCheckedChange={(value) =>
+                setValue("whatsapp", value === "indeterminate" ? false : value)
+              }
+              {...register("whatsapp")}
+              id="whatsapp"
+              className="h-6 w-6 rounded-md"
+            />
+            <label
+              htmlFor="whatsapp"
+              className="flex select-none items-center gap-x-3 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              <BsWhatsapp size={30} className="text-green-400" /> Whatsapp
+            </label>
+          </div>
+          <div className="flex items-center gap-x-3">
+            <Checkbox
+              onCheckedChange={(value) =>
+                setValue("viber", value === "indeterminate" ? false : value)
+              }
+              {...register("viber")}
+              id="viber"
+              className="h-6 w-6 rounded-md "
+            />
+            <label
+              htmlFor="viber"
+              className="flex select-none items-center gap-x-3 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              <FaViber size={30} className="text-purple-400" /> Viber
+            </label>
+          </div>
+        </div>
       </div>
       <h3 className="pt-5 text-xl">Images</h3>
-      <CarPostFormFileUpload setAcceptedFiles={setAcceptedFiles} />
+      <CarPostFormFileUpload
+        files={acceptedFiles}
+        setFiles={setAcceptedFiles}
+      />
       <Button onClick={handleSubmit(onSubmit)}>Post Car</Button>{" "}
     </div>
   );

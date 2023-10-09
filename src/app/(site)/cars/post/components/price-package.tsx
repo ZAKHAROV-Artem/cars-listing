@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { PricePackage } from "@/types/api/price-package";
+import Link from "next/link";
 type Props = {
   pricePackage: PricePackage;
   className?: string;
@@ -9,7 +10,10 @@ type Props = {
 export default function PricePackage({ pricePackage, className }: Props) {
   return (
     <div
-      className={cn("overflow-hidden max-w-[500px] rounded-xl bg-white shadow-md", className)}
+      className={cn(
+        "max-w-[500px] overflow-hidden rounded-xl bg-white shadow-md",
+        className,
+      )}
     >
       <div className="bg-primary-main p-3 text-white">{pricePackage.name}</div>
       <div className="space-y-4 p-5 pb-8">
@@ -29,7 +33,9 @@ export default function PricePackage({ pricePackage, className }: Props) {
           ))}
         </div>
         <div className="flex justify-center">
-          <Button variant="red">Buy</Button>
+          <Link href={pricePackage.href} target="_blank">
+            <Button variant="red">Buy</Button>
+          </Link>
         </div>
       </div>
     </div>

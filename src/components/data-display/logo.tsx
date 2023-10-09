@@ -16,6 +16,7 @@ export default function Logo({ mode }: Props) {
         }.png`}
         width={230}
         height={40}
+        priority
         className="w-[160px] xs:w-[200px] sm:w-[230px]"
         alt="Logo"
       />

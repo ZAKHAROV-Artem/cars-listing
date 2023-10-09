@@ -49,6 +49,11 @@ export default async function postCar(data: PostCarFields) {
         seller: {
           name: data.sellerName,
           phone: data.sellerPhone,
+          social_media: [
+            ...(data.telegram ? ["telegram"] : []),
+            ...(data.whatsapp ? ["whatsapp"] : []),
+            ...(data.viber ? ["viber"] : []),
+          ],
           seller_type: {
             connect: [data.sellerTypeId],
           },

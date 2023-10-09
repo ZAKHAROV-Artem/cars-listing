@@ -21,6 +21,9 @@ export const PostCarValidationSchema = z.object({
   sellerTypeId: z.string().nonempty("Seller type is required"),
   sellerName: z.string().nonempty("Seller name is required"),
   sellerPhone: z.string().nonempty("Seller phone is required"),
+  telegram: z.boolean(),
+  whatsapp: z.boolean(),
+  viber: z.boolean(),
   userId: z.string().optional(),
 });
 export type PostCarFields = z.infer<typeof PostCarValidationSchema>;

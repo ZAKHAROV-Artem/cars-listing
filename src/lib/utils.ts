@@ -70,3 +70,7 @@ export function getInitials(fullname: string) {
     .map((n) => n[0])
     .join("");
 }
+
+export function reduceString(value: string, maxLength: number) {
+  return value.length > maxLength ? `${value.slice(0, maxLength)}...` : value;
+}

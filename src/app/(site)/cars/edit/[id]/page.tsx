@@ -10,10 +10,9 @@ export const revalidate = 0;
 export default async function EditCarPage({ params }: Props) {
   const user = await getServerAuth();
   if (!user || !params.id) redirect("/");
-  const cacheKey = Date.now().toString();
 
-  // Append the cache key as a query parameter
   const car = await getCar(params.id);
+  if (car.attributes.user?.data.id !== user.id) redirect("/");
   return (
     <div className={"container relative"}>
       <h1 className="py-5  text-xl font-[500] sm:text-2xl md:text-3xl">

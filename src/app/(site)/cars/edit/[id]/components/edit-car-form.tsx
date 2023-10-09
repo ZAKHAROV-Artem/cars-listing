@@ -2,7 +2,7 @@
 
 import postCar from "@/actions/client/postCar";
 import { Button } from "@/components/ui/button";
-import CarPostFormFileUpload from "@/components/ui/car-post-form-file-upload";
+import CarPostFormFileUpload from "@/components/ui/post-car-file-input/car-post-form-file-upload";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -46,6 +46,7 @@ import { fetcher, fetcherAuth } from "@/lib/api-client";
 import { Car } from "@/types/api/car";
 import updateCar from "@/actions/client/updateCar";
 import { useQueryClient } from "@tanstack/react-query";
+import { FileWithPreview } from "@/types/other";
 
 type Props = {
   car: Car;
@@ -91,7 +92,7 @@ export default function EditCarForm({ car }: Props) {
     resolver: zodResolver(PostCarValidationSchema),
   });
 
-  const [acceptedFiles, setAcceptedFiles] = useState<FileWithPath[]>([]);
+  const [acceptedFiles, setAcceptedFiles] = useState<FileWithPreview[]>([]);
 
   const onSubmit: SubmitHandler<PostCarFields> = async (data) => {
     try {
@@ -144,7 +145,7 @@ export default function EditCarForm({ car }: Props) {
   const { data: bodyTypes } = useBodyTypes();
   const { data: brands } = useBrands();
   const { data: categories } = useCategories();
-  const { data: models } = useModels();
+  const { data: models } = useModels({ id: getValues().brandId });
   const { data: sellerTypes } = useSellerTypes();
   const { data: priceTypes } = usePriceTypes();
   return (
@@ -667,7 +668,10 @@ export default function EditCarForm({ car }: Props) {
         </div>
       </div>
       <h3 className="pt-5 text-xl">Images</h3>
-      <CarPostFormFileUpload setAcceptedFiles={setAcceptedFiles} />
+      <CarPostFormFileUpload
+        files={acceptedFiles}
+        setFiles={setAcceptedFiles}
+      />
       {!acceptedFiles.length && (
         <>
           {car.attributes.images.data.map((image) => (

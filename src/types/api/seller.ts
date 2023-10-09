@@ -6,6 +6,7 @@ export interface SellerType {
     publishedAt?: Date;
     type: string;
     slug: string;
+    social_media?: string[];
   };
 }
 export interface SellerTypePlain {
@@ -15,6 +16,7 @@ export interface SellerTypePlain {
   publishedAt?: Date;
   type: string;
   slug: string;
+  social_media?: string[];
 }
 export interface Seller {
   name: string;

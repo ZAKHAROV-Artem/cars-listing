@@ -17,7 +17,8 @@ import Widget from "@/components/ui/widget";
 import SellerTypeBadge from "@/components/ui/seller-type-badge";
 import type { Metadata } from "next";
 import Link from "next/link";
-
+import { BsTelegram, BsWhatsapp } from "react-icons/bs";
+import { FaViber } from "react-icons/fa";
 type Props = {
   params: { slug: string };
 };
@@ -127,11 +128,28 @@ export default async function CarDetail({ params: { slug } }: Props) {
           </div>
           <div>
             <h2 className="text-xl font-semibold sm:text-2xl">Seller</h2>
-            <div className="flex flex-col gap-x-3">
-              <div>Name : {car.attributes.seller?.name}</div>
-              <Link href={`tel:${car.attributes.seller?.phone}`}>
-                Phone : {car.attributes.seller?.phone}
+            <div className="flex flex-col gap-x-3 md:pl-5">
+              <div className="flex  gap-x-3 lg:block items-center">
+
+              <div>{car.attributes.seller?.name}</div>
+              <Link
+                className="text-violet-700 underline"
+                href={`tel:${car.attributes.seller?.phone}`}
+                >
+                {car.attributes.seller?.phone}
               </Link>
+                </div>
+              <div className="flex gap-3 flex-wrap my-3">
+                <Link href={`https://t.me/${car.attributes.seller?.phone}`} target="_blank" className="flex items-center gap-x-1">
+                  <BsTelegram size={30} className="text-blue-400" /> Telegram
+                </Link>
+                <Link href={`https://wa.me/${car.attributes.seller?.phone}`} target="_blank" className="flex items-center gap-x-1">
+                <BsWhatsapp size={30} className="text-green-400" /> Whatsapp
+                </Link>
+                <Link href={`viber://contact?number=${car.attributes.seller?.phone}`} target="_blank" className="flex items-center gap-x-1">
+                <FaViber size={30} className="text-purple-400" /> Viber
+                </Link>
+              </div>
               <SellerTypeBadge
                 type={
                   car.attributes.seller?.seller_type?.data.attributes.type || ""
