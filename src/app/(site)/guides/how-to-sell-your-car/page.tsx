@@ -15,14 +15,15 @@ export default async function Guides({ params: { slug } }: Props) {
   return (
     <div className="container flex py-3">
       <div
-        className="grow"
+        className="w-3/4"
         dangerouslySetInnerHTML={{
           __html: page.data.data[0]?.attributes.html || "<div/>",
         }}
       />
       {widget.data.data[0]?.attributes.html && (
         <div
-          dangerouslySetInnerHTML={{
+        className="w-1/4"  
+        dangerouslySetInnerHTML={{
             __html: widget.data.data[0].attributes.html,
           }}
         />
