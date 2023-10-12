@@ -22,7 +22,7 @@ export default async function Guides({ params: { slug } }: Props) {
       />
       {widget.data.data[0]?.attributes.html && (
         <div
-        className="w-1/4"  
+        className="hidden md:block w-1/4"  
         dangerouslySetInnerHTML={{
             __html: widget.data.data[0].attributes.html,
           }}
