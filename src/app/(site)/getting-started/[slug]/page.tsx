@@ -15,14 +15,15 @@ export default async function GettingStarted({ params: { slug } }: Props) {
   return (
     <div className="container flex py-3">
       <div
-        className="grow"
+         className="w-full md:w-3/4 p-2"
         dangerouslySetInnerHTML={{
           __html: page.data.data[0]?.attributes.html || "<div/>",
         }}
       />
       {widget.data.data[0]?.attributes.html && (
         <div
-          dangerouslySetInnerHTML={{
+        className="hidden md:block md:w-1/4"    
+        dangerouslySetInnerHTML={{
             __html: widget.data.data[0].attributes.html,
           }}
         />
