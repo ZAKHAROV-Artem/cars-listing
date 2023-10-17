@@ -46,10 +46,10 @@ const widgetMenus: WidgetFooterMenu[] = [
     id: "3",
     title: "List cars by price",
     menus: [
-      { href: "/cars/search?maxPrice=1000000", label: "Less than ETB 1,000,000" },
-      { href: "/cars/search?minPrice=1000000&maxPrice=3000000", label: "ETB 1,000,000 - ETB 3,000,000" },
-      { href: "/cars/search?minPrice=3000000&maxPrice=10000000", label: "ETB 3,000,000 - ETB 10,000,000" },
-      { href: "/cars/search?minPrice=10000000", label: "Above ETB 10,000,000" },
+      { href: "/cars/search?maxPrice=1000000", label: "Less than 1 million ETB" },
+      { href: "/cars/search?minPrice=1000000&maxPrice=3000000", label: "Between 1 & 3 million" },
+      { href: "/cars/search?minPrice=3000000&maxPrice=10000000", label: "Between 3 & 10 million" },
+      { href: "/cars/search?minPrice=10000000", label: "Above 10 million ETB" },
     ],
   },
 ];
