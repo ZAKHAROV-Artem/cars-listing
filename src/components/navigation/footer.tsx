@@ -87,9 +87,9 @@ const Footer: React.FC = () => {
             <Logo />
           </div>
           <div className="col-span-2 text-sm flex items-center md:col-span-3">
-            <p>Bole road, </br>
-            Getu commercial center</br>
-            4th floor, #405</br>
+            <p>Bole road, <br/>
+            Getu commercial center<br/>
+            4th floor, #405<br/>
             Tel: +251 944 333333</p>
           </div>
         </div>
