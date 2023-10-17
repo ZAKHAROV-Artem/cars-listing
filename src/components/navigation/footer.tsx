@@ -87,6 +87,16 @@ const Footer: React.FC = () => {
             <Logo />
           </div>
           <div className="col-span-2 flex items-center md:col-span-3">
+            <p>Bole road, Getu commercial center</p>
+            <p>4th floor, #405</p>
+            <p>Tel: +251 944 333333</p>
+          </div>
+        </div>
+        <div className="col-span-2 grid grid-cols-4 gap-5 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
+        <h2 className="font-semibold text-neutral-700 dark:text-neutral-200">
+          Follow us on:
+        </h2>
+          <div className="col-span-2 flex items-center md:col-span-3">
             <SocialMediaList
               withName
               className="flex items-center space-x-2 lg:flex-col lg:items-start lg:space-x-0 lg:space-y-3"
