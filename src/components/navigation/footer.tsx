@@ -82,17 +82,18 @@ const Footer: React.FC = () => {
   return (
     <div className="nc-Footer relative border-t border-neutral-200 py-20 dark:border-neutral-700 lg:pb-24 lg:pt-28">
       <div className="container grid grid-cols-2 gap-x-5 gap-y-10 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 ">
-        <div className="col-span-2 grid grid-cols-4 gap-5 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
+        <div className="col-span-2 grid grid-cols-2 gap-5 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
           <div className="col-span-2 md:col-span-1">
             <Logo />
           </div>
-          <div className="col-span-2 flex items-center md:col-span-3">
-            <p>Bole road, Getu commercial center</p>
-            <p>4th floor, #405</p>
-            <p>Tel: +251 944 333333</p>
+          <div className="col-span-2 text-sm flex items-center md:col-span-3">
+            <p>Bole road, </br>
+            Getu commercial center</br>
+            4th floor, #405</br>
+            Tel: +251 944 333333</p>
           </div>
         </div>
-        <div className="col-span-2 grid grid-cols-4 gap-5 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
+        <div className="col-span-2 grid grid-cols-3 gap-5 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
         <h2 className="font-semibold text-neutral-700 dark:text-neutral-200">
           Follow us on:
         </h2>
