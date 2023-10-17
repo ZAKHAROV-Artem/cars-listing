@@ -12,7 +12,7 @@ export interface WidgetFooterMenu {
 }
 
 const widgetMenus: WidgetFooterMenu[] = [
-  {
+  /*{
     id: "5",
     title: "Getting started",
     menus: [
@@ -21,35 +21,35 @@ const widgetMenus: WidgetFooterMenu[] = [
       { href: "/getting-started/browser-support", label: "Browser Support" },
       { href: "/getting-started/help", label: "Help" },
     ],
-  },
+  },*/
   {
     id: "1",
-    title: "Explore",
+    title: "Looking for",
     menus: [
-      { href: "/explore/prototyping", label: "Prototyping" },
-      { href: "/explore/design-systems", label: "Design systems" },
-      { href: "/explore/pricing", label: "Pricing" },
-      { href: "/explore/security", label: "Security" },
+      { href: "/cars/search?sellerType=private", label: "Cars by Private sellers" },
+      { href: "/cars/search?sellerType=dealership", label: "Cars by dealerships" },
+      { href: "/cars/search?sellerType=broker", label: "Cars by brokers" },
+      { href: "/cars/search?sellerType=importer-exporter", label: "Cars to be imported" },
     ],
   },
   {
     id: "2",
-    title: "Resources",
+    title: "Services",
     menus: [
-      { href: "/resources/best-practices", label: "Best practices" },
-      { href: "/resources/support", label: "Support" },
-      { href: "/resources/developers", label: "Developers" },
-      { href: "/resources/learn-design", label: "Learn design" },
+      { href: "/services/loans-and-financing", label: "Financing services" },
+      { href: "/services/insurance", label: "insurance services" },
+      { href: "/services/spare-parts", label: "Spare parts" },
+      { href: "/services/import", label: "Import services" },
     ],
   },
   {
-    id: "4",
-    title: "Community",
+    id: "3",
+    title: "List cars by price",
     menus: [
-      { href: "/community/discussion-forums", label: "Discussion Forums" },
-      { href: "/community/code-of-conduct", label: "Code of Conduct" },
-      { href: "/community/contributing", label: "Contributing" },
-      { href: "/community/api-reference", label: "API Reference" },
+      { href: "/cars/search?maxPrice=1000000", label: "Less than ETB 1,000,000" },
+      { href: "/cars/search?minPrice=1000000&maxPrice=3000000", label: "ETB 1,000,000 - ETB 3,000,000" },
+      { href: "/cars/search?minPrice=3000000&maxPrice=10000000", label: "ETB 3,000,000 - ETB 10,000,000" },
+      { href: "/cars/search?minPrice=10000000", label: "Above ETB 10,000,000" },
     ],
   },
 ];
