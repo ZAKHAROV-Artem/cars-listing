@@ -3,11 +3,14 @@
 import { useTheme } from "@/hooks/useThemeMode";
 import Image from "next/image";
 
-export default function CarsNotFound() {
+type Props = {
+  text?: string;
+};
+export default function NotFound({ text = "Not found" }: Props) {
   const theme = useTheme();
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="text-xl">Cars not found</div>
+      <div className="text-xl">{text}</div>
 
       <Image
         src={`/imgs/status/not-found-${

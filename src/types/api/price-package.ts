@@ -10,6 +10,7 @@ export interface PricePackage {
   price: string;
   includes: string[];
   href: string;
+  points:number;
 }
 export interface PricePackagePlain {
   name: string;
@@ -17,4 +18,5 @@ export interface PricePackagePlain {
   price: string;
   includes: string[];
   href: string;
+  points:number;
 }

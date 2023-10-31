@@ -25,4 +25,12 @@ export interface User {
   points: number;
   pointsExpirationDate?: Date;
   auth_type: UserAuthType;
+  role: UserRole;
+}
+export interface UserRole {
+  id: number;
+  createdAt: Date;
+  name: string;
+  type: string;
+  description: string;
 }

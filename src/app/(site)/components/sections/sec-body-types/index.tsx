@@ -2,7 +2,7 @@ import getBodyTypes from "@/actions/server/getBodyTypes";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Sec01BodyTypes() {
+export default async function SecBodyTypes() {
   const bodyTypes = await getBodyTypes();
   return (
     <div className="container grid grid-cols-3 gap-1 md:grid-cols-6">

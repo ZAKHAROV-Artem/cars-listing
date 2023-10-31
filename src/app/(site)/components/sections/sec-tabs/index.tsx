@@ -11,7 +11,7 @@ import useCarsPrivateSeller from "@/hooks/useCarsPrivateSeller";
 import { useTabs } from "@/state/TabsState";
 import { InView } from "react-intersection-observer";
 
-export default function Sec04Tabs() {
+export default function SecTabs() {
   const tabsState = useTabs();
   const {
     data: privateSellerCars,

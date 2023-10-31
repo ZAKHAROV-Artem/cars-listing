@@ -25,6 +25,7 @@ export default function SearchPage() {
     setMaxPrice,
     setMinMileage,
     setMaxMileage,
+    setTransmission,
     setIsOpen,
     isOpen,
   } = useFilters();
@@ -97,6 +98,13 @@ export default function SearchPage() {
       });
       setModel(searchParams.get("model") || "");
     }
+    if (searchParams.has("transmission")) {
+      filters.push({
+        key: "filters[car_ch][transmission][$eq]",
+        value: searchParams.get("transmission") || "",
+      });
+      setTransmission(searchParams.get("transmission") || "");
+    }
     if (searchParams.has("minPrice")) {
       filters.push({
         key: "filters[price][price][$gt]",
@@ -114,16 +122,16 @@ export default function SearchPage() {
     if (searchParams.has("minMileage")) {
       filters.push({
         key: "filters[car_ch][mileage][$gt]",
-        value: searchParams.get("minMileage") || "",
+        value: searchParams.get("minMileage") || "0",
       });
-      setMinMileage(Number(searchParams.get("minMileage")) || 0);
+      setMinMileage(Number(searchParams.get("minMileage")));
     }
     if (searchParams.has("maxMileage")) {
       filters.push({
         key: "filters[car_ch][mileage][$lt]",
-        value: searchParams.get("maxMileage") || "",
+        value: searchParams.get("maxMileage") || "1000000",
       });
-      setMaxMileage(Number(searchParams.get("maxMileage")) || 0);
+      setMaxMileage(Number(searchParams.get("maxMileage")));
     }
     if (searchParams.has("q")) {
       filters.push({

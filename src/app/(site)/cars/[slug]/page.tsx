@@ -9,16 +9,18 @@ import { notFound, redirect } from "next/navigation";
 import dayjs from "dayjs";
 import setCarStatus from "@/actions/server/setCarStatus";
 import { Status } from "@/types/api/car";
-import setCarFatuted from "@/actions/server/setCarFatuted";
+import setCarFetured from "@/actions/server/setCarFeatured";
 import CarDetailSliderSkeleton from "@/components/ui/car-detail-slider-skeleton";
 import Breadcrumbs from "./components/breadcrumbs";
-import Sec02TopCars from "../../components/sections/sec-02-top-cars";
+import SecTopCars from "../../components/sections/sec-top-cars";
 import Widget from "@/components/ui/widget";
 import SellerTypeBadge from "@/components/ui/seller-type-badge";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BsTelegram, BsWhatsapp } from "react-icons/bs";
 import { FaViber } from "react-icons/fa";
+import AdminButtons from "./components/admin-buttons";
+import { getServerAuth } from "@/lib/getServerAuth";
 type Props = {
   params: { slug: string };
 };
@@ -32,43 +34,47 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }).catch(() => {
       notFound();
     });
-    return {
-      title: `${car.attributes.title} - ${car.attributes.price?.price}${car.attributes.price?.currency}`,
-      description: car.attributes.description,
-      keywords: [
-        `${car.attributes.title}`,
-        `${car.attributes.car_ch?.brand?.data.attributes.name}`,
-        `${car.attributes.car_ch?.model?.data.attributes.name}`,
-        "used car price in ethiopia 2021, car price in ethiopia, car market in ethiopia, car for sale in ethiopia, new car price in ethiopia 2021, buy and sell cars, suzuki car price in ethiopia, car sales in ethiopia, car sell in ethiopia, cars for sale in ethiopia, used car price in ethiopia, diplomatic car for sale in ethiopia 2021",
-      ],
-      openGraph: {
+    if (car) {
+      return {
         title: `${car.attributes.title} - ${car.attributes.price?.price}${car.attributes.price?.currency}`,
         description: car.attributes.description,
-        images: [car.attributes.images.data[0].attributes.url],
-        type: "article",
-        url: `${process.env.NEXTAUTH_URL}/cars/${car.attributes.slug}-${car.id}`,
-        siteName: process.env.DOMAIN,
-      },
-      twitter: {
-        title: `${car.attributes.title} - ${car.attributes.price?.price}${car.attributes.price?.currency}`,
-        site: "@mekinanet",
-        creator: "@mekinanet",
-        description: car.attributes.description,
-        images: [car.attributes.images.data[0].attributes.url],
-      },
-    };
-  } else {
-    return {
-      title: "Car detail page",
-    };
+        keywords: [
+          `${car.attributes.title}`,
+          `${car.attributes.car_ch?.brand?.data.attributes.name}`,
+          `${car.attributes.car_ch?.model?.data?.attributes.name || ""}`,
+          "used car price in ethiopia 2021, car price in ethiopia, car market in ethiopia, car for sale in ethiopia, new car price in ethiopia 2021, buy and sell cars, suzuki car price in ethiopia, car sales in ethiopia, car sell in ethiopia, cars for sale in ethiopia, used car price in ethiopia, diplomatic car for sale in ethiopia 2021",
+        ],
+        openGraph: {
+          title: `${car.attributes.title} - ${car.attributes.price?.price}${car.attributes.price?.currency}`,
+          description: car.attributes.description,
+          images: [car.attributes.images.data[0].attributes.url],
+          type: "article",
+          url: `${process.env.NEXTAUTH_URL}/cars/${car.attributes.slug}-${car.id}`,
+          siteName: process.env.DOMAIN,
+        },
+        twitter: {
+          title: `${car.attributes.title} - ${car.attributes.price?.price}${car.attributes.price?.currency}`,
+          site: "@mekinanet",
+          creator: "@mekinanet",
+          description: car.attributes.description,
+          images: [car.attributes.images.data[0].attributes.url],
+        },
+      };
+    }
   }
+  return {
+    title: "Car detail page",
+  };
 }
 
 export default async function CarDetail({ params: { slug } }: Props) {
   const id = slug.split("-").at(-1);
   if (!id) return redirect("/");
+  const user = await getServerAuth();
   const car = await getCar(id, {
-    "filters[status][$eq]": "active",
+    ...(user?.role.type !== "admin"
+      ? { "filters[status][$eq]": "active" }
+      : {}),
   }).catch(() => {
     notFound();
   });
@@ -81,10 +87,10 @@ export default async function CarDetail({ params: { slug } }: Props) {
     car?.attributes?.car_featured_expiration_date &&
     dayjs() > dayjs(car.attributes.car_featured_expiration_date)
   ) {
-    await setCarFatuted(car.id, false);
+    await setCarFetured(car.id, false);
   }
-
   await incrementVisits(car.id, car.attributes.visits);
+
   return (
     <div className="md:container md:py-10">
       <div className="mb-4 hidden items-center justify-between md:flex">
@@ -98,17 +104,28 @@ export default async function CarDetail({ params: { slug } }: Props) {
               label: car.attributes.car_ch?.brand?.data.attributes.name || "",
               href: `/cars/search?brand=${car.attributes.car_ch?.brand?.data.attributes.slug}`,
             },
-            {
-              label: car.attributes.car_ch?.model?.data.attributes.name || "",
-              href: `/cars/search?brand=${car.attributes.car_ch?.brand?.data.attributes.slug}&model=${car.attributes.car_ch?.model?.data.attributes.slug}`,
-            },
+            ...(car.attributes.car_ch?.model?.data?.attributes.name
+              ? [
+                  {
+                    label:
+                      car.attributes.car_ch?.model?.data.attributes.name || "",
+                    href: `/cars/search?brand=${car.attributes.car_ch?.brand?.data.attributes.slug}&model=${car.attributes.car_ch?.model?.data.attributes.slug}`,
+                  },
+                ]
+              : []),
           ]}
           title={car.attributes.title}
         />
       </div>
       <div className="grid grid-cols-1 md:gap-4 lg:grid-cols-[65%_35%]">
         <ClientOnly fallback={<CarDetailSliderSkeleton />}>
-          <CarImagesSlider images={car.attributes.images.data} />
+          <CarImagesSlider
+            images={car.attributes.images.data.sort((a, b) => {
+              const nameA = a.attributes.name;
+              const nameB = b.attributes.name;
+              return nameA.localeCompare(nameB);
+            })}
+          />
         </ClientOnly>
         <div className="space-y-3 bg-paper-light p-4 dark:bg-paper-dark md:rounded-2xl lg:h-full lg:p-8">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-x-4">
@@ -128,28 +145,49 @@ export default async function CarDetail({ params: { slug } }: Props) {
           </div>
           <div>
             <h2 className="text-xl font-semibold sm:text-2xl">Seller</h2>
-            <div className="flex flex-col gap-x-3 md:pl-5">
-              <div className="flex  gap-x-3 lg:block items-center">
-
-              <div>{car.attributes.seller?.name}</div>
-              <Link
-                className="text-violet-700 underline"
-                href={`tel:${car.attributes.seller?.phone}`}
+            <div className="flex flex-col gap-3 md:pl-5">
+              <div className="flex  items-center gap-x-3 lg:block">
+                <div>{car.attributes.seller?.name}</div>
+                <Link
+                  className="text-violet-700 underline"
+                  href={`tel:${car.attributes.seller?.phone}`}
                 >
-                {car.attributes.seller?.phone}
-              </Link>
-                </div>
-              <div className="flex gap-3 flex-wrap my-3">
-                <Link href={`https://t.me/${car.attributes.seller?.phone}`} target="_blank" className="flex items-center gap-x-1">
-                  <BsTelegram size={30} className="text-blue-400" /> Telegram
-                </Link>
-                <Link href={`https://wa.me/${car.attributes.seller?.phone}`} target="_blank" className="flex items-center gap-x-1">
-                <BsWhatsapp size={30} className="text-green-400" /> Whatsapp
-                </Link>
-                <Link href={`viber://contact?number=${car.attributes.seller?.phone}`} target="_blank" className="flex items-center gap-x-1">
-                <FaViber size={30} className="text-purple-400" /> Viber
+                  {car.attributes.seller?.phone}
                 </Link>
               </div>
+              {car.attributes.seller?.social_media && (
+                <div className="my-3 flex flex-wrap gap-3">
+                  {car.attributes.seller?.social_media.includes("telegram") && (
+                    <Link
+                      href={`https://t.me/${car.attributes.seller?.phone}`}
+                      target="_blank"
+                      className="flex items-center gap-x-1"
+                    >
+                      <BsTelegram size={30} className="text-blue-400" />{" "}
+                      Telegram
+                    </Link>
+                  )}
+                  {car.attributes.seller?.social_media.includes("whatsapp") && (
+                    <Link
+                      href={`https://wa.me/${car.attributes.seller?.phone}`}
+                      target="_blank"
+                      className="flex items-center gap-x-1"
+                    >
+                      <BsWhatsapp size={30} className="text-green-400" />{" "}
+                      Whatsapp
+                    </Link>
+                  )}
+                  {car.attributes.seller?.social_media.includes("viber") && (
+                    <Link
+                      href={`viber://contact?number=${car.attributes.seller?.phone}`}
+                      target="_blank"
+                      className="flex items-center gap-x-1"
+                    >
+                      <FaViber size={30} className="text-purple-400" /> Viber
+                    </Link>
+                  )}
+                </div>
+              )}
               <SellerTypeBadge
                 type={
                   car.attributes.seller?.seller_type?.data.attributes.type || ""
@@ -158,6 +196,7 @@ export default async function CarDetail({ params: { slug } }: Props) {
                   car.attributes.seller?.seller_type?.data.attributes.slug || ""
                 }
               />
+              <AdminButtons car={car} />
             </div>
           </div>
           <Widget slug="detail-page-widget" />
@@ -180,7 +219,8 @@ export default async function CarDetail({ params: { slug } }: Props) {
                   <div className="flex w-full justify-between">
                     Model :{" "}
                     <span className="text-light-light dark:text-dark-light">
-                      {car.attributes.car_ch?.model?.data.attributes.name}
+                      {car.attributes.car_ch?.model?.data?.attributes.name ||
+                        "No model"}
                     </span>
                   </div>
                   <Separator className="my-1" />
@@ -270,7 +310,7 @@ export default async function CarDetail({ params: { slug } }: Props) {
         </div>
       </div>
       <SellerInfoFooter seller={car.attributes.seller} />
-      <Sec02TopCars className="mt-5" />
+      <SecTopCars className="mt-5" />
     </div>
   );
 }

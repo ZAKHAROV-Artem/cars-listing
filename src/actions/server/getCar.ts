@@ -12,6 +12,7 @@ export default async function getCar(carId: string, filters?: QueryParams) {
         "populate[category][populate]": "*",
         "populate[price][populate]": "*",
         "populate[seller][populate]": "*",
+        "populate[user][populate]": "*",
         "populate[images]": "*",
         ...filters,
       },

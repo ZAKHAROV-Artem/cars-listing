@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 type Props = {
   className?: string;
 };
-export default async function Sec02TopCars({ className }: Props) {
+export default async function SecTopCars({ className }: Props) {
   const topCars = await getTopCars({
     "pagination[limit]": "12",
   });

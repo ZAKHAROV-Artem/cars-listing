@@ -2,21 +2,22 @@
 
 import { FcGoogle } from "react-icons/fc";
 import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
 import { useAuth } from "@/state/AuthState";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+import { useUpdateEffect } from "usehooks-ts";
 
 export default function GoogleButton() {
   const { data } = useSession();
   const setToken = useAuth((state) => state.setToken);
   const router = useRouter();
-  useEffect(() => {
+  const queryClient = useQueryClient();
+  useUpdateEffect(() => {
     if (data?.token && data?.user) {
       setToken(data.token.jwt);
+      queryClient.invalidateQueries(["current-user"]);
       router.push("/");
-      window.location.reload();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
   return (
     <div

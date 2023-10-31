@@ -10,6 +10,7 @@ export async function getCurrentUser() {
     params: {
       "populate[0]": "seller_type",
       "populate[1]": "image",
+      "populate[2]": "role",
     },
   });
 }

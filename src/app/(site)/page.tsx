@@ -1,15 +1,15 @@
 import SearchInput from "@/components/navigation/search-input";
-import Sec01BodyTypes from "./components/sections/sec-01-body-types";
-import Sec02TopCars from "./components/sections/sec-02-top-cars";
-import Sec03FeaturedCars from "./components/sections/sec-03-featured-cars";
-import Sec04Tabs from "./components/sections/sec-04-tabs";
-import Sec05Brands from "./components/sections/sec-05-brands";
+import SecBodyTypes from "./components/sections/sec-body-types";
+import SecTopCars from "./components/sections/sec-top-cars";
+import SecFeaturedCars from "./components/sections/sec-featured-cars";
+import SecTabs from "./components/sections/sec-tabs";
+import SecBrands from "./components/sections/sec-brands";
 import PostCarFloatingButton from "@/components/ui/post-car-floating-button";
 import Filters from "./cars/search/components/filters";
 import FiltersSearch from "./cars/search/components/filters-search";
 
 export const revalidate = 3600;
-
+// export const dynamic = "force-dynamic";
 export default function Home() {
   return (
     <div>
@@ -20,11 +20,11 @@ export default function Home() {
           </div>
           <Filters fromMain={true} />
         </div>
-        <Sec01BodyTypes />
-        <Sec02TopCars />
-        <Sec03FeaturedCars />
-        <Sec04Tabs />
-        <Sec05Brands />
+        <SecBodyTypes />
+        <SecFeaturedCars />
+        <SecTabs />
+        <SecTopCars />
+        <SecBrands />
       </div>
       <PostCarFloatingButton />
     </div>

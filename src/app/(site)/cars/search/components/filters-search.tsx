@@ -18,7 +18,7 @@ export default function FiltersSearch() {
 
     const search = current.toString();
     const query = search ? `?${search}` : "";
-    router.push(query);
+    router.push("/cars/search" + query);
   };
   const { setIsOpen, isOpen } = useFilters((state) => ({
     setIsOpen: state.setIsOpen,

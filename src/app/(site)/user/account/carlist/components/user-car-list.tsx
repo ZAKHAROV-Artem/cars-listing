@@ -1,7 +1,7 @@
 "use client";
 import useCurrentUserCars from "@/hooks/useCurrentUserCars";
 import { InView } from "react-intersection-observer";
-import AccountCarItem from "./account-car-item";
+import ListCarItem from "@/components/cars/list-car-item";
 import { Separator } from "@/components/ui/separator";
 import { Fragment } from "react";
 type Props = {
@@ -19,7 +19,7 @@ export default function UserCarList({ userId }: Props) {
         <Fragment key={i}>
           {page.data.data?.map((car) => (
             <div key={car.id}>
-              <AccountCarItem
+              <ListCarItem
                 car={car}
                 refetch={() =>
                   refetch({ refetchPage: (page, index) => index === i })

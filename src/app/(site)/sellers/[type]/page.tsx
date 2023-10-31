@@ -1,5 +1,5 @@
 "use client";
-import SellerItem from "./components/seller-item";
+import SellerItem from "@/components/sellers/seller-item";
 import useSellers from "@/hooks/useSellers";
 import { PropagateLoader } from "react-spinners";
 import { InView } from "react-intersection-observer";

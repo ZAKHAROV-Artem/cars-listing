@@ -4,21 +4,20 @@ import { AiFillFacebook } from "react-icons/ai";
 import { signIn, useSession } from "next-auth/react";
 import { useAuth } from "@/state/AuthState";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useUpdateEffect } from "usehooks-ts";
 
 export default function FacebookButton() {
-  const queryClient = useQueryClient();
   const { data } = useSession();
   const setToken = useAuth((state) => state.setToken);
   const router = useRouter();
-  useEffect(() => {
+  const queryClient = useQueryClient();
+  useUpdateEffect(() => {
     if (data?.token && data?.user) {
       setToken(data.token.jwt);
       queryClient.invalidateQueries(["current-user"]);
       router.push("/");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
   return (
     <div

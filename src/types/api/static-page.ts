@@ -7,6 +7,8 @@ export interface StaticPage {
     title: string;
     html: string;
     slug: string;
+    css: any;
+    js: string;
   };
 }
 export interface StaticPagePlain {
@@ -17,4 +19,6 @@ export interface StaticPagePlain {
   title: string;
   html: string;
   slug: string;
+  css: any;
+  js: string;
 }

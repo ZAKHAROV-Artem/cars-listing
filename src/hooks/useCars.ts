@@ -1,17 +1,13 @@
 import getCars from "@/actions/client/infinity/getCars";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
-const useCars = () => {
-  const query = useInfiniteQuery({
-    queryKey: [`all-cars-infinity`],
-    queryFn: async ({ pageParam = 1 }) => await getCars(pageParam),
-    getNextPageParam: (res, pages) => {
-      return res.data.meta.pagination?.page ===
-        res.data.meta.pagination?.pageCount
-        ? undefined
-        : pages.length + 1;
-    },
+const useCars = (page: number) => {
+  const query = useQuery({
+    queryKey: [`all-cars-infinity`, page],
+    queryFn: async () => await getCars(page),
+
     refetchOnMount: false,
+    keepPreviousData: true,
     refetchOnWindowFocus: false,
   });
   return query;

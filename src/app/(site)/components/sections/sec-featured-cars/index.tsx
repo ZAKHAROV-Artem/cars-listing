@@ -2,7 +2,7 @@ import getFeaturedCars from "@/actions/server/getFeaturedCars";
 import CarsList from "@/components/cars/cars-list";
 import SectionHeading from "@/components/data-display/section-heading";
 
-export default async function Sec03FeaturedCars() {
+export default async function SecFeaturedCars() {
   const featuredCars = await getFeaturedCars({
     "pagination[limit]": "12",
   });

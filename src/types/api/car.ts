@@ -22,6 +22,7 @@ export enum Status {
   Expired = "expired",
   Sold = "sold",
 }
+export const statusValues = ["active", "inactive", "expired", "sold"];
 
 export interface Car {
   id: number;
@@ -44,6 +45,7 @@ export interface Car {
     car_expiration_date: Date;
     car_featured_expiration_date: Date;
     category?: { data: Category };
+    car_publication_date?: Date;
   };
 }
 
@@ -67,4 +69,5 @@ export interface CarPlain {
   car_expiration_date: Date;
   car_featured_expiration_date?: Date;
   category?: CategoryPlain;
+  car_publication_date?: Date;
 }

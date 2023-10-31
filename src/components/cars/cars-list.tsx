@@ -1,5 +1,5 @@
 import CarItem from "./car-item";
-import CarsNotFound from "./cars-not-found";
+import NotFound from "../data-display/not-found";
 import { Car } from "@/types/api/car";
 type Props = {
   cars: Car[];
@@ -12,7 +12,7 @@ export default function CarsList({ cars }: Props) {
           <CarItem car={car} key={car.id} />
         ))}
       </div>
-      {!cars.length && <CarsNotFound />}
+      {!cars.length && <NotFound text="Cars not found" />}
     </div>
   );
 }

@@ -30,8 +30,7 @@ export default function Drawer() {
               <Logo />
             </SheetTitle>
             <SheetDescription>
-              Discover the most outstanding articles on all topics of life.
-              Write your stories and share them
+              Buy, sell or rent cars in Ethiopia.
             </SheetDescription>
             <div className="flex items-center justify-between">
               <SocialMediaList />

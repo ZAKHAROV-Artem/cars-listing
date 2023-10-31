@@ -3,7 +3,8 @@ import { fetcherServer } from "@/lib/api-server";
 export default async function getMe(jwt: string) {
   return await fetcherServer.get<User>(`/users/me`, {
     params: {
-      populate: "seller_type",
+      "populate[0]": "seller_type",
+      "populate[1]": "role",
     },
 
     headers: {

@@ -75,9 +75,10 @@ export default function Filters({ fromMain = false }: Props) {
     if (transmission) query += `&transmission=${transmission}`;
     if (sellerType) query += `&sellerType=${sellerType}`;
     if (minPrice) query += `&minPrice=${minPrice}`;
-    if (maxPrice) query += `&maxPrice=${maxPrice}`;
+    if (maxPrice && maxPrice !== 20000000) query += `&maxPrice=${maxPrice}`;
     if (minMileage) query += `&minMileage=${minMileage}`;
-    if (maxMileage) query += `&maxMileage=${maxMileage}`;
+    if (maxMileage && maxMileage !== 1000000)
+      query += `&maxMileage=${maxMileage}`;
     if (searchParams.has("q")) query += `&q=${searchParams.get("q")}`;
     router.push(query);
   };

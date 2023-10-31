@@ -12,7 +12,8 @@ export default async function EditCarPage({ params }: Props) {
   if (!user || !params.id) redirect("/");
 
   const car = await getCar(params.id);
-  if (car.attributes.user?.data.id !== user.id) redirect("/");
+  if (user.role.type !== "admin" && car.attributes.user?.data.id !== user.id)
+    redirect("/");
   return (
     <div className={"container relative"}>
       <h1 className="py-5  text-xl font-[500] sm:text-2xl md:text-3xl">

@@ -19,7 +19,7 @@ export default function SellerInfoFooter({ seller }: Props) {
         <AiOutlinePhone size={40} className="text-dark-main" />
         <div className="text-dark-main">
           <div className="text-md md:text-xl">
-            <Link href={`tel:$ {seller?.phone}`}>{seller?.phone}</Link>
+            <Link href={`tel:${seller?.phone}`}>{seller?.phone}</Link>
           </div>
           <div className="text-xl md:text-3xl ">{seller?.name}</div>
         </div>

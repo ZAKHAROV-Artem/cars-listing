@@ -1,11 +1,12 @@
 export const fuels = [
   "Diesel",
+  "Gazoline",
   "Benzine",
   "Hybrid",
   "Electric",
+  "Gazoline/Benzine",
 ];
 export const engineSizes = [
-  "-",
   "0,8",
   "0,9",
   "1,0",

@@ -26,7 +26,7 @@ export default async function getTopCars(filters?: QueryParams) {
       "populate[price][populate]": "*",
       "populate[images][fields][0]": "url",
       "sort[1]": "createdAt:desc",
-      "filters[createdAt][$gte]": date,
+      "filters[car_publication_date][$gte]": date,
       ...filters,
     },
   });

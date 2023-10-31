@@ -45,7 +45,9 @@ export default function CarPostFormFileUpload({
     maxFiles: 6,
     disabled: files.length >= 6,
     accept: {
-      "image/*": [],
+      "image/png": [".png"],
+      "image/jpeg": [".jpeg"],
+      "image/jpg": [".jpg"],
     },
     onDrop: (acceptedFiles) => {
       if (files.length + acceptedFiles.length >= 6) {

@@ -13,6 +13,7 @@ export default async function postCar(data: PostCarFields) {
         status: "inactive",
         car_expiration_date: dayjs().add(30, "day").toDate(),
         car_featured_expiration_date: null,
+        car_publication_date: null,
         title: data.title,
         location: data.location,
         description: data.description,
@@ -31,9 +32,12 @@ export default async function postCar(data: PostCarFields) {
           brand: {
             connect: [data.brandId],
           },
-          model: {
-            connect: [data.modelId],
-          },
+          ...(data.modelId?{
+
+            model: {
+              connect: [data.modelId],
+            },
+          }:{}),
           body_type: {
             connect: [data.bodyTypeId],
           },

@@ -19,9 +19,13 @@ export default async function updateCar(carId: number, data: PostCarFields) {
         brand: {
           connect: [data.brandId],
         },
-        model: {
-          connect: [data.modelId],
-        },
+        ...(data.modelId
+          ? {
+              model: {
+                connect: [data.modelId],
+              },
+            }
+          : {}),
         body_type: {
           connect: [data.bodyTypeId],
         },
@@ -40,7 +44,17 @@ export default async function updateCar(carId: number, data: PostCarFields) {
         seller_type: {
           connect: [data.sellerTypeId],
         },
+        social_media: [
+          ...(data.telegram ? ["telegram"] : []),
+          ...(data.whatsapp ? ["whatsapp"] : []),
+          ...(data.viber ? ["viber"] : []),
+        ],
       },
+      ...(data.userId && {
+        user: {
+          connect: [data.userId],
+        },
+      }),
       category: {
         connect: [data.categoryId],
       },

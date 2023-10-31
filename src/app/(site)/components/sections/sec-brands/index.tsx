@@ -3,7 +3,7 @@ import SectionHeading from "@/components/data-display/section-heading";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Sec05Brands() {
+export default async function SecBrands() {
   const brands = await getBrands();
   return (
     <div className="rounded-[20px] bg-paper-light py-10 dark:bg-paper-dark md:rounded-[80px]">
