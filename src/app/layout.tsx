@@ -5,7 +5,7 @@ import Navbar from "@/components/navigation/navbar";
 import Footer from "@/components/navigation/footer";
 import { Poppins } from "next/font/google";
 import Script from 'next/script'
-import './globals.css'
+import 'tailwindcss/tailwind.css';
 
 const GTM_ID = 'GTM-TVZ9PL2C';
 
