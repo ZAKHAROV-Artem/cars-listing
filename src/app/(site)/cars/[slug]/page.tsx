@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     });
     if (car) {
       return {
-        title: `${car.attributes.title} - ${formatNumberWithCommas(car.attributes.price?.price || 0)}${car.attributes.price?.currency}`,
+        title: `${car.attributes.title} - ${car.attributes.price?.currency}${formatNumberWithCommas(car.attributes.price?.price || 0)}`,
         description: car.attributes.description,
         keywords: [
           `${car.attributes.title}`,
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           "used car price in ethiopia 2021, car price in ethiopia, car market in ethiopia, car for sale in ethiopia, new car price in ethiopia 2021, buy and sell cars, suzuki car price in ethiopia, car sales in ethiopia, car sell in ethiopia, cars for sale in ethiopia, used car price in ethiopia, diplomatic car for sale in ethiopia 2021",
         ],
         openGraph: {
-          title: `${car.attributes.title} - ${car.attributes.price?.price}${car.attributes.price?.currency}`,
+          title: `${car.attributes.title} - ${car.attributes.price?.currency}${formatNumberWithCommas(car.attributes.price?.price || 0)}`,
           description: car.attributes.description,
           images: [car.attributes.images.data[0].attributes.url],
           type: "article",
@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           siteName: process.env.DOMAIN,
         },
         twitter: {
-          title: `${car.attributes.title} - ${car.attributes.price?.price}${car.attributes.price?.currency}`,
+          title: `${car.attributes.title} - ${car.attributes.price?.currency}${formatNumberWithCommas(car.attributes.price?.price || 0)}`,
           site: "@mekinanet",
           creator: "@mekinanet",
           description: car.attributes.description,
