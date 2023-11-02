@@ -2,8 +2,8 @@ import getWidget from "@/actions/server/getWidget";
 import getStaticPage from "@/actions/server/getStaticPage";
 import { notFound } from "next/navigation";
 import Script from "next/script";
-export const revalidate = 3600;
-// export const dynamic = "force-dynamic";
+//export const revalidate = 3600;
+ export const dynamic = "force-dynamic";
 type Props = {
   params: { slug: string };
 };
