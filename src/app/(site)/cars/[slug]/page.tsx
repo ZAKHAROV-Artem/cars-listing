@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     });
     if (car) {
       return {
-        title: `${car.attributes.title} - ${car.attributes.price?.price}${car.attributes.price?.currency}`,
+        title: `${car.attributes.title} - ${formatNumberWithCommas(car.attributes.price?.price || 0)}${car.attributes.price?.currency}`,
         description: car.attributes.description,
         keywords: [
           `${car.attributes.title}`,
