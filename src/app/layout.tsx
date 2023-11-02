@@ -5,6 +5,7 @@ import Navbar from "@/components/navigation/navbar";
 import Footer from "@/components/navigation/footer";
 import { Poppins } from "next/font/google";
 import Script from 'next/script'
+import './globals.css'
 
 const GTM_ID = 'GTM-TVZ9PL2C';
 
@@ -15,7 +16,7 @@ const poppins = Poppins({
 });
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXTAUTH_URL as string),
-  title: "Cars for sale in Ethiopia, get latest car prices in Ethiopia page 1",
+  title: "Cars for sale in Ethiopia, get latest car prices in Ethiopia",
   applicationName: "Mekina.net",
   robots: "index, follow",
   keywords: "Buy, Sell or rent cars in Ethiopia on www.mekina.net",
