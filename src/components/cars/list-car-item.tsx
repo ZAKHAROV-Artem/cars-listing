@@ -44,13 +44,19 @@ export default function ListCarItem({ car, refetch, admin = false }: Props) {
     <div className="grid gap-y-3 sm:grid-cols-[1.2fr,1fr]">
       <div className="flex gap-x-3">
         <div className="h-[80px] w-[120px] overflow-hidden rounded-md">
-          <Image
-            src={car.attributes.images.data[0].attributes.url || ""}
-            alt={car.attributes.images.data[0].attributes.alternativeText || ""}
-            width={120}
-            height={80}
-            className="h-full w-full object-cover"
-          />
+          {car.attributes.images?.data ? (
+            <Image
+              src={car.attributes.images.data[0].attributes.url || ""}
+              alt={
+                car.attributes.images.data[0].attributes.alternativeText || ""
+              }
+              width={120}
+              height={80}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="h-full w-full bg-paper-light dark:bg-paper-dark" />
+          )}
         </div>
         <div>
           {car.attributes.status === "active" || admin ? (

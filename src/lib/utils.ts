@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import dayjs from "dayjs";
 import axios from "axios";
+import { v4 } from "uuid";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -13,9 +14,9 @@ export function range(start: number, stop: number, step: number) {
   );
 }
 
-export function generateFilename(carId: number, i: number) {
+export function generateFilename(index: number) {
   const date = dayjs().format("YYYY/MM/DD/HH/mm/ss");
-  return `${date}-image-${i}-car-${carId}`;
+  return `${date}-${index}-${v4()}`;
 }
 
 export function formatNumberWithCommas(number: number): string {

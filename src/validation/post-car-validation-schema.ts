@@ -28,6 +28,7 @@ export const PostCarValidationSchema = z.object({
   whatsapp: z.boolean(),
   viber: z.boolean(),
   userId: z.string().optional(),
+  imagesIds: z.array(z.number()),
 });
 export type PostCarFields = z.infer<typeof PostCarValidationSchema>;
 

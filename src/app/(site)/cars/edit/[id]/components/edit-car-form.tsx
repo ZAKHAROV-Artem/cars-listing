@@ -1,6 +1,5 @@
 "use client";
 
-import postCar from "@/actions/client/postCar";
 import { Button } from "@/components/ui/button";
 import CarPostFormFileUpload from "@/components/ui/post-car-file-input/car-post-form-file-upload";
 import { Input } from "@/components/ui/input";
@@ -30,7 +29,6 @@ import usePriceTypes from "@/hooks/usePriceTypes";
 import useSellerTypes from "@/hooks/useSellerTypes";
 import { cn, generateFilename, range } from "@/lib/utils";
 import {
-  PostCarFields,
   PostCarStep1Fields,
   PostCarStep1ValidationSchema,
   PostCarStep2Fields,
@@ -39,18 +37,14 @@ import {
   PostCarStep3ValidationSchema,
   PostCarStep4Fields,
   PostCarStep4ValidationSchema,
-  PostCarValidationSchema,
 } from "@/validation/post-car-validation-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { FileWithPath } from "react-dropzone";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { RiseLoader } from "react-spinners";
-import dayjs from "dayjs";
-import { fetcher, fetcherAuth } from "@/lib/api-client";
+import { fetcherAuth } from "@/lib/api-client";
 import { Car } from "@/types/api/car";
 import updateCar from "@/actions/client/updateCar";
 import { useQueryClient } from "@tanstack/react-query";
@@ -59,6 +53,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { BsTelegram, BsWhatsapp } from "react-icons/bs";
 import { FaViber } from "react-icons/fa";
 import { useCounter } from "usehooks-ts";
+import { useUpload } from "@/hooks/useUpload";
+import { v4 } from "uuid";
 
 type Props = {
   car: Car;
@@ -81,7 +77,7 @@ export default function EditCarForm({ car }: Props) {
       title: car.attributes.title,
       description: car.attributes.description,
       location: car.attributes.location,
-      categoryId: String(car.attributes.category?.data?.id),
+      categoryId: String(car.attributes.category?.data?.id || ""),
     },
     resolver: zodResolver(PostCarStep1ValidationSchema),
   });
@@ -136,21 +132,69 @@ export default function EditCarForm({ car }: Props) {
       sellerTypeId: String(car.attributes.seller?.seller_type?.data.id),
       sellerPhone: car.attributes.seller?.phone,
       sellerName: car.attributes.seller?.name,
-      telegram: car.attributes.seller?.social_media?.includes("telegram"),
-      whatsapp: car.attributes.seller?.social_media?.includes("whatsapp"),
-      viber: car.attributes.seller?.social_media?.includes("viber"),
+      telegram:
+        car.attributes.seller?.social_media?.includes("telegram") || false,
+      whatsapp:
+        car.attributes.seller?.social_media?.includes("whatsapp") || false,
+      viber: car.attributes.seller?.social_media?.includes("viber") || false,
     },
 
     resolver: zodResolver(PostCarStep4ValidationSchema),
   });
   console.log(car.attributes.images);
-
-  const [acceptedFiles, setAcceptedFiles] = useState<FileWithPreview[]>([]);
+  const { mutateAsync: uploadAsync } = useUpload();
+  const [acceptedFiles, setAcceptedFiles] = useState<FileWithPreview[]>(
+    car.attributes.images.data.map((item) => ({
+      ...item.attributes,
+      id: item.id,
+      preview: item.attributes.url,
+    })) as any,
+  );
   const handleFinalSubmit = async () => {
     try {
       setLoading(true);
+      const imagesIds: number[] = [];
 
-      const res = await updateCar(car.id, {
+      if ("provider" in acceptedFiles[0]) {
+        console.log(acceptedFiles);
+        acceptedFiles.forEach((file: any) => {
+          imagesIds.push(file.id);
+        });
+      } else {
+        const uploadFormData = new FormData();
+
+        uploadFormData.append("field", "images");
+        uploadFormData.append(
+          "path",
+          `cars/${user ? `private/${user.username}` : "public"}/${v4()}`,
+        );
+
+        acceptedFiles.forEach((file, i) => {
+          uploadFormData.append(`files`, file, generateFilename(i + 1));
+        });
+        await Promise.all(
+          car.attributes.images.data.map(async (image) => {
+            await fetcherAuth.delete(`/upload/files/${image?.id}`);
+          }),
+        );
+        await uploadAsync(
+          { formData: uploadFormData },
+          {
+            onSuccess: (res) => {
+              res.data
+                .sort((a, b) => {
+                  const nameA = a.name;
+                  const nameB = b.name;
+                  return nameA.localeCompare(nameB);
+                })
+                .forEach((item) => {
+                  imagesIds.push(item.id);
+                });
+            },
+          },
+        );
+      }
+      await updateCar(car.id, {
         ...getValuesStep1(),
         ...getValuesStep2(),
         ...getValuesStep3(),
@@ -158,39 +202,8 @@ export default function EditCarForm({ car }: Props) {
         sellerTypeId: user
           ? String(user?.seller_type?.id)
           : getValuesStep4().sellerTypeId,
+        imagesIds,
       });
-      const uploadFormData = new FormData();
-      if (acceptedFiles.length) {
-        uploadFormData.append("ref", "api::car.car");
-        uploadFormData.append("refId", `${res.data.data.id}`);
-        uploadFormData.append("field", "images");
-        uploadFormData.append(
-          "path",
-          `cars/${
-            car.attributes.user
-              ? `private/${car.attributes.user.data.username}`
-              : "public"
-          }/${res.data.data.id}`,
-        );
-        acceptedFiles.forEach((file, i) => {
-          uploadFormData.append(
-            "files",
-            file,
-            generateFilename(res.data.data.id, i + 1),
-          );
-        });
-        await Promise.all(
-          car.attributes.images.data.map(async (image) => {
-            await fetcherAuth.delete(`/upload/files/${image?.id}`);
-          }),
-        );
-
-        await fetcher.post(`/upload`, uploadFormData, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_UPLOAD_API_TOKEN}`,
-          },
-        });
-      }
       toast.success("Car updated successfully. Info will be shown soon");
       if (user?.role.type === "admin") {
         router.back();
@@ -311,7 +324,11 @@ export default function EditCarForm({ car }: Props) {
                 }
               >
                 <Label>የመኪናው ሁኔታ | Category</Label>
-                <SelectTrigger className="">
+                <SelectTrigger
+                  className={cn({
+                    "border border-primary-light": errorsStep1.categoryId,
+                  })}
+                >
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -325,6 +342,11 @@ export default function EditCarForm({ car }: Props) {
                   ))}
                 </SelectContent>
               </Select>
+              {errorsStep1.categoryId && (
+                <span className="ml-3 text-sm text-primary-light">
+                  {errorsStep1.categoryId?.message}
+                </span>
+              )}
             </div>
           </div>{" "}
           <Button onClick={handleSubmitStep1(nextStep)}>Next step</Button>{" "}
@@ -363,12 +385,13 @@ export default function EditCarForm({ car }: Props) {
             <div>
               <Select
                 {...registerStep2("modelId")}
+                defaultValue={getValuesStep2().modelId}
                 onValueChange={(value) =>
                   setValueStep2("modelId", value, { shouldValidate: true })
                 }
                 disabled={!getValuesStep2().brandId.length}
               >
-                <Label>Models</Label>
+                <Label>Model</Label>
                 <SelectTrigger
                   className={cn({
                     "border border-primary-light dark:border-primary-light":
@@ -782,6 +805,7 @@ export default function EditCarForm({ car }: Props) {
             <div className="mt-5 flex flex-wrap gap-5 xs:col-span-2 ">
               <div className="flex items-center gap-x-3">
                 <Checkbox
+                  {...registerStep4("telegram")}
                   defaultChecked={getValuesStep4().telegram}
                   onCheckedChange={(value) =>
                     setValueStep4(
@@ -789,7 +813,6 @@ export default function EditCarForm({ car }: Props) {
                       value === "indeterminate" ? false : value,
                     )
                   }
-                  {...registerStep4("telegram")}
                   id="telegram"
                   className="h-6 w-6 rounded-md "
                 />
@@ -802,6 +825,7 @@ export default function EditCarForm({ car }: Props) {
               </div>
               <div className="flex items-center gap-x-3">
                 <Checkbox
+                  {...registerStep4("whatsapp")}
                   defaultChecked={getValuesStep4().whatsapp}
                   onCheckedChange={(value) =>
                     setValueStep4(
@@ -809,7 +833,6 @@ export default function EditCarForm({ car }: Props) {
                       value === "indeterminate" ? false : value,
                     )
                   }
-                  {...registerStep4("whatsapp")}
                   id="whatsapp"
                   className="h-6 w-6 rounded-md"
                 />
@@ -822,6 +845,7 @@ export default function EditCarForm({ car }: Props) {
               </div>
               <div className="flex items-center gap-x-3">
                 <Checkbox
+                  {...registerStep4("viber")}
                   defaultChecked={getValuesStep4().viber}
                   onCheckedChange={(value) =>
                     setValueStep4(
@@ -829,7 +853,6 @@ export default function EditCarForm({ car }: Props) {
                       value === "indeterminate" ? false : value,
                     )
                   }
-                  {...registerStep4("viber")}
                   id="viber"
                   className="h-6 w-6 rounded-md "
                 />
@@ -857,7 +880,7 @@ export default function EditCarForm({ car }: Props) {
           />
           <div className="flex gap-x-3">
             <Button onClick={prevStep}>Prev step</Button>{" "}
-            <Button onClick={handleFinalSubmit}>Post car</Button>{" "}
+            <Button onClick={handleFinalSubmit}>Edit car</Button>{" "}
           </div>
         </>
       )}

@@ -58,6 +58,7 @@ export default async function updateCar(carId: number, data: PostCarFields) {
       category: {
         connect: [data.categoryId],
       },
+      images: data.imagesIds,
     },
   });
 }

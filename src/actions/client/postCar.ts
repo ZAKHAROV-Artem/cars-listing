@@ -32,12 +32,13 @@ export default async function postCar(data: PostCarFields) {
           brand: {
             connect: [data.brandId],
           },
-          ...(data.modelId?{
-
-            model: {
-              connect: [data.modelId],
-            },
-          }:{}),
+          ...(data.modelId
+            ? {
+                model: {
+                  connect: [data.modelId],
+                },
+              }
+            : {}),
           body_type: {
             connect: [data.bodyTypeId],
           },
@@ -65,6 +66,7 @@ export default async function postCar(data: PostCarFields) {
         category: {
           connect: [data.categoryId],
         },
+        images: data.imagesIds,
       },
     },
     {

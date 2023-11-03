@@ -56,6 +56,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { BsTelegram, BsWhatsapp } from "react-icons/bs";
 import { FaViber } from "react-icons/fa";
 import { useCounter } from "usehooks-ts";
+import { v4 } from "uuid";
+import { Media, MediaPlain } from "@/types/api/media";
+import { useUpload } from "@/hooks/useUpload";
 
 export default function PostCarForm() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -171,8 +174,9 @@ export default function PostCarForm() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+  const { mutateAsync: uploadAsync } = useUpload();
   const [acceptedFiles, setAcceptedFiles] = useState<FileWithPreview[]>([]);
-  console.log(acceptedFiles);
+
   const handleFinalSubmit = async () => {
     try {
       if (!acceptedFiles.length) {
@@ -181,8 +185,37 @@ export default function PostCarForm() {
       }
 
       setLoading(true);
+      const imagesIds: number[] = [];
 
-      const res = await postCar({
+      const uploadFormData = new FormData();
+
+      uploadFormData.append("field", "images");
+      uploadFormData.append(
+        "path",
+        `cars/${user ? `private/${user.username}` : "public"}/${v4()}`,
+      );
+
+      acceptedFiles.forEach((file, i) => {
+        uploadFormData.append(`files`, file, generateFilename(i + 1));
+      });
+      await uploadAsync(
+        { formData: uploadFormData },
+        {
+          onSuccess: (res) => {
+            res.data
+              .sort((a, b) => {
+                const nameA = a.name;
+                const nameB = b.name;
+                return nameA.localeCompare(nameB);
+              })
+              .forEach((item) => {
+                imagesIds.push(item.id);
+              });
+          },
+        },
+      );
+
+      await postCar({
         ...getValuesStep1(),
         ...getValuesStep2(),
         ...getValuesStep3(),
@@ -191,37 +224,11 @@ export default function PostCarForm() {
           ? String(user?.seller_type?.id)
           : getValuesStep4().sellerTypeId,
         userId: String(user?.id || ""),
+        imagesIds,
+      }).then((res) => {
+        toast.success("Car submitted successfully");
+        router.push(`/order/${res.data.data.id}`);
       });
-      const uploadFormData = new FormData();
-
-      uploadFormData.append("ref", "api::car.car");
-      uploadFormData.append("refId", `${res.data.data.id}`);
-      uploadFormData.append("field", "images");
-      uploadFormData.append(
-        "path",
-        `cars/${user ? `private/${user.username}` : "public"}/${
-          res.data.data.id
-        }`,
-      );
-
-      acceptedFiles.forEach((file, i) => {
-        uploadFormData.append(
-          `files`,
-          file,
-          generateFilename(res.data.data.id, i + 1),
-        );
-      });
-      await fetcher
-        .post(`/upload`, uploadFormData, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_UPLOAD_API_TOKEN}`,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          toast.success("Car submitted successfully");
-          router.push(`/order/${res.data.data.id}`);
-        });
       if (user) {
         await fetcherAuth.put(`/user/me`, {
           points: Number(user.points) - 1,
@@ -256,9 +263,7 @@ export default function PostCarForm() {
       <div className="grid h-3 w-full grid-cols-5 gap-x-3 ">
         {range(1, 5, 1).map((i) => (
           <div
-            className={cn(
-              "overflow-hidden rounded-md bg-primary-light/30",
-            )}
+            className={cn("overflow-hidden rounded-md bg-primary-light/30")}
             key={i}
           >
             <div
