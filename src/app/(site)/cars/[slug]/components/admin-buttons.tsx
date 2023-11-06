@@ -31,6 +31,7 @@ export default function AdminButtons({ car, refetch }: Props) {
   async function postToSocialMedia() {
     const response = await fetch('https://maker.ifttt.com/trigger/car_posted/with/key/{IFTTT_KEY}', {
       method: 'POST',
+      mode: 'no-cors', 
       headers: {
         'Content-Type': 'application/json'
       },
@@ -42,8 +43,8 @@ export default function AdminButtons({ car, refetch }: Props) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to post to social media');
       toast.error("Failed to post to social!");
+      throw new Error('Failed to post to social media');
     }
     toast.success("sent to social !");
   }
