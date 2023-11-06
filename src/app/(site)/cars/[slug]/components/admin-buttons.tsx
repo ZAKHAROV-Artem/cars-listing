@@ -29,7 +29,7 @@ export default function AdminButtons({ car, refetch }: Props) {
   const { data: user, isSuccess } = useCurrentUser();
   const { mutateAsync } = useAdminButtonsMutation();
   async function postToSocialMedia() {
-    const response = await fetch(`https://maker.ifttt.com/trigger/car_posted/with/key/${process.env.IFTTT_KEY}`, {
+    const response = await fetch('https://maker.ifttt.com/trigger/car_posted/with/key/bA3GfIfHiWa9WnaP3Kq2ea', {
       method: 'POST',
       mode: 'no-cors', 
       headers: {
