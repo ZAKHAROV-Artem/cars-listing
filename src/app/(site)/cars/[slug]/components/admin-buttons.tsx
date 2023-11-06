@@ -31,12 +31,12 @@ export default function AdminButtons({ car, refetch }: Props) {
  
   async function postToSocialMedia() {
     const socialBody = JSON.stringify({
-      Value1:	car.attributes.title + ' - ' + car.attributes.price?.currency + ' ' + car.attributes.price?.price + '<br/>' + car.attributes.seller?.phone + '<br/>Click for more details',
+      Value1:	car.attributes.title + ' - ' + car.attributes.price?.currency + ' ' + car.attributes.price?.price + '<br>' + car.attributes.seller?.phone + '<br>Click for more details',
       Value2:	 car.attributes.images?.data[0].attributes.url,
       Value3: 'https://app.meina.et/cars/' + car.attributes.slug + '-' + car.id + '?utm_source=facebook&utm_medium=social'
     });
     console.log(socialBody);
-   /* const response = await fetch('https://maker.ifttt.com/trigger/car_posted/with/key/bA3GfIfHiWa9WnaP3Kq2ea', {
+    const response = await fetch('https://maker.ifttt.com/trigger/car_posted/with/key/bA3GfIfHiWa9WnaP3Kq2ea', {
       method: 'POST',
       mode: 'no-cors', 
       headers: {
@@ -49,7 +49,7 @@ export default function AdminButtons({ car, refetch }: Props) {
       toast.error("Failed to post to social!");
       
       throw new Error('Failed to post to social media');
-    }*/
+    }
     toast.success("sent to social !");
   }
   
