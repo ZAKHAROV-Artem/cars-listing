@@ -43,7 +43,9 @@ export default function AdminButtons({ car, refetch }: Props) {
 
     if (!response.ok) {
       throw new Error('Failed to post to social media');
+      toast.error("Failed to post to social!");
     }
+    toast.success("sent to social !");
   }
   
   const handleChange = async () => {
