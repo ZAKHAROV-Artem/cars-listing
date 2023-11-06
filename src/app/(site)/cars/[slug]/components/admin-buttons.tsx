@@ -28,6 +28,12 @@ export default function AdminButtons({ car, refetch }: Props) {
 
   const { data: user, isSuccess } = useCurrentUser();
   const { mutateAsync } = useAdminButtonsMutation();
+  const socialBody = JSON.stringify({
+    Value1:	car.attributes.title + ' - ' + car.attributes.price?.currency + ' ' + car.attributes.price?.price + '<br/>' + car.attributes.seller?.phone + '<br/>Click for more details',
+    Value2:	 car.attributes.images?.data[0].attributes.url,
+    Value3: 'https://app.meina.et/cars/' + car.attributes.slug + '-' + car.id + '?utm_source=facebook&utm_medium=social'
+  });
+  console.log(socialBody);
   async function postToSocialMedia() {
     const response = await fetch('https://maker.ifttt.com/trigger/car_posted/with/key/bA3GfIfHiWa9WnaP3Kq2ea', {
       method: 'POST',
@@ -35,15 +41,12 @@ export default function AdminButtons({ car, refetch }: Props) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        value1:	car.attributes.title + ' - ' + car.attributes.price?.currency + ' ' + car.attributes.price?.price + '<br/>' + car.attributes.seller?.phone + '<br/>Click for more details',
-        value2:	 car.attributes.images?.data[0].attributes.url,
-        value3: 'https://app.meina.et/cars/' + car.attributes.slug + '-' + car.id + '?utm_source=facebook&utm_medium=social'
-      })
+      body: socialBody
     });
 
     if (!response.ok) {
       toast.error("Failed to post to social!");
+      
       throw new Error('Failed to post to social media');
     }
     toast.success("sent to social !");
