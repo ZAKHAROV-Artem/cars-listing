@@ -34,7 +34,7 @@ export default function PricePackage({ pricePackage, className }: Props) {
         </div>
         <div className="flex justify-center">
           <Link href={pricePackage.href} target="_blank">
-            <Button variant="red">Buy</Button>
+            <Button variant="red">Contact us</Button>
           </Link>
         </div>
       </div>
