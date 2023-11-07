@@ -282,6 +282,7 @@ export default function PostCarForm() {
             <div className="h-fit">
               <Label>Title:</Label>
               <Input
+              placeholder="eg: Toyota Corolla 2010"
                 {...registerStep1("title")}
                 wrapperClassName={cn({
                   "border border-primary-light": errorsStep1.title,
