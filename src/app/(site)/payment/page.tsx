@@ -15,11 +15,11 @@ export default async function PaymentPage() {
               <p>Payment can be done via CBE mobile app or your nearest branch of CBE <br/> After payment notify us on whatsapp /telegram /viber on: 0944333333</p>
               <p>CBE Account number: 1000036123428</p>
           </div>
-          <div className="flex-initial w-64">
+          <div className="flex-initial w-32 w-32">
             <Image 
               src="imgs/cbe-qr.png"
-              width={400}
-              height={400}
+              width={200}
+              height={200}
               quality={72}
               alt="qr code for cbe payment"
             />
