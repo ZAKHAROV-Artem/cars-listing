@@ -11,8 +11,8 @@ export default async function PaymentPage() {
         Payments
       </h1>
       <div className="flex">
-          <div className="flex-initial w-64">
-              <p>Payment can be done via your nearest branch of CBE (Commercial Bank of Ethiopia) and notify us on whatsapp/telegram/viber: 0944333333</p>
+          <div className="flex-initial w-75 flex justify-center gap-x-3 py-5 text-light-light">
+              <p>Payment can be done via CBE mobile app or your nearest branch of CBE <br/> After payment notify us on whatsapp /telegram /viber on: 0944333333</p>
               <p>CBE Account number: 1000036123428</p>
           </div>
           <div className="flex-initial w-64">
