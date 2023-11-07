@@ -66,7 +66,7 @@ export const PostCarStep4ValidationSchema = z.object({
   sellerName: z.string().nonempty("Seller name is required"),
   sellerPhone: z
     .string()
-    .startsWith("+", "Phone should start with +")
+   // .startsWith("+", "Phone should start with +")
     .nonempty("Seller phone is required"),
   telegram: z.boolean(),
   whatsapp: z.boolean(),
