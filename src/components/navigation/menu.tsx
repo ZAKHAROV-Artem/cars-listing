@@ -60,7 +60,7 @@ export default function Menu() {
         <div className={cn(menuItemClassPopupDefault, menuItemClassPopupHuge)}>
           <div className="container grid grid-cols-[1fr,1fr,1fr,2fr] gap-x-5 pb-5">
             <div>
-              <div className="my-4 text-2xl text-light-main dark:text-dark-main">
+              <div className="my-4 px-3 text-xl text-primary-main dark:text-dark-main">
                 Categories
               </div>
               <div>
@@ -76,7 +76,7 @@ export default function Menu() {
               </div>
             </div>
             <div>
-              <div className="my-4 text-2xl text-light-main dark:text-dark-main">
+              <div className="my-4 px-3 text-xl text-primary-main dark:text-dark-main">
                 Popular brands
               </div>
               <div>
@@ -86,7 +86,7 @@ export default function Menu() {
               </div>
             </div>
             <div>
-              <div className="my-4 text-2xl text-light-main dark:text-dark-main">
+              <div className="my-4 px-3 text-xl text-primary-main dark:text-dark-main">
                 Top dealerships
               </div>
               <div>

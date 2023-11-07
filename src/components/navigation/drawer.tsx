@@ -15,6 +15,7 @@ import MenuAccordion from "./menu-accordion";
 import Logo from "../data-display/logo";
 import { useState } from "react";
 import Link from "next/link";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 export default function Drawer() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -43,6 +44,14 @@ export default function Drawer() {
             href="/cars/post"
             className="group hidden h-10 cursor-pointer items-center justify-center gap-x-3 rounded-full px-2 duration-200 hover:bg-default-light dark:hover:bg-default-dark lg:flex"
           >
+            <AiOutlinePlusCircle
+              size={25}
+              className="group-hover:text-light-main dark:group-hover:text-dark-main"
+            />
+            <div className="group-hover:text-light-main dark:group-hover:text-dark-main">
+              Post car
+            </div>
+          </Link>
           <MenuAccordion closeDrawer={()=>setIsOpen(false)}/>
         </SheetContent>
       </Sheet>
