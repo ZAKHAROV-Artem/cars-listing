@@ -3,6 +3,7 @@ import SellerItem from "@/components/sellers/seller-item";
 import useSellers from "@/hooks/useSellers";
 import { PropagateLoader } from "react-spinners";
 import { InView } from "react-intersection-observer";
+import dayjs from "dayjs";
 
 type Props = {
   params: { type: string };
@@ -29,7 +30,7 @@ export default function SellersPage({ params: { type } }: Props) {
           {data?.pages.map((page, i) => (
             <div className="grid gap-5 sm:grid-cols-2" key={i}>
               {page.data.map((seller) => (
-                seller.points !== 0 && <SellerItem seller={seller} key={seller.id} />
+                dayjs() < dayjs(seller.pointsExpirationDate) && <SellerItem seller={seller} key={seller.id} />
               ))}
                 
             </div>
