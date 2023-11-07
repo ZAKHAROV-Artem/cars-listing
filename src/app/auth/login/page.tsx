@@ -13,8 +13,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useAuth } from "@/state/AuthState";
-import { StrapiError } from "@/types/response";
-import { REGISTER_ROUTE } from "@/data/navigation-data";
+import { AuthResponse, StrapiError } from "@/types/response";
+import { REGISTER_ROUTE, RESET_PASSWORD_ROUTE } from "@/data/navigation-data";
 import { Separator } from "@/components/ui/separator";
 import GoolgeButton from "@/components/ui/google-button";
 import FacebookButton from "@/components/ui/facebook-button";
@@ -39,18 +39,19 @@ export default function LoginPage() {
     resolver: zodResolver(LoginValidationSchema),
   });
   const onSubmit: SubmitHandler<LoginFields> = async (data) => {
-    await mutateAsync(data)
-      .then((res) => {
+    await mutateAsync(data, {
+      onSuccess: (res) => {
         setToken(res.data.jwt);
         queryClient.invalidateQueries(["current-user"]);
         toast.success("Logined successfully !");
         router.push("/");
-      })
-      .catch((err: StrapiError) => {
+      },
+      onError: (err: any) => {
         toast.error(
           err.response?.data.error.message || "Something went wrong :(",
         );
-      });
+      },
+    });
   };
 
   return (
@@ -71,7 +72,7 @@ export default function LoginPage() {
         </div>
         <div>
           <Label>Password</Label>
-          <Input type="password" {...register("password")} />
+          <Input type="password" autoComplete="on" {...register("password")} />
           <span className="ml-5 text-sm text-primary-light">
             {errors.password?.message}
           </span>
@@ -86,6 +87,12 @@ export default function LoginPage() {
           {"Don't have an account yet ? "}
           <Link href={REGISTER_ROUTE} className="text-blue-400 underline">
             Register
+          </Link>
+        </div>
+        <div className="mt-3 text-sm">
+          {"Forgot your password ? "}
+          <Link href={RESET_PASSWORD_ROUTE} className="text-blue-400 underline">
+            Reset
           </Link>
         </div>
       </form>

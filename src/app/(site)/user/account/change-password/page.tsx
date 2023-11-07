@@ -1,7 +1,5 @@
 "use client";
 
-import { ChangePasswordFields } from "@/validation/change-password-schema";
-import { ChangePasswordSchema } from "./../../../../../validation/change-password-schema";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@/components/ui/label";
@@ -11,6 +9,10 @@ import { Button } from "@/components/ui/button";
 import { changePassword } from "@/actions/client/auth/changePassword";
 import { useRouter } from "next/navigation";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import {
+  ChangePasswordFields,
+  ChangePasswordSchema,
+} from "@/validation/auth-validation-schema";
 
 export default function AccountChangePasswordPage() {
   const {

@@ -79,14 +79,14 @@ export const menuRoutes = {
   cars: carsMenuItemRoutes,
   sellers: sellersMenuItemRoutes,
   sell: sellMenuItemRoutes,
-  services: servicesMenuItemRoutes,
+  //services: servicesMenuItemRoutes,
   search: "/cars/search",
 };
 export const socialsLinks = [
-  { name: "Facebook", icon: facebook, href: "#" },
-  { name: "Twitter", icon: twitter, href: "#" },
-  { name: "Youtube", icon: youtube, href: "#" },
-  { name: "Telegram", icon: telegram, href: "#" },
+  { name: "Facebook", icon: facebook, href: "https://www.facebook.com/mekinanet" },
+  { name: "Twitter", icon: twitter, href: "https://www.twitter.com/mekinanet" },
+  { name: "Youtube", icon: youtube, href: "https://www.youtube.com/channel/UCsy-BlFQzx4mGdaLTLKiyyA/videos" },
+  { name: "Telegram", icon: telegram, href: "https://t.me/mekinanet" },
 ];
 export type MenuPopoverItemType = {
   icon: IconType;
@@ -123,3 +123,4 @@ export const accountPageRoutes: MenuItemRouteType[] = [
 
 export const LOGIN_ROUTE = "/auth/login";
 export const REGISTER_ROUTE = "/auth/register";
+export const RESET_PASSWORD_ROUTE = "/auth/reset-password";
