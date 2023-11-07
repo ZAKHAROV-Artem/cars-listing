@@ -29,8 +29,9 @@ export default function SellersPage({ params: { type } }: Props) {
           {data?.pages.map((page, i) => (
             <div className="grid gap-5 sm:grid-cols-2" key={i}>
               {page.data.map((seller) => (
-                <SellerItem seller={seller} key={seller.id} />
+                seller.points !== 0 && <SellerItem seller={seller} key={seller.id} />
               ))}
+                
             </div>
           ))}
           <>
