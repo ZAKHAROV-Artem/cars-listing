@@ -57,7 +57,7 @@ export default function RegisterPage() {
       .then((res) => {
         setToken(res.data.jwt);
         queryClient.invalidateQueries(["current-user"]);
-        toast.success("Logined successfully !");
+        toast.success("Logged in successfully !");
         router.push("/");
       })
       .catch((err: StrapiError) => {
