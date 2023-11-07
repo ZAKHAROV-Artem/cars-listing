@@ -743,9 +743,7 @@ export default function PostCarForm() {
         <>
           <h3 className="pt-5 text-xl">Informaiton about seller</h3>
           <div className="grid grid-cols-1 gap-x-5 xs:grid-cols-2">
-            { !(user &&
-                  (user?.seller_type?.slug === "dealership" ||
-                    user?.seller_type?.slug === "broker")) && (
+            {!user && (
               <>
                 {/* SELLER TYPE */}
                 <div>
