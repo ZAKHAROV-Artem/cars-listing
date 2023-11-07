@@ -131,6 +131,7 @@ export default function Menu() {
           ))}
         </div>
       </div>
+      {/*
       <div className={cn(menuItemWrappperClass, "relative")}>
         <div className={menuItemClass}>
           Services <BsChevronDown size={18} />
@@ -142,6 +143,7 @@ export default function Menu() {
           ))}
         </div>
       </div>
+          */}
       <div className={cn(menuItemWrappperClass, "relative")}>
         <Link href={menuRoutes.search} className={menuItemClass}>
           Search
