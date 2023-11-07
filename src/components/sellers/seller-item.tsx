@@ -28,6 +28,9 @@ export default function SellerItem({ seller, admin = false, refetch }: Props) {
           <Link href={`/seller/${seller.id}`} className="text-xl">
             {seller.name || seller.username}
           </Link>
+          <div>
+            Phone: {seller.phone}
+          </div>
           {admin && (
             <Button variant="outline" onClick={handleOpen}>
               Edit
