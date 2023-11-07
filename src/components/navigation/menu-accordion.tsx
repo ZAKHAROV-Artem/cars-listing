@@ -37,6 +37,7 @@ export default function MenuAccordion({ closeDrawer }: Props) {
           ))}
         </AccordionContent>
       </AccordionItem>
+      {/*
       <AccordionItem value="item-4">
         <AccordionTrigger>Services</AccordionTrigger>
         <AccordionContent onClick={closeDrawer}>
@@ -44,7 +45,8 @@ export default function MenuAccordion({ closeDrawer }: Props) {
             <RouteItem route={route} key={route.href} />
           ))}
         </AccordionContent>
-      </AccordionItem>
+      </AccordionItem>*/}
     </Accordion>
+          
   );
 }

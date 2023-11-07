@@ -79,7 +79,7 @@ export const menuRoutes = {
   cars: carsMenuItemRoutes,
   sellers: sellersMenuItemRoutes,
   sell: sellMenuItemRoutes,
-  //services: servicesMenuItemRoutes,
+  services: servicesMenuItemRoutes,
   search: "/cars/search",
 };
 export const socialsLinks = [
