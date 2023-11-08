@@ -54,7 +54,7 @@ export default function AdminButtons({ car, refetch }: Props) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(if_data),
+    body:JSON.stringify(if_data)
   })
     .then((response) => {
       if (!response.ok) {
