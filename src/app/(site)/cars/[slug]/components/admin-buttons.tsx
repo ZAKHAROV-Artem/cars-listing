@@ -45,7 +45,7 @@ export default function AdminButtons({ car, refetch }: Props) {
   const if_data = {
     value1: "Toyota Hiace",
     value2: "Corolla",
-    value3: "https://mekina.s3.eu-west-1.amazonaws.com/22_image_2_car_47_03b1d4f561_f797c5be80.jpeg",
+    value3: "https://mekina.s3.eu-west-1.amazonaws.com/22_image_2_car_47_03b1d4f561_f797c5be80.jpeg"
   };
   console.log(JSON.stringify(if_data));
   fetch(if_url, {
