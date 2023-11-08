@@ -19,7 +19,7 @@ export default async function getBrokerCars(page?: number) {
       "populate[price][populate]": "*",
       "populate[seller][populate]": "*",
       "populate[images][fields][0]": "url",
-      "sort[1]": "createdAt:desc",
+      "sort[1]": "car_publication_date:desc",
     },
   });
 }

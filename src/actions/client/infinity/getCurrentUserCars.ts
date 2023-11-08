@@ -7,7 +7,7 @@ export default async function getCurrentUserCars(id: string, page?: number) {
     params: {
       "filters[user][id]": id,
       "sort[0]": "status",
-      "sort[1]": "createdAt:desc",
+      "sort[1]": "car_publication_date:desc",
       "pagination[page]": page,
       "pagination[pageSize]": 12,
       "fields[0]": "title",
