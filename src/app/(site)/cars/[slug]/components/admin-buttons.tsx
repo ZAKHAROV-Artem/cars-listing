@@ -41,7 +41,7 @@ export default function AdminButtons({ car, refetch }: Props) {
     
     console.log(socialBody);
 
-    const if_url = "https://maker.ifttt.com/trigger/car_posted/with/key/bA3GfIfHiWa9WnaP3Kq2ea";
+    const if_url = "https://maker.ifttt.com/trigger/car_posted/json/with/key/bA3GfIfHiWa9WnaP3Kq2ea";
   const if_data = {
     value1: "Toyota Hiace",
     value2: "Corolla",
