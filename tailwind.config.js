@@ -56,9 +56,9 @@ module.exports = {
       },
       fontSize: {
         xs: "10px",
-        sm: "14px",
-        md: "16px",
-        lg: "20px",
+        sm: "12px",
+        md: "14px",
+        lg: "16px",
       },
       keyframes: {
         "accordion-down": {
