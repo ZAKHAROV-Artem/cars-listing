@@ -1,4 +1,5 @@
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 type Props = {
   params: { id: string };
@@ -20,28 +21,14 @@ export default function OrderPage({ params: { id } }: Props) {
          Order ID: {id}
        </h4>
      </div>
-     <span>
-       Payment can be done via your nearest branch of CBE (Commercial Bank of
-       Ethiopia)
-     </span>
-     <h4 className="font-bold">Account number: 1000036123428</h4>
-     <h4 className="font-bold">Name: Araya Lakew</h4>
-     <div>
-       or in our office: Bole road, Getu Commercial Center 4th floor Room 405
-     </div>
-     <Separator />
-     <div>Send payment slip on viber or whatsapp (0944 333333)</div>
-     <div>
-       After payment is done please send payment of proof and your order ID (
-       {id}) via one of the following:
-     </div>
-     <div>
-       email: <span className="font-bold">info@mekina.net</span>
-     </div>
-     <div>
-       whatsapp / viber / telegram:{" "}
-       <span className="font-bold">0944 333333</span>
-     </div>
+     <Image
+        src="https://mekina.s3.eu-west-1.amazonaws.com/free_691a4d90e5.jpg"
+        className="max-h-[300px] max-w-[300px] md:max-h-[500px] md:max-w-[500px]"
+        width={400}
+        height={400}
+        quality={72}
+        alt="Free offer"
+      />
    </div>
     ) : (
       <div className="mx-auto max-w-4xl space-y-5 px-3 py-5 text-center">
