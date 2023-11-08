@@ -24,7 +24,7 @@ export default function CarItem({ car }: Props) {
       <div className="p-4">
         <div className="text-sm sm:text-md">{car.attributes.title}</div>
         <div className="mt-3 text-sm">{car.attributes.seller?.phone}</div>
-        <div className="text-disabled text-[12px] sm:text-sm">{`${car.attributes.car_ch?.year_made} | ${car.attributes.car_ch?.fuel} | የለጠፈ | ${car.attributes.seller?.seller_type?.data.attributes.type}`}</div>
+        <div className="text-disabled text-[12px] sm:text-sm">{`${car.attributes.car_ch?.year_made} | ${car.attributes.car_ch?.fuel} `}</div>
         <div className="mt-3 flex justify-between text-xs">
           <div  className="hidden">
             {formatDistance(
