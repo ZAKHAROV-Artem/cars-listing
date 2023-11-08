@@ -42,12 +42,12 @@ export default function AdminButtons({ car, refetch }: Props) {
     console.log(socialBody);
 
     const if_url = "https://maker.ifttt.com/trigger/cars/with/key/bA3GfIfHiWa9WnaP3Kq2ea";
-  const if_data = {"value1":"Toyota Hiace","value2":"Corolla","value3":"https://mekina.s3.eu-west-1.amazonaws.com/22_image_2_car_47_03b1d4f561_f797c5be80.jpeg"}
+  const if_data = {"value1":"Toyota Hiace","value2":"Corolla","value3":"https://mekina.s3.eu-west-1.amazonaws.com/22_image_2_car_47_03b1d4f561_f797c5be80.jpeg"};
   
-  console.log(JSON.stringify(if_data));
+  //console.log(JSON.stringify(if_data));
   fetch(if_url, {
     method: "POST",
-
+    mode: 'no-cors', 
     headers: {
       "Content-Type": "application/json",
     },
@@ -55,6 +55,7 @@ export default function AdminButtons({ car, refetch }: Props) {
   })
     .then((response) => {
       if (!response.ok) {
+        console.log(response);
         throw new Error("Network response was not ok");
       }
       return response.json();
