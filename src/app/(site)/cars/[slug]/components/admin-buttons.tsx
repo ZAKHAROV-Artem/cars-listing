@@ -96,7 +96,7 @@ export default function AdminButtons({ car, refetch }: Props) {
       {
         onSuccess: () => {
           refetch && refetch();
-          //if (status === 'active') postToSocialMedia();
+          if (status === 'active') postToSocialMedia();
           toast.success("Updated successfully !");
         },
       },
