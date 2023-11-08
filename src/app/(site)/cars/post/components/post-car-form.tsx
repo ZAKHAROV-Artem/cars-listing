@@ -282,6 +282,7 @@ export default function PostCarForm() {
             <div className="h-fit">
               <Label>Title:</Label>
               <Input
+              placeholder="eg. Toyota Corolla 2010"
                 {...registerStep1("title")}
                 wrapperClassName={cn({
                   "border border-primary-light": errorsStep1.title,
@@ -742,7 +743,9 @@ export default function PostCarForm() {
         <>
           <h3 className="pt-5 text-xl">Informaiton about seller</h3>
           <div className="grid grid-cols-1 gap-x-5 xs:grid-cols-2">
-            {!user && (
+            {!(user &&
+                  (user?.seller_type?.slug === "dealership" ||
+                    user?.seller_type?.slug === "broker")) && (
               <>
                 {/* SELLER TYPE */}
                 <div>
