@@ -43,12 +43,12 @@ export default function AdminButtons({ car, refetch }: Props) {
 
     const if_url = "https://maker.ifttt.com/trigger/car_posted/with/key/bA3GfIfHiWa9WnaP3Kq2ea";
   const if_data = {
-    value1: "Toyota",
+    value1: "Toyota Hiace",
     value2: "Corolla",
-    value3: "https://cars-listing.vercel.app/_next/image?url=https%3A%2F%2Fmekina.s3.eu-west-1.amazonaws.com%2Fcars%2Fprivate%2Fb6630260-90ff-4972-ada1-ec85d60cf79e%2Fae4bda40-9775-4171-bf3d-539315bcd13c%2F41_1_a788959d_5ef0_4b67_8524_8afe63f91d5b_b5cc87cfb0.jpeg&w=3840&q=75",
+    value3: "https://mekina.s3.eu-west-1.amazonaws.com/22_image_2_car_47_03b1d4f561_f797c5be80.jpeg",
   };
   console.log(JSON.stringify(if_data));
-  /*fetch(if_url, {
+  fetch(if_url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -67,7 +67,7 @@ export default function AdminButtons({ car, refetch }: Props) {
     .catch((error) => {
       console.error("There was a problem with the fetch operation:", error);
     });
-*/
+
     /*const response = await fetch('https://maker.ifttt.com/trigger/car_posted/with/key/bA3GfIfHiWa9WnaP3Kq2ea', {
       method: 'POST',
       mode: 'no-cors', 
