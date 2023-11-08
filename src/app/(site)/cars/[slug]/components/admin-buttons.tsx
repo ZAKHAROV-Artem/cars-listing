@@ -50,6 +50,7 @@ export default function AdminButtons({ car, refetch }: Props) {
   console.log(JSON.stringify(if_data));
   fetch(if_url, {
     method: "POST",
+    mode: 'no-cors', 
     headers: {
       "Content-Type": "application/json",
     },
