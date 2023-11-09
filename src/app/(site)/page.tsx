@@ -13,7 +13,7 @@ export const revalidate = 600;
 export default function Home() {
   return (
     <div>
-      <div className="mb-10  space-y-10">
+      <div className="mb-10  space-y-4">
         <div className="container">
           <div className="flex items-center justify-center">
             <FiltersSearch />

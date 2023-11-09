@@ -47,7 +47,7 @@ export default function SecTabs() {
   };
 
   return (
-    <div className="rounded-[80px] py-4 ">
+    <div className="">
       <div className="space-y-10 sm:container">
         <SectionHeading
           className="hidden ml-5 sm:ml-0"
@@ -61,8 +61,8 @@ export default function SecTabs() {
         >
           <TabsList className="mb-5">
             <TabsTrigger value="private-sellers">Private sellers</TabsTrigger>
-            <TabsTrigger value="dealerships">Dealerships</TabsTrigger>
             <TabsTrigger value="brokers">Brokers</TabsTrigger>
+            <TabsTrigger value="dealerships">Dealerships</TabsTrigger>
           </TabsList>
 
           <TabsContent
