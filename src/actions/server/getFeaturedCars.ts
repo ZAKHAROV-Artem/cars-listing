@@ -17,7 +17,7 @@ export default async function getFeaturedCars(filters?: QueryParams) {
       "populate[seller][populate]": "*",
       "populate[price][populate]": "*",
       "populate[images][fields][0]": "url",
-      "sort[1]": "createdAt:desc",
+      "sort[1]":"car_publication_date:desc",
       ...filters,
     },
   });
