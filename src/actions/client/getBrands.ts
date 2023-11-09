@@ -6,7 +6,7 @@ export default async function getBrands() {
   return await fetcher.get<Payload<Brand[]>>(`/brands`, {
     params: {
       "sort[0]": "name",
-      "pagination[pageSize]": "20",
+      "pagination[pageSize]": "40",
     },
   });
 }
