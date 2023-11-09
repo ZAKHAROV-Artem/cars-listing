@@ -47,10 +47,10 @@ export default function SecTabs() {
   };
 
   return (
-    <div className="rounded-[80px]  py-10 ">
+    <div className="rounded-[80px] py-4 ">
       <div className="space-y-10 sm:container">
         <SectionHeading
-          className="ml-5 sm:ml-0"
+          className="hidden ml-5 sm:ml-0"
           textAccent="Search"
           text="cars by seller"
         />

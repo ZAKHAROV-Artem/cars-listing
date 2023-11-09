@@ -34,13 +34,13 @@ export const metadata: Metadata = {
 
 export default async function PostCarPage() {
   const user = await getServerAuth();
-  if (
+  /*if (
     user &&
     (Number(user?.points) || 0) < 1 &&
     user?.seller_type?.slug !== "private"
   )
-    //redirect("/payment");
-
+    redirect("/payment");
+*/
   return (
     <div className={"container relative"}>
       <h1 className="py-5  text-xl font-[500] sm:text-2xl md:text-3xl">
