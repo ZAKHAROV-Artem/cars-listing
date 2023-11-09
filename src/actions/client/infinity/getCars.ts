@@ -5,6 +5,7 @@ import { Payload } from "@/types/api/common";
 export default async function getCars(page?: number) {
   return fetcher.get<Payload<Car[]>>(`/cars`, {
     params: {
+      "sort[1]": "ID:desc",
       "pagination[page]": page,
       "pagination[pageSize]": 12,
       "fields[0]": "title",
