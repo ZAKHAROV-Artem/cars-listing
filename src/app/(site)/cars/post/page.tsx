@@ -39,7 +39,7 @@ export default async function PostCarPage() {
     (Number(user?.points) || 0) < 1 &&
     user?.seller_type?.slug !== "private"
   )
-    redirect("/payment");
+    //redirect("/payment");
 
   return (
     <div className={"container relative"}>
