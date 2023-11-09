@@ -55,6 +55,7 @@ export const locations = [
   "Addis Ababa",
   "Adama",
   "Bahir Dar",
+  "Bishoftu",
   "Dire Dawa",
   "Hawassa",
   "Mekelle",

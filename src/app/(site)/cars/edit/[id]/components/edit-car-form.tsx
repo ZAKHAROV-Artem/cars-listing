@@ -733,13 +733,15 @@ export default function EditCarForm({ car }: Props) {
         <>
           <h3 className="pt-5 text-xl">Informaiton about seller</h3>
           <div className="grid grid-cols-1 gap-x-5 xs:grid-cols-2">
-            {!user && (
+            {!(user &&
+                  (user?.seller_type?.slug === "dealership" ||
+                    user?.seller_type?.slug === "broker")) && (
               <>
                 {/* SELLER TYPE */}
                 <div>
                   <Select
                     {...registerStep4("sellerTypeId")}
-                   // defaultValue={getValuesStep4().sellerTypeId}
+                    defaultValue={getValuesStep4().sellerTypeId}
                     onValueChange={(value) =>
                       setValueStep4("sellerTypeId", value, {
                         shouldValidate: true,
