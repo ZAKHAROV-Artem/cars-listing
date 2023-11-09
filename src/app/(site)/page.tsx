@@ -21,8 +21,8 @@ export default function Home() {
           <Filters fromMain={true} />
         </div>
         <SecBodyTypes />
-        <SecFeaturedCars />
         <SecTabs />
+        <SecFeaturedCars />
         <SecTopCars />
         <SecBrands />
       </div>
