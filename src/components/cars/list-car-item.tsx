@@ -81,6 +81,7 @@ export default function ListCarItem({ car, refetch, admin = false }: Props) {
               })}
             />
             <div className="text-md">{car.attributes.status}</div>
+            <div className="text-md">{car.attributes.seller?.name}</div>
           </div>
           <div className="text-md">order id: {car.id}</div>
         </div>
