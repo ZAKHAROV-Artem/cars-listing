@@ -739,7 +739,7 @@ export default function EditCarForm({ car }: Props) {
                 <div>
                   <Select
                     {...registerStep4("sellerTypeId")}
-                    defaultValue={getValuesStep4().sellerTypeId}
+                   // defaultValue={getValuesStep4().sellerTypeId}
                     onValueChange={(value) =>
                       setValueStep4("sellerTypeId", value, {
                         shouldValidate: true,
