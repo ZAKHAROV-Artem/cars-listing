@@ -199,12 +199,10 @@ export default function EditCarForm({ car }: Props) {
         ...getValuesStep2(),
         ...getValuesStep3(),
         ...getValuesStep4(),
-        sellerTypeId: user
-          ? String(user?.seller_type?.id)
-          : getValuesStep4().sellerTypeId,
+        sellerTypeId: getValuesStep4().sellerTypeId,
         imagesIds,
       });
-      toast.success("Car updated successfully. Info will be shown soon");
+      toast.success("Car updated successfully");
       if (user?.role.type === "admin") {
         router.back();
       } else {
