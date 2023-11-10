@@ -62,9 +62,7 @@ export const locations = [
 export const transmissions = [
   "Automatic",
   "Manual",
-  "Semi-automatic",
   "Continuously Variable",
-  "Tiptronic transmission",
 ];
 export const colors: {
   value: string;
@@ -74,14 +72,14 @@ export const colors: {
   { value: "Silver", hex: "#C0C0C0" },
   { value: "Black", hex: "#000000" },
   { value: "White", hex: "#FFFFFF" },
-  { value: "Kaki (1D9)", hex: "#C6B7AC" },
-  { value: "Sky Blue", hex: "#87CEEB" },
-  { value: "Brown", hex: "#654321" },
+  //{ value: "Kaki (1D9)", hex: "#C6B7AC" },
+  //{ value: "Sky Blue", hex: "#87CEEB" },
+  //{ value: "Brown", hex: "#654321" },
   { value: "Red", hex: "#FF0000" },
   { value: "Blue", hex: "#0000FF" },
   { value: "Green", hex: "#00FF00" },
-  { value: "Bronze", hex: "#CD7F32" },
-  { value: "Burgundy", hex: "#800020" },
+  //{ value: "Bronze", hex: "#CD7F32" },
+  //{ value: "Burgundy", hex: "#800020" },
   { value: "Yellow", hex: "#FFFF00" },
   { value: "Orange", hex: "#FFA500" },
   { value: "Purple", hex: "#800080" },
