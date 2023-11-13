@@ -45,7 +45,7 @@ export function slugify(data: string) {
     .toLocaleLowerCase()
     .split(" ")
     .join("-")
-    .replaceAll(/[,.?!]/g, "");
+    .replaceAll(/[,.?!()]/g, "");
 }
 
 export function addDomain(name?: string) {

@@ -17,7 +17,7 @@ export default async function postCar(data: PostCarFields) {
         title: data.title,
         location: data.location,
         description: data.description,
-        slug: slugify(`${data.title} ${Date.now()}`),
+        slug: slugify(`${data.title ? data.title : "car"} ${Date.now()}`),
         ...(data.userId && {
           user: {
             connect: [data.userId],

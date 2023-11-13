@@ -176,7 +176,7 @@ export default function PostCarForm() {
   }, [user]);
   const { mutateAsync: uploadAsync } = useUpload();
   const [acceptedFiles, setAcceptedFiles] = useState<FileWithPreview[]>([]);
-
+  const [progress, setProgress] = useState<number>(0);
   const handleFinalSubmit = async () => {
     try {
       if (!acceptedFiles.length) {
@@ -199,7 +199,7 @@ export default function PostCarForm() {
         uploadFormData.append(`files`, file, generateFilename(i + 1));
       });
       await uploadAsync(
-        { formData: uploadFormData },
+        { formData: uploadFormData, setProgress },
         {
           onSuccess: (res) => {
             res.data
@@ -237,6 +237,7 @@ export default function PostCarForm() {
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
   const { data: bodyTypes } = useBodyTypes();
@@ -256,7 +257,8 @@ export default function PostCarForm() {
   return (
     <div className="my-5 space-y-2 rounded-2xl border-slate-400 sm:border sm:p-6 ">
       {loading && (
-        <div className="fixed left-0 top-0 z-20 flex h-screen w-full items-center justify-center backdrop-blur-sm">
+        <div className="fixed left-0 top-0 z-20 flex h-screen w-full flex-col items-center justify-center gap-y-5 backdrop-blur-sm">
+          <div className="text-2xl text-primary-main">{progress}%</div>
           <RiseLoader color="#ef4444" />
         </div>
       )}
@@ -282,7 +284,7 @@ export default function PostCarForm() {
             <div className="h-fit">
               <Label>Title:</Label>
               <Input
-              placeholder="eg. Toyota Corolla 2010"
+                placeholder="eg. Toyota Corolla 2010"
                 {...registerStep1("title")}
                 wrapperClassName={cn({
                   "border border-primary-light": errorsStep1.title,
@@ -743,9 +745,11 @@ export default function PostCarForm() {
         <>
           <h3 className="pt-5 text-xl">Informaiton about seller</h3>
           <div className="grid grid-cols-1 gap-x-5 xs:grid-cols-2">
-            {!(user &&
-                  (user?.seller_type?.slug === "dealership" ||
-                    user?.seller_type?.slug === "broker")) && (
+            {!(
+              user &&
+              (user?.seller_type?.slug === "dealership" ||
+                user?.seller_type?.slug === "broker")
+            ) && (
               <>
                 {/* SELLER TYPE */}
                 <div>

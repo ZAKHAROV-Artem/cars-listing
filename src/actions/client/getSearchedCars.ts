@@ -19,7 +19,7 @@ export default async function getSearchedCars({
   }
   return await fetcher.get<Payload<Car[]>>(`/cars`, {
     params: {
-      "pagination[pageSize]": "12",
+      "pagination[pageSize]": "20",
       "pagination[page]": page,
       "filters[status][$eq]": "active",
       "fields[0]": "title",
@@ -31,7 +31,7 @@ export default async function getSearchedCars({
       "populate[price][populate]": "*",
       "populate[seller][populate]": "*",
       "populate[images][fields][0]": "url",
-      "sort[1]": "createdAt:desc",
+      "sort[0]": "car_publication_date:desc",
       ...queryParams,
     },
   });

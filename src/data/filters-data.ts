@@ -1,9 +1,4 @@
-export const fuels = [
-  "Diesel",
-  "Benzine",
-  "Hybrid",
-  "Electric",
-];
+export const fuels = ["Diesel", "Benzine", "Hybrid", "Electric"];
 export const engineSizes = [
   "-",
   "0,8",
@@ -54,16 +49,20 @@ export const currencies = ["ETB", "EUR", "USD"];
 export const locations = [
   "Addis Ababa",
   "Adama",
-  "Bahir Dar",
+  "Dessie",
   "Dire Dawa",
+  "Asosa",
+  "Bahir Dar",
+  "Bishoftu",
+  "Gondar",
   "Hawassa",
+  "Harar",
+  "Jigjiga",
+  "Jimma",
   "Mekelle",
 ];
-export const transmissions = [
-  "Automatic",
-  "Manual",
-  "Continuously Variable",
-];
+
+export const transmissions = ["Automatic", "Manual", "Continuously Variable"];
 export const colors: {
   value: string;
   hex?: string;
@@ -72,19 +71,22 @@ export const colors: {
   { value: "Silver", hex: "#C0C0C0" },
   { value: "Black", hex: "#000000" },
   { value: "White", hex: "#FFFFFF" },
-  //{ value: "Kaki (1D9)", hex: "#C6B7AC" },
-  //{ value: "Sky Blue", hex: "#87CEEB" },
-  //{ value: "Brown", hex: "#654321" },
+  { value: "Kaki", hex: "#C6B7AC" },
+  { value: "Sky Blue", hex: "#87CEEB" },
+  { value: "Brown", hex: "#654321" },
   { value: "Red", hex: "#FF0000" },
   { value: "Blue", hex: "#0000FF" },
   { value: "Green", hex: "#00FF00" },
-  //{ value: "Bronze", hex: "#CD7F32" },
-  //{ value: "Burgundy", hex: "#800020" },
+  { value: "Bronze", hex: "#CD7F32" },
+  { value: "Burgundy", hex: "#800020" },
+  { value: "Champaign", hex: "#F7E7CE" },
+  { value: "Golden", hex: "#FFD700" },
+  { value: "Pink", hex: "#FFC0CB" },
   { value: "Yellow", hex: "#FFFF00" },
   { value: "Orange", hex: "#FFA500" },
   { value: "Purple", hex: "#800080" },
-  { value: "Multi", hex: "linear-gradient(195deg, #00DBDE 0%, #FC00FF 100%)" }, // Adjust hex value accordingly
+  { value: "Multi", hex: "linear-gradient(195deg, #00DBDE 0%, #FC00FF 100%)"},
   {
     value: "Another",
-  }, // Adjust hex value accordingly
+  }, 
 ];

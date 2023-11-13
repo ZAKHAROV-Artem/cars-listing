@@ -21,6 +21,7 @@ import { BsTelegram, BsWhatsapp } from "react-icons/bs";
 import { FaViber } from "react-icons/fa";
 import AdminButtons from "./components/admin-buttons";
 import { getServerAuth } from "@/lib/getServerAuth";
+import sendToSocialMedia from "@/actions/client/sendToSocialMedia";
 type Props = {
   params: { slug: string };
 };
@@ -36,7 +37,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     });
     if (car) {
       return {
-        title: `${car.attributes.title} - ${car.attributes.price?.currency}${formatNumberWithCommas(car.attributes.price?.price || 0)}`,
+        title: `${car.attributes.title} - ${car.attributes.price
+          ?.currency}${formatNumberWithCommas(
+          car.attributes.price?.price || 0,
+        )}`,
         description: car.attributes.description,
         keywords: [
           `${car.attributes.title}`,
@@ -45,7 +49,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           "used car price in ethiopia 2021, car price in ethiopia, car market in ethiopia, car for sale in ethiopia, new car price in ethiopia 2021, buy and sell cars, suzuki car price in ethiopia, car sales in ethiopia, car sell in ethiopia, cars for sale in ethiopia, used car price in ethiopia, diplomatic car for sale in ethiopia 2021",
         ],
         openGraph: {
-          title: `${car.attributes.title} - ${car.attributes.price?.currency}${formatNumberWithCommas(car.attributes.price?.price || 0)}`,
+          title: `${car.attributes.title} - ${car.attributes.price
+            ?.currency}${formatNumberWithCommas(
+            car.attributes.price?.price || 0,
+          )}`,
           description: car.attributes.description,
           images: [car.attributes.images.data[0].attributes.url],
           type: "article",
@@ -53,7 +60,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           siteName: process.env.DOMAIN,
         },
         twitter: {
-          title: `${car.attributes.title} - ${car.attributes.price?.currency}${formatNumberWithCommas(car.attributes.price?.price || 0)}`,
+          title: `${car.attributes.title} - ${car.attributes.price
+            ?.currency}${formatNumberWithCommas(
+            car.attributes.price?.price || 0,
+          )}`,
           site: "@mekinanet",
           creator: "@mekinanet",
           description: car.attributes.description,
@@ -90,7 +100,6 @@ export default async function CarDetail({ params: { slug } }: Props) {
     await setCarFetured(car.id, false);
   }
   await incrementVisits(car.id, car.attributes.visits);
-
   return (
     <div className="md:container md:py-10">
       <div className="mb-4 hidden items-center justify-between md:flex">

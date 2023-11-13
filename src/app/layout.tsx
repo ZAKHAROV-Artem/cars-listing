@@ -4,10 +4,9 @@ import type { Metadata } from "next";
 import Navbar from "@/components/navigation/navbar";
 import Footer from "@/components/navigation/footer";
 import { Poppins } from "next/font/google";
-import Script from 'next/script'
+import Script from "next/script";
 
-
-const GTM_ID = 'GTM-TVZ9PL2C';
+const GTM_ID = "GTM-TVZ9PL2C";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -24,12 +23,10 @@ export const metadata: Metadata = {
     "Looking for used or new cars in Ethiopia? Get daily updates of car prices posted directly from private owners, car dealers and brokers in Ethiopia.",
   twitter: {
     card: "summary_large_image",
-    title:
-      "Cars for sale in Ethiopia, get latest car prices in Ethiopia",
+    title: "Cars for sale in Ethiopia, get latest car prices in Ethiopia",
     site: "@mekinanet",
     creator: "@mekinanet",
-    description:
-      "Buy, Sell or rent cars in Ethiopia on www.mekina.net",
+    description: "Buy, Sell or rent cars in Ethiopia on www.mekina.net",
   },
   openGraph: {
     title: `${process.env.DOMAIN} - Buy, Sell or rent cars online in Ethiopia`,
@@ -49,7 +46,7 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-       <Script id="google-tag-manager" strategy="afterInteractive">
+      <Script id="google-tag-manager" strategy="afterInteractive">
         {`
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -57,7 +54,7 @@ export default async function RootLayout({
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','${GTM_ID}');
         `}
-    </Script>
+      </Script>
       <body className={poppins.className}>
         <Providers>
           <Navbar />

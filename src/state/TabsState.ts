@@ -11,7 +11,7 @@ type Actions = {
 
 export const useTabs = create(
   immer<State & Actions>((set) => ({
-    tab: "private-sellers",
+    tab: "recent-cars",
     setTab: (value) =>
       set((state) => {
         state.tab = value;

@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSetCarFeatured } from "@/hooks/useSetCarFeatured";
-import { useAdminButtonsMutation } from "@/hooks/useAdminButtonsMutation";
+import { useSendToSocialMediaMutation } from "@/hooks/useSendToSocialMediaMutation";
+import { CheckedState } from "@radix-ui/react-checkbox";
 
 type Props = {
   car: Car;
@@ -27,78 +28,61 @@ export default function AdminButtons({ car, refetch }: Props) {
   const [featured, setFeatured] = useState<boolean>(car.attributes.featured);
 
   const { data: user, isSuccess } = useCurrentUser();
-  const { mutateAsync } = useAdminButtonsMutation();
- 
-
-  
-  
-  async function postToSocialMedia() {
-    const socialBody = JSON.stringify({
-      Value1:	car.attributes.title + ' - ' + car.attributes.price?.currency + ' ' + car.attributes.price?.price + '<br>' + car.attributes.seller?.phone + '<br>Click for more details',
-      Value2:	 car.attributes.images?.data[0].attributes.url,
-      Value3: 'https://www.meina.net/cars/' + car.attributes.slug + '-' + car.id + '?utm_source=facebook&utm_medium=social'
-    });
-    
-    console.log(socialBody);
-
-    const if_url = "https://maker.ifttt.com/trigger/cars/with/key/bA3GfIfHiWa9WnaP3Kq2ea";
-  const if_data = {"value1":"Toyota Hiace","value2":"Corolla","value3":"https://mekina.s3.eu-west-1.amazonaws.com/22_image_2_car_47_03b1d4f561_f797c5be80.jpeg"};
-  
-  //console.log(JSON.stringify(if_data));
-  fetch(if_url, {
-    method: "POST",
-    mode: 'no-cors', 
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body:JSON.stringify(if_data)
-  })
-    .then((response) => {
-      if (!response.ok) {
-        console.log(response);
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error("There was a problem with the fetch operation:", error);
-    });
-
-    /*const response = await fetch('https://maker.ifttt.com/trigger/car_posted/with/key/bA3GfIfHiWa9WnaP3Kq2ea', {
-      method: 'POST',
-      mode: 'no-cors', 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: socialBody
-    });
-
-    if (!response.ok) {
-      toast.error("Failed to post to social!");
-      
-      throw new Error('Failed to post to social media');
-    }*/
-    toast.success("sent to social !");
-  }
-  
-  const handleChange = async () => {
-    await mutateAsync(
+  const { mutateAsync: sendToSocialMedia } = useSendToSocialMediaMutation();
+  const { mutateAsync: setCarStatus } = useSetCarStatus();
+  const { mutateAsync: setCarFeatured } = useSetCarFeatured();
+  const handleFeaturedChange = async (value: CheckedState) => {
+    setFeatured(value === "indeterminate" ? false : value);
+    await setCarFeatured(
       {
         id: car.id,
-        status,
-        featured,
+        featured: value === "indeterminate" ? false : value,
       },
       {
         onSuccess: () => {
           refetch && refetch();
-          if (status === 'active') postToSocialMedia();
           toast.success("Updated successfully !");
         },
       },
     );
+  };
+  const handleStatusChange = async () => {
+    await setCarStatus(
+      {
+        id: car.id,
+        status,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Car successfully updated !");
+        },
+      },
+    );
+    // const body = {
+    //   value1:
+    //     car.attributes.title +
+    //     " - " +
+    //     car.attributes.price?.currency +
+    //     " " +
+    //     car.attributes.price?.price +
+    //     "<br>" +
+    //     car.attributes.seller?.phone +
+    //     "<br>Click for more details",
+    //   value2: car.attributes.images?.data[0].attributes.url,
+    //   value3:
+    //     "https://www.meina.net/cars/" +
+    //     car.attributes.slug +
+    //     "-" +
+    //     car.id +
+    //     "?utm_source=facebook&utm_medium=social",
+    // };
+    // if (status === Status.Active) {
+    //   await sendToSocialMedia(body, {
+    //     onSuccess: () => {
+    //       toast.success("sent to social !");
+    //     },
+    //   });
+    // }
   };
 
   if (!isSuccess || user?.role?.type !== "admin") return null;
@@ -109,7 +93,10 @@ export default function AdminButtons({ car, refetch }: Props) {
           Edit car
         </Button>{" "}
       </Link>
-      <Select value={status} onValueChange={(value:Status)=>setStatus(value)}>
+      <Select
+        value={status}
+        onValueChange={(value: Status) => setStatus(value)}
+      >
         <SelectTrigger className="w-fit">
           <SelectValue placeholder="Select price type" />
         </SelectTrigger>
@@ -121,14 +108,12 @@ export default function AdminButtons({ car, refetch }: Props) {
           ))}
         </SelectContent>
       </Select>
+      <Button onClick={handleStatusChange}>Save</Button>
       <Checkbox
         className="h-7 w-7"
         checked={featured}
-        onCheckedChange={(value) =>
-          setFeatured(value === "indeterminate" ? false : value)
-        }
+        onCheckedChange={handleFeaturedChange}
       />
-      <Button onClick={handleChange}>Save</Button>
     </div>
   );
 }

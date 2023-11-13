@@ -13,7 +13,11 @@ export default function CarItem({ car }: Props) {
       className="cur relative overflow-hidden rounded-xl bg-white shadow-xl dark:bg-default-dark"
     >
       <CarItemImage
-        image={car.attributes.images.data[0].attributes.url}
+        image={
+          car.attributes.images?.data
+            ? car.attributes.images?.data[0].attributes.url
+            : ""
+        }
         featured={car.attributes.featured}
         alt={`${car.attributes.title}`}
         price={car.attributes.price?.price}
@@ -26,7 +30,7 @@ export default function CarItem({ car }: Props) {
         <div className="mt-3 text-sm">{car.attributes.seller?.phone}</div>
         <div className="text-disabled text-[12px] sm:text-sm">{`${car.attributes.car_ch?.year_made} | ${car.attributes.car_ch?.fuel} `}</div>
         <div className="mt-3 flex justify-between text-xs">
-          <div  className="hidden">
+          <div>
             {formatDistance(
               new Date(car.attributes.createdAt).getTime(),
               Date.now(),

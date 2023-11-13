@@ -1,23 +1,16 @@
 import getSearchedCars from "@/actions/client/getSearchedCars";
 import { Filter } from "@/state/FiltersState";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
-const useSearchedCars = (filters: Filter[]) => {
-  const query = useInfiniteQuery({
-    queryKey: [`searched-cars-infinity`],
-    queryFn: async ({ pageParam = 1 }) =>
+const useSearchedCars = (filters: Filter[], page: number) => {
+  const query = useQuery({
+    queryKey: [`searched-cars-infinity`, page],
+    queryFn: async () =>
       await getSearchedCars({
         filters,
-        page: pageParam,
+        page,
       }),
 
-    getNextPageParam: (res, pages) => {
-      return res.data.meta.pagination?.page ===
-        res.data.meta.pagination?.pageCount ||
-        !res.data.meta.pagination?.pageCount
-        ? undefined
-        : pages.length + 1;
-    },
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });

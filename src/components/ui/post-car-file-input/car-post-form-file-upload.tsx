@@ -1,22 +1,14 @@
-import {
-  Dispatch,
-  InputHTMLAttributes,
-  SetStateAction,
-  useCallback,
-  useState,
-} from "react";
-import { useDropzone, FileWithPath } from "react-dropzone";
+import { InputHTMLAttributes } from "react";
+import { useDropzone } from "react-dropzone";
 import { Button } from "../button";
 import { useEffectOnce } from "usehooks-ts";
 import FileItem from "./file-item";
 import {
   DndContext,
   KeyboardSensor,
-  PointerSensor,
   useSensor,
   useSensors,
   closestCenter,
-  UniqueIdentifier,
   DragEndEvent,
   TouchSensor,
   MouseSensor,
@@ -54,7 +46,7 @@ export default function CarPostFormFileUpload({
         acceptedFiles = acceptedFiles.slice(0, 6 - files.length);
       }
       setFiles((prev: any) => [
-        ...prev,
+        ...(prev[0]?.hasOwnProperty("provider") ? [] : prev),
         ...acceptedFiles.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
@@ -62,14 +54,6 @@ export default function CarPostFormFileUpload({
           }),
         ),
       ]);
-      console.log(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-            id: v4(),
-          }),
-        ),
-      );
     },
   });
   useEffectOnce(() => {

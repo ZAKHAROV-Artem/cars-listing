@@ -10,7 +10,7 @@ export default async function AccountLayout({
   const user = await getServerAuth();
   if (!user) return notFound();
   return (
-    <div className=" mx-5 max-w-3xl py-10 md:mx-auto">
+    <div className="container py-10 ">
       <h1 className="text-xl md:text-3xl">Account</h1>
       <div className="mt-5">
         <span className="font-bold">{user?.name || user?.username}</span>
