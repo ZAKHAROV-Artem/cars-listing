@@ -46,6 +46,7 @@ export interface Car {
     car_featured_expiration_date: Date;
     category?: { data: Category };
     car_publication_date?: Date;
+    sentToSocialMedia: boolean;
   };
 }
 
@@ -70,4 +71,5 @@ export interface CarPlain {
   car_featured_expiration_date?: Date;
   category?: CategoryPlain;
   car_publication_date?: Date;
+  sentToSocialMedia: boolean;
 }

@@ -18,6 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useSetCarFeatured } from "@/hooks/useSetCarFeatured";
 import { useSendToSocialMediaMutation } from "@/hooks/useSendToSocialMediaMutation";
 import { CheckedState } from "@radix-ui/react-checkbox";
+import { useSetCarSentToSocialMedia } from "@/hooks/useSetCarSentToSocialMedia";
 
 type Props = {
   car: Car;
@@ -31,6 +32,7 @@ export default function AdminButtons({ car, refetch }: Props) {
   const { mutateAsync: sendToSocialMedia } = useSendToSocialMediaMutation();
   const { mutateAsync: setCarStatus } = useSetCarStatus();
   const { mutateAsync: setCarFeatured } = useSetCarFeatured();
+  const { mutateAsync: setCarSentToSocialMedia } = useSetCarSentToSocialMedia();
   const handleFeaturedChange = async (value: CheckedState) => {
     setFeatured(value === "indeterminate" ? false : value);
     await setCarFeatured(
@@ -58,31 +60,35 @@ export default function AdminButtons({ car, refetch }: Props) {
         },
       },
     );
-    // const body = {
-    //   value1:
-    //     car.attributes.title +
-    //     " - " +
-    //     car.attributes.price?.currency +
-    //     " " +
-    //     car.attributes.price?.price +
-    //     "<br>" +
-    //     car.attributes.seller?.phone +
-    //     "<br>Click for more details",
-    //   value2: car.attributes.images?.data[0].attributes.url,
-    //   value3:
-    //     "https://www.meina.net/cars/" +
-    //     car.attributes.slug +
-    //     "-" +
-    //     car.id +
-    //     "?utm_source=facebook&utm_medium=social",
-    // };
-    // if (status === Status.Active) {
-    //   await sendToSocialMedia(body, {
-    //     onSuccess: () => {
-    //       toast.success("sent to social !");
-    //     },
-    //   });
-    // }
+    const body = {
+      value1:
+        car.attributes.title +
+        " - " +
+        car.attributes.price?.currency +
+        " " +
+        car.attributes.price?.price +
+        "<br>" +
+        car.attributes.seller?.phone +
+        "<br>Click for more details",
+      value2: car.attributes.images?.data[0].attributes.url,
+      value3:
+        "https://www.meina.net/cars/" +
+        car.attributes.slug +
+        "-" +
+        car.id +
+        "?utm_source=facebook&utm_medium=social",
+    };
+    if (status === Status.Active && !car.attributes.sentToSocialMedia) {
+      await sendToSocialMedia(body, {
+        onSuccess: (res) => {
+          toast.success(res.data);
+        },
+      });
+      await setCarSentToSocialMedia({
+        id: car.id,
+        sentToSocialMedia: true,
+      });
+    }
   };
 
   if (!isSuccess || user?.role?.type !== "admin") return null;
@@ -98,7 +104,7 @@ export default function AdminButtons({ car, refetch }: Props) {
         onValueChange={(value: Status) => setStatus(value)}
       >
         <SelectTrigger className="w-fit">
-          <SelectValue placeholder="Select price type" />
+          <SelectValue placeholder="Select status" />
         </SelectTrigger>
         <SelectContent>
           {statusValues.map((value) => (

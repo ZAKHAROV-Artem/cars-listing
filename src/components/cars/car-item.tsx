@@ -30,15 +30,17 @@ export default function CarItem({ car }: Props) {
         <div className="mt-3 text-sm">{car.attributes.seller?.phone}</div>
         <div className="text-disabled text-[12px] sm:text-sm">{`${car.attributes.car_ch?.year_made} | ${car.attributes.car_ch?.fuel} `}</div>
         <div className="mt-3 flex justify-between text-xs">
-          <div>
-            {formatDistance(
-              new Date(car.attributes.createdAt).getTime(),
-              Date.now(),
-              {
-                addSuffix: true,
-              },
-            )}
-          </div>
+          {car.attributes?.car_publication_date && (
+            <div>
+              {formatDistance(
+                new Date(car.attributes.car_publication_date).getTime(),
+                Date.now(),
+                {
+                  addSuffix: true,
+                },
+              )}
+            </div>
+          )}
           <SellerTypeBadge
             type={
               car.attributes.seller?.seller_type?.data.attributes.type || ""

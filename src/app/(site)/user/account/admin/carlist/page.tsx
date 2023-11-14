@@ -10,12 +10,23 @@ import Pagination from "@/components/ui/pagination";
 import { Input } from "@/components/ui/input";
 import { QueryParams } from "@/actions/client/getSearchedCars";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Status, statusValues } from "@/types/api/car";
 
 export default function AdminCarlistPage() {
   const [page, setPage] = useState<number>(1);
   const [title, setTitle] = useState<string>("");
   const [id, setId] = useState<string>("");
-  const [filters, setFilters] = useState<QueryParams>({});
+  const [status, setStatus] = useState<string | undefined>(undefined);
+  const [filters, setFilters] = useState<QueryParams>({
+    "sort[0]": "id:desc",
+  });
   const { data, isInitialLoading, refetch } = useCars(page, filters);
   const handleSearch = () => {
     const filters: QueryParams = {};
@@ -24,6 +35,9 @@ export default function AdminCarlistPage() {
     }
     if (id) {
       filters["filters[id][$eq]"] = id;
+    }
+    if (status) {
+      filters["filters[status][$eq]"] = status;
     }
     setFilters(filters);
   };
@@ -46,6 +60,21 @@ export default function AdminCarlistPage() {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Title"
             />
+            <Select
+              value={status}
+              onValueChange={(value: Status) => setStatus(value)}
+            >
+              <SelectTrigger className="w-fit">
+                <SelectValue placeholder="Select status" />
+              </SelectTrigger>
+              <SelectContent>
+                {statusValues.map((value) => (
+                  <SelectItem value={value} key={value}>
+                    {value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Button onClick={handleSearch}>Search</Button>
           </div>
           {data?.data.data.map((car, carIndex) => (
