@@ -1,5 +1,6 @@
 import { SocialMediaBody } from "@/actions/client/sendToSocialMedia";
 import axios from "axios";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
@@ -13,8 +14,8 @@ export async function POST(req: Request) {
         },
       },
     );
-    return Response.json("Sent to social media");
+    return NextResponse.json("Sent to social media");
   } catch (error) {
-    return Response.json("Failed to send to social media");
+    return NextResponse.json("Failed to send to social media");
   }
 }
