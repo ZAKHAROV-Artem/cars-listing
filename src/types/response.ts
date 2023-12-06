@@ -1,9 +1,9 @@
 import { AxiosError } from "axios";
-import { User } from "./api/user";
+import { UserPlain } from "./api/user";
 
 export interface AuthResponse {
   jwt: string;
-  user: User;
+  user: UserPlain;
 }
 export interface StrapiError_Plain {
   data: null;

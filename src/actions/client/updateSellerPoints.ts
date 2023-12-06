@@ -1,5 +1,5 @@
 import { fetcherAuth } from "@/lib/api-client";
-import { User } from "@/types/api/user";
+import { UserPlain } from "@/types/api/user";
 import dayjs from "dayjs";
 
 export default async function updateSellerPoints({
@@ -9,8 +9,7 @@ export default async function updateSellerPoints({
   sellerId: number;
   points: number;
 }) {
-  console.log(sellerId, points);
-  return await fetcherAuth.put<User>(`/users/${sellerId}`, {
+  return await fetcherAuth.put<UserPlain>(`/users/${sellerId}`, {
     points,
     pointsExpirationDate: dayjs().add(30, "day"),
   });

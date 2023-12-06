@@ -8,7 +8,6 @@ type Props = {
 };
 export default async function OrderPage({ params: { id } }: Props) {
   const user = await getServerAuth();
-  console.log(user);
   return (
     <>
       {user?.pointsExpirationDate &&

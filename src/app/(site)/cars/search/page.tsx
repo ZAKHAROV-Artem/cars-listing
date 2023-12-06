@@ -29,7 +29,7 @@ export default function SearchPage() {
     setIsOpen,
     isOpen,
   } = useFilters();
-
+  const [title, setTitle] = useState<string>("");
   const [initialFilters, setInitialFilters] = useState<Filter[]>([]);
   useEffect(() => {
     setIsLoading(true);
@@ -39,7 +39,6 @@ export default function SearchPage() {
         key: "filters[car_ch][body_type][slug][$eq]",
         value: searchParams.get("bodyType") || "",
       });
-
       setBodyType(searchParams.get("bodyType") || "");
     }
     if (searchParams.has("sellerType")) {
@@ -140,6 +139,19 @@ export default function SearchPage() {
       });
       setQuery(searchParams.get("q") || "");
     }
+
+    if (searchParams.has("bodyType")) {
+      setTitle(
+        `Search results for body type - ${searchParams.get("bodyType")}`,
+      );
+    } else if (searchParams.has("model")) {
+      setTitle(`Search results for model - ${searchParams.get("model")}`);
+    } else if (searchParams.has("brand")) {
+      setTitle(`Search results for brand - ${searchParams.get("brand")}`);
+    } else {
+      setTitle(`Search results`);
+    }
+
     setInitialFilters(filters);
     setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -150,6 +162,7 @@ export default function SearchPage() {
         <FiltersSearch />
       </div>
       <div className="grid gap-x-5 space-y-5 pb-10 sm:container">
+        <div className="mt-7 text-2xl font-[400]">{title}</div>
         {isLoading ? (
           <CarSkeletonLayout className="mt-5" />
         ) : (

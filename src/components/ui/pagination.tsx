@@ -11,6 +11,7 @@ export default function Pagination({ page, pageCount, setPage }: Props) {
     setPage(page);
     window.scrollTo({ behavior: "smooth", left: 0, top: 0 });
   };
+  if (!pageCount || pageCount === 1) return null;
   return (
     <div className="flex w-fit items-center gap-x-3 ">
       <FaArrowLeft
@@ -30,7 +31,7 @@ export default function Pagination({ page, pageCount, setPage }: Props) {
                 1
               </div>
             )}
-            <div className="grid h-8 w-8 cursor-pointer place-content-center bg-primary-light text-white duration-200 hover:bg-primary-main">
+            <div className="grid h-8 w-8 cursor-pointer place-content-center bg-primary-main text-white duration-200 hover:bg-primary-main">
               {page}
             </div>
             {page + 1 < pageCount && (

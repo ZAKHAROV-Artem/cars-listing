@@ -22,6 +22,7 @@ import { FaViber } from "react-icons/fa";
 import AdminButtons from "./components/admin-buttons";
 import { getServerAuth } from "@/lib/getServerAuth";
 import sendToSocialMedia from "@/actions/client/sendToSocialMedia";
+import sendEmail from "@/actions/client/sendEmail";
 type Props = {
   params: { slug: string };
 };
@@ -54,7 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             car.attributes.price?.price || 0,
           )}`,
           description: car.attributes.description,
-          images: [car.attributes.images.data[0].attributes.url],
+          images: [car.attributes.images?.data[0]?.attributes.url || ""],
           type: "article",
           url: `${process.env.NEXTAUTH_URL}/cars/${car.attributes.slug}-${car.id}`,
           siteName: process.env.DOMAIN,
@@ -98,6 +99,15 @@ export default async function CarDetail({ params: { slug } }: Props) {
     dayjs() > dayjs(car.attributes.car_featured_expiration_date)
   ) {
     await setCarFetured(car.id, false);
+    if (user) {
+      await sendEmail({
+        templateReferenceId: "2",
+        to: user.email,
+        data: {
+          user,
+        },
+      });
+    }
   }
   await incrementVisits(car.id, car.attributes.visits);
   return (

@@ -69,7 +69,6 @@ export default function CarPostFormFileUpload({
   );
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    console.log(active, over);
     if (active.id !== over?.id) {
       const oldIndex = files.findIndex((file) => file.id === active.id);
       const newIndex = files.findIndex((file) => file.id === over?.id);

@@ -59,6 +59,7 @@ import { useCounter } from "usehooks-ts";
 import { v4 } from "uuid";
 import { Media, MediaPlain } from "@/types/api/media";
 import { useUpload } from "@/hooks/useUpload";
+import { useEmail } from "@/hooks/useEmail";
 
 export default function PostCarForm() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -171,12 +172,20 @@ export default function PostCarForm() {
       if (user?.seller_type?.slug !== "private") {
         router.push("/payment");
       }
+      sendEmailToUser({
+        templateReferenceId: "1",
+        to: user?.email,
+        data: {
+          user,
+        },
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
   const { mutateAsync: uploadAsync } = useUpload();
   const [acceptedFiles, setAcceptedFiles] = useState<FileWithPreview[]>([]);
   const [progress, setProgress] = useState<number>(0);
+  const { mutateAsync: sendEmailToUser } = useEmail();
   const handleFinalSubmit = async () => {
     try {
       if (!acceptedFiles.length) {
@@ -215,7 +224,7 @@ export default function PostCarForm() {
         },
       );
 
-      await postCar({
+      const res = await postCar({
         ...getValuesStep1(),
         ...getValuesStep2(),
         ...getValuesStep3(),
@@ -228,12 +237,23 @@ export default function PostCarForm() {
       }).then((res) => {
         toast.success("Car submitted successfully");
         router.push(`/order/${res.data.data.id}`);
+        return res;
       });
       if (user) {
         await fetcherAuth.put(`/user/me`, {
           points: Number(user.points) - 1,
         });
         await refetch();
+      }
+      if (user) {
+        await sendEmailToUser({
+          templateReferenceId: "3",
+          to: user?.email,
+          data: {
+            car: res.data.data,
+            user,
+          },
+        });
       }
     } catch (error) {
       console.log(error);

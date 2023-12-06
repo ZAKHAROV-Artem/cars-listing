@@ -52,7 +52,6 @@ export default function EditSellerDialog() {
   };
   const handlePopup = async () => {
     if (!selectedPackage) return;
-    console.log(selectedPackage);
     await mutateAsync(
       {
         sellerId: dialog.seller!.id,

@@ -11,7 +11,7 @@ export default function PricePackage({ pricePackage, className }: Props) {
   return (
     <div
       className={cn(
-        "max-w-[500px] overflow-hidden rounded-xl bg-white shadow-md",
+        "max-w-[500px] overflow-hidden rounded-xl bg-white shadow-md dark:bg-paper-dark",
         className,
       )}
     >

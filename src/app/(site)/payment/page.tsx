@@ -10,22 +10,26 @@ export default async function PaymentPage() {
       <h1 className="py-5 text-center text-xl font-[500] sm:text-2xl md:text-3xl">
         Payments
       </h1>
-      <div className="flex">
-          <div className="flex-initial w-75 flex justify-center gap-x-3 py-5 text-light-light">
-              <p>Payment can be done via CBE mobile app or your nearest branch of CBE <br/> After payment notify us on whatsapp /telegram /viber on: 0944333333</p>
-              <p>CBE Account number: 1000036123428</p>
-          </div>
-          <div className="flex-initial w-32 h-32">
-            <Image 
-              src="/imgs/cbe-qr.png"
-              width={200}
-              height={200}
-              quality={72}
-              alt="qr code for cbe payment"
-            />
+      <div className="flex gap-x-3">
+        <div className="w-75 flex flex-initial justify-center gap-x-3 py-5 text-light-light">
+          <p>
+            Payment can be done via CBE mobile app or your nearest branch of CBE{" "}
+            <br /> After payment notify us on whatsapp /telegram /viber on:
+            0944333333
+          </p>
+          <p>CBE Account number: 1000036123428</p>
+        </div>
+        <div className="h-32 w-32 flex-initial">
+          <Image
+            src="/imgs/cbe-qr.png"
+            width={200}
+            height={200}
+            quality={72}
+            alt="qr code for cbe payment"
+          />
         </div>
       </div>
-      <div className="mb-5 flex w-full flex-wrap justify-center gap-5">
+      <div className="mb-5 mt-3 flex w-full flex-wrap justify-center gap-5">
         {data?.data?.data?.attributes?.packages.map((pricePackage) => (
           <PricePackage
             className="grow"

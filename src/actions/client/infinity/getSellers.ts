@@ -1,8 +1,8 @@
 import { fetcher } from "@/lib/api-client";
-import { User } from "@/types/api/user";
+import { UserPlain } from "@/types/api/user";
 
 export default async function getSellers(sellerType: string, page: number) {
-  return await fetcher.get<User[]>(`/users`, {
+  return await fetcher.get<UserPlain[]>(`/users`, {
     params: {
       "pagination[page]": page,
       "pagination[pageSize]": 12,

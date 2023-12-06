@@ -25,14 +25,21 @@ export default function SearchedCars({ initialFilters = [] }: Props) {
 
   return (
     <div className="relative z-10 space-y-1 sm:space-y-4">
+      {!!searchedCars?.data.meta.pagination?.pageCount  && (
+
+        <div>
+        Page {page} of {searchedCars?.data.meta.pagination?.pageCount}
+      </div>
+        )}
       {searchedCars?.data.data && <CarsList cars={searchedCars.data.data} />}
       {isLoading && <CarSkeletonLayout />}
-
-      <Pagination
-        page={page}
-        setPage={setPage}
-        pageCount={searchedCars?.data.meta.pagination?.pageCount || 0}
-      />
+      <div className="flex justify-center">
+        <Pagination
+          page={page}
+          setPage={setPage}
+          pageCount={searchedCars?.data.meta.pagination?.pageCount || 0}
+        />
+      </div>
     </div>
   );
 }

@@ -19,6 +19,8 @@ import { useSetCarFeatured } from "@/hooks/useSetCarFeatured";
 import { useSendToSocialMediaMutation } from "@/hooks/useSendToSocialMediaMutation";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { useSetCarSentToSocialMedia } from "@/hooks/useSetCarSentToSocialMedia";
+import { useEmail } from "@/hooks/useEmail";
+import { useSendToTopic } from "@/hooks/useSendToTopic";
 
 type Props = {
   car: Car;
@@ -33,6 +35,8 @@ export default function AdminButtons({ car, refetch }: Props) {
   const { mutateAsync: setCarStatus } = useSetCarStatus();
   const { mutateAsync: setCarFeatured } = useSetCarFeatured();
   const { mutateAsync: setCarSentToSocialMedia } = useSetCarSentToSocialMedia();
+  const { mutateAsync: sendEmailToUser } = useEmail();
+  const { mutateAsync: sendToTopic } = useSendToTopic();
   const handleFeaturedChange = async (value: CheckedState) => {
     setFeatured(value === "indeterminate" ? false : value);
     await setCarFeatured(
@@ -55,11 +59,21 @@ export default function AdminButtons({ car, refetch }: Props) {
         status,
       },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
           toast.success("Car successfully updated !");
         },
       },
     );
+    if (car.attributes.user && status === Status.Active) {
+      await sendEmailToUser({
+        templateReferenceId: "4",
+        to: car.attributes.user?.data.attributes.email,
+        data: {
+          car,
+          user: car.attributes.user.data,
+        },
+      });
+    }
     const body = {
       value1:
         car.attributes.title +
@@ -78,7 +92,20 @@ export default function AdminButtons({ car, refetch }: Props) {
         car.id +
         "?utm_source=facebook&utm_medium=social",
     };
+
     if (status === Status.Active && !car.attributes.sentToSocialMedia) {
+      // await sendToTopic({
+      //   to: "/topics/all-users",
+      //   notification: {
+      //     title: "New car was published",
+      //     body: {
+      //       id: car.id,
+      //       brand: car.attributes.car_ch?.brand?.data?.attributes.name || "",
+      //       model: car.attributes.car_ch?.model?.data?.attributes.name || "",
+      //       year: car.attributes.car_ch?.year_made || "",
+      //     },
+      //   },
+      // });
       await sendToSocialMedia(body, {
         onSuccess: (res) => {
           toast.success(res.data);

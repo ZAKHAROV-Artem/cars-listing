@@ -1,10 +1,10 @@
-import { User } from "@/types/api/user";
+import { UserPlain } from "@/types/api/user";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 type State = {
   show: boolean;
-  seller: User | undefined;
+  seller: UserPlain | undefined;
   refetch: any | undefined;
 };
 
@@ -13,7 +13,7 @@ type Actions = {
   toggle: () => void;
   setFalse: () => void;
   setTrue: () => void;
-  setSeller: (seller: User) => void;
+  setSeller: (seller: UserPlain) => void;
   setRefetch: (refetch: any) => void;
   clearSeller: () => void;
   setAll: (data: State) => void;

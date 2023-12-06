@@ -1,11 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@/types/api/user";
+import { UserPlain } from "@/types/api/user";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEditSellerDialog } from "@/state/EditSellerDialogState";
 
 type Props = {
-  seller: User;
+  seller: UserPlain;
   admin?: boolean;
   refetch?: any;
 };
@@ -28,7 +28,7 @@ export default function SellerItem({ seller, admin = false, refetch }: Props) {
           <Link href={`/seller/${seller.id}`} className="text-xl">
             {seller.name || seller.username}
           </Link>
-          
+
           {admin && (
             <Button variant="outline" onClick={handleOpen}>
               Edit

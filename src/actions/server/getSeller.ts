@@ -1,8 +1,8 @@
 import { fetcherServer } from "@/lib/api-server";
-import { User } from "@/types/api/user";
+import { UserPlain } from "@/types/api/user";
 
 export default async function getSeller(id: string) {
-  return await fetcherServer.get<User>(`/users/${id}`, {
+  return await fetcherServer.get<UserPlain>(`/users/${id}`, {
     params: {
       "populate[cars][populate][price][populate]": "*",
       "populate[cars][populate][car_ch][populate][brand]": "*",

@@ -141,7 +141,6 @@ export default function EditCarForm({ car }: Props) {
 
     resolver: zodResolver(PostCarStep4ValidationSchema),
   });
-  console.log(car.attributes.images);
   const { mutateAsync: uploadAsync } = useUpload();
   const [acceptedFiles, setAcceptedFiles] = useState<FileWithPreview[]>(
     car.attributes.images.data.map((item) => ({
@@ -156,7 +155,6 @@ export default function EditCarForm({ car }: Props) {
       const imagesIds: number[] = [];
 
       if ("provider" in acceptedFiles[0]) {
-        console.log(acceptedFiles);
         acceptedFiles.forEach((file: any) => {
           imagesIds.push(file.id);
         });
