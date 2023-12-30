@@ -1,9 +1,10 @@
 "use client";
 import SellerItem from "@/components/sellers/seller-item";
-import useSellers from "@/hooks/useSellers";
+import { useSellers } from "@/hooks/useSellers";
 import { PropagateLoader } from "react-spinners";
 import { InView } from "react-intersection-observer";
 import dayjs from "dayjs";
+import { Fragment } from "react";
 
 type Props = {
   params: { type: string };
@@ -26,14 +27,16 @@ export default function SellersPage({ params: { type } }: Props) {
           <PropagateLoader color="#ef4444" />
         </div>
       ) : (
-        <div className="relative space-y-5">
+        <div className="relative grid gap-5 sm:grid-cols-2">
           {data?.pages.map((page, i) => (
-            <div className="grid gap-5 sm:grid-cols-2" key={i}>
-              {page.data.map((seller) => (
-                dayjs() < dayjs(seller.pointsExpirationDate) && <SellerItem seller={seller} key={seller.id} />
-              ))}
-                
-            </div>
+            <Fragment key={i}>
+              {page.data.map(
+                (seller) =>
+                  dayjs() < dayjs(seller.pointsExpirationDate) && (
+                    <SellerItem seller={seller} key={seller.id} />
+                  ),
+              )}
+            </Fragment>
           ))}
           <>
             {hasNextPage && (
