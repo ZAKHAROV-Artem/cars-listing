@@ -2,6 +2,8 @@ import { SocialMediaBody } from "@/actions/client/sendToSocialMedia";
 import axios from "axios";
 import { NextResponse } from "next/server";
 
+export const runtime = "edge";
+
 export async function POST(req: Request) {
   try {
     const body: SocialMediaBody = await req.json();
