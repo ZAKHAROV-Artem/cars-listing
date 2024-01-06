@@ -8,7 +8,7 @@ import PostCarFloatingButton from "@/components/ui/post-car-floating-button";
 import Filters from "./cars/search/components/filters";
 import FiltersSearch from "./cars/search/components/filters-search";
 
-export const revalidate = 600;
+export const revalidate = 3600;
 // export const dynamic = "force-dynamic";
 export default function Home() {
   return (

@@ -7,9 +7,13 @@ export type SocialMediaBody = {
 };
 
 export default async function sendToSocialMedia(body: SocialMediaBody) {
-  return await axios.post(`/api/social`, body, {
-    headers: {
-      "Content-Type": "application/json",
+  return await axios.post(
+    `https://maker.ifttt.com/trigger/cars/with/key/bA3GfIfHiWa9WnaP3Kq2ea`,
+    body,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
     },
-  });
+  );
 }
