@@ -1,9 +1,9 @@
-import { fetcherServer } from "@/lib/api-server";
+import { fetcher } from "@/lib/fetcher";
 import { Payload } from "@/types/api/common";
 import { Car } from "@/types/api/car";
 
 export async function generateSitemaps() {
-  const count = await fetcherServer.get<number>(`/cars/count/view`);
+  const count = await fetcher.get<number>(`/cars/count/view`);
   const pageCount = Math.ceil(count.data / 1000);
   const res = [];
   for (let i = 1; i <= pageCount; i++) {
@@ -12,7 +12,7 @@ export async function generateSitemaps() {
   return res;
 }
 export default async function sitemap({ id }: { id: number }) {
-  const cars = await fetcherServer.get<Payload<Car[]>>(`/cars`, {
+  const cars = await fetcher.get<Payload<Car[]>>(`/cars`, {
     params: {
       "fields[0]": "slug",
       "fields[1]": "publishedAt",
