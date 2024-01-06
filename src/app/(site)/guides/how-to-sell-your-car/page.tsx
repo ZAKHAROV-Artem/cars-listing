@@ -1,5 +1,5 @@
-import getStaticPage from "@/actions/server/getStaticPage";
-import getWidget from "@/actions/server/getWidget";
+import getStaticPage from "@/actions/get/getStaticPage";
+import getWidget from "@/actions/get/getWidget";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 
@@ -15,20 +15,20 @@ export default async function Guides({ params: { slug } }: Props) {
 
   return (
     <div className="container flex py-3">
-    <div
-      className="w-full md:w-3/4 p-2"
-      dangerouslySetInnerHTML={{
-        __html: page.data.data[0]?.attributes.html || "<div/>",
-      }}
-    />
-    {widget.data.data[0]?.attributes.html && (
       <div
-      className="hidden md:block md:w-1/4"  
-      dangerouslySetInnerHTML={{
-          __html: widget.data.data[0].attributes.html,
+        className="w-full p-2 md:w-3/4"
+        dangerouslySetInnerHTML={{
+          __html: page.data.data[0]?.attributes.html || "<div/>",
         }}
       />
-    )}
-  </div>
+      {widget.data.data[0]?.attributes.html && (
+        <div
+          className="hidden md:block md:w-1/4"
+          dangerouslySetInnerHTML={{
+            __html: widget.data.data[0].attributes.html,
+          }}
+        />
+      )}
+    </div>
   );
 }

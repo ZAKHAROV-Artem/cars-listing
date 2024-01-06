@@ -1,4 +1,4 @@
-import getBrands from "@/actions/server/getBrands";
+import getBrands from "@/actions/get/getBrands";
 import SectionHeading from "@/components/data-display/section-heading";
 import Image from "next/image";
 import Link from "next/link";

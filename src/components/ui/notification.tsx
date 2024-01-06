@@ -6,7 +6,7 @@ import { onMessage, getMessaging } from "firebase/messaging";
 import { useEffectOnce } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 import firebaseApp from "@/lib/firebase";
-import { SendToTopicNotification } from "@/actions/client/sendToTopic";
+import { SendToTopicNotification } from "@/actions/post/sendToTopic";
 import Link from "next/link";
 
 export default function Notification() {

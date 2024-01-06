@@ -1,4 +1,4 @@
-import setCarSentToSocialMedia from "@/actions/client/setCarSentToSocialMedia";
+import setCarSentToSocialMedia from "@/actions/put/setCarSentToSocialMedia";
 import { useMutation } from "@tanstack/react-query";
 
 export const useSetCarSentToSocialMedia = () => {

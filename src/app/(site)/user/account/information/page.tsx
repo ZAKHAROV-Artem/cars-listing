@@ -1,8 +1,6 @@
 "use client";
-import { getCurrentUser } from "@/actions/client/auth/getCurrentUser";
 import AccountImageFileUpload from "@/components/ui/account-image-file-upload";
 import { Button } from "@/components/ui/button";
-import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,7 +11,6 @@ import {
   UpdateAccountValidationSchema,
 } from "@/validation/update-account-info-schema copy";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import dayjs from "dayjs";
 import { locations } from "@/data/filters-data";
@@ -27,11 +24,13 @@ import {
 import { useState } from "react";
 import { FileWithPath } from "react-dropzone";
 import { toast } from "react-hot-toast";
-import { fetcherAuth } from "@/lib/api-client";
+import { fetcherAuth } from "@/lib/fetcher";
 import { UserAuthType } from "@/types/api/user";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import getMe from "@/actions/get/getMe";
+import { getCurrentUser } from "@/actions/client/auth/getCurrentUser";
 
 export default function AccountInfoPage() {
   const { data: user, isLoading, refetch } = useCurrentUser();

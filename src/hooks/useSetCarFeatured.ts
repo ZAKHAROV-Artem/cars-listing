@@ -1,4 +1,4 @@
-import setCarFeatured from "@/actions/client/setCarFeatured";
+import setCarFeatured from "@/actions/put/setCarFeatured";
 import { useMutation } from "@tanstack/react-query";
 
 export const useSetCarFeatured = () => {

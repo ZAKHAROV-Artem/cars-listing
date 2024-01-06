@@ -1,4 +1,4 @@
-import getBodyTypes from "@/actions/client/getBodyTypes";
+import getBodyTypes from "@/actions/get/getBodyTypes";
 import { useQuery } from "@tanstack/react-query";
 
 const useBodyTypes = () => {

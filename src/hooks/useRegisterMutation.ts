@@ -1,4 +1,4 @@
-import { register } from "@/actions/client/auth/register";
+import { register } from "@/actions/post/auth/register";
 import { useMutation } from "@tanstack/react-query";
 
 export const useRegisterMutation = () => {

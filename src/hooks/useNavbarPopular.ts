@@ -1,4 +1,4 @@
-import getNavbarPopular from "@/actions/client/getNavbarPopular";
+import getNavbarPopular from "@/actions/get/getNavbarPopular";
 import { useQuery } from "@tanstack/react-query";
 
 const useNavbarPopular = () => {

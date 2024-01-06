@@ -1,4 +1,4 @@
-import getSellers from "@/actions/client/infinity/getSellers";
+import getSellers from "@/actions/get/infinity/getSellers";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 export const useSellers = (sellerType: string) => {
@@ -7,7 +7,6 @@ export const useSellers = (sellerType: string) => {
     queryFn: async ({ pageParam = 0 }) =>
       await getSellers(sellerType, pageParam),
     getNextPageParam: (res, pages) => {
-      console.log(pages);
       return res.data.length < 12 ? undefined : pages.length + 1;
     },
     refetchOnMount: false,

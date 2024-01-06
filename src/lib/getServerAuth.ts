@@ -1,4 +1,4 @@
-import getMe from "@/actions/server/getMe";
+import getMe from "@/actions/get/getMe";
 import { cookies } from "next/headers";
 export async function getServerAuth() {
   try {

@@ -1,4 +1,4 @@
-import getFeaturedCars from "@/actions/server/getFeaturedCars";
+import getFeaturedCars from "@/actions/get/getFeaturedCars";
 import CarsList from "@/components/cars/cars-list";
 import SectionHeading from "@/components/data-display/section-heading";
 

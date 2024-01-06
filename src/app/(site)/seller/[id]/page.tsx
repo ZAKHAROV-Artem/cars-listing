@@ -1,4 +1,4 @@
-import getSeller from "@/actions/server/getSeller";
+import getSeller from "@/actions/get/getSeller";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import SellerCarsList from "./components/seller-cars-list";

@@ -1,4 +1,4 @@
-import getSellers from "@/actions/client/infinity/getSellers";
+import getSellers from "@/actions/get/infinity/getSellers";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 const useBrokers = () => {

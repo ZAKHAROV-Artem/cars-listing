@@ -1,4 +1,4 @@
-import getPaymentPage from "@/actions/server/getPaymentPage";
+import getPaymentPage from "@/actions/get/getPaymentPage";
 import PricePackage from "../cars/post/components/price-package";
 import Image from "next/image";
 

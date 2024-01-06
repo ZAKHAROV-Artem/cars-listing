@@ -1,4 +1,4 @@
-import getCars from "@/actions/client/infinity/getCars";
+import getCars from "@/actions/get/infinity/getCars";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 const useSellerCars = (sellerId: string) => {

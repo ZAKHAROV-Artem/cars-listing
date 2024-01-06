@@ -1,4 +1,4 @@
-import sendEmail from "@/actions/client/sendEmail";
+import sendEmail from "@/actions/post/sendEmail";
 import { useMutation } from "@tanstack/react-query";
 
 export const useEmail = () => {

@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
-import { changePassword } from "@/actions/client/auth/changePassword";
+import { changePassword } from "@/actions/post/auth/changePassword";
 import { useRouter } from "next/navigation";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import {

@@ -1,6 +1,6 @@
 "use client";
 
-import postCar from "@/actions/client/postCar";
+import postCar from "@/actions/post/postCar";
 import { Button } from "@/components/ui/button";
 import CarPostFormFileUpload from "@/components/ui/post-car-file-input/car-post-form-file-upload";
 import { Input } from "@/components/ui/input";
@@ -50,7 +50,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { RiseLoader } from "react-spinners";
 import dayjs from "dayjs";
-import { fetcher, fetcherAuth } from "@/lib/api-client";
+import { fetcher, fetcherAuth } from "@/lib/fetcher";
 import { FileWithPreview } from "@/types/other";
 import { Checkbox } from "@/components/ui/checkbox";
 import { BsTelegram, BsWhatsapp } from "react-icons/bs";

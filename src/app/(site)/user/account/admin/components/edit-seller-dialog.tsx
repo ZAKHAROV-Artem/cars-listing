@@ -4,10 +4,8 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,7 +13,7 @@ import { useEditSellerDialog } from "@/state/EditSellerDialogState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import usePaymentPage from "@/hooks/usePaymentPage";
 import { PricePackage } from "@/types/api/price-package";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Separator } from "../../../../../../components/ui/separator";
 import { cn } from "@/lib/utils";
 import useUpdateSellerPoints from "@/hooks/useUpdateSellerPoints";
@@ -25,7 +23,6 @@ import {
   UpdateAccountFields,
   UpdateAccountValidationSchema,
 } from "@/validation/update-account-info-schema copy";
-import { getCurrentUser } from "@/actions/client/auth/getCurrentUser";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Select,
@@ -37,7 +34,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { locations } from "@/data/filters-data";
 import { useUpdateEffect } from "usehooks-ts";
-import { fetcherAuth } from "@/lib/api-client";
+import { fetcherAuth } from "@/lib/fetcher";
 export default function EditSellerDialog() {
   const dialog = useEditSellerDialog();
   const { data: packages } = usePaymentPage();

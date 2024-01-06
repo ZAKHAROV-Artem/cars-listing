@@ -6,7 +6,7 @@ import { v4 } from "uuid";
 import { convertBlobToFile, getImageFromURL } from "./utils";
 import { UserAuthType } from "@/types/api/user";
 import dayjs from "dayjs";
-import getMe from "@/actions/server/getMe";
+import getMe from "@/actions/get/getMe";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,

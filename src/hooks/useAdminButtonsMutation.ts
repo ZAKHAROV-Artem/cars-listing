@@ -1,4 +1,4 @@
-import updateCarAdmin from "@/actions/client/updateCarAdmin";
+import updateCarAdmin from "@/actions/put/updateCarAdmin";
 import { useMutation } from "@tanstack/react-query";
 
 export const useAdminButtonsMutation = () => {

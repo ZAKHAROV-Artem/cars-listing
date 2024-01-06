@@ -1,4 +1,4 @@
-import getBodyTypes from "@/actions/server/getBodyTypes";
+import getBodyTypes from "@/actions/get/getBodyTypes";
 import Image from "next/image";
 import Link from "next/link";
 

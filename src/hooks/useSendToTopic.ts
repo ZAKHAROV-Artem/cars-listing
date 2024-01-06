@@ -1,4 +1,4 @@
-import sendToTopic from "@/actions/client/sendToTopic";
+import sendToTopic from "@/actions/post/sendToTopic";
 import { useMutation } from "@tanstack/react-query";
 
 export const useSendToTopic = () => {

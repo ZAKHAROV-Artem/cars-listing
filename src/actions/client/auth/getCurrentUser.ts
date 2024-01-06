@@ -1,4 +1,4 @@
-import { fetcherAuth } from "@/lib/api-client";
+import { fetcherAuth } from "@/lib/fetcher";
 import { UserPlain } from "@/types/api/user";
 import Cookies from "js-cookie";
 

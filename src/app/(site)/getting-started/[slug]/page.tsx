@@ -1,5 +1,5 @@
-import getStaticPage from "@/actions/server/getStaticPage";
-import getWidget from "@/actions/server/getWidget";
+import getStaticPage from "@/actions/get/getStaticPage";
+import getWidget from "@/actions/get/getWidget";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 

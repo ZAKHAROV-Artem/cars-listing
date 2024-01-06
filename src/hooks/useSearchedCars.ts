@@ -1,4 +1,4 @@
-import getSearchedCars from "@/actions/client/getSearchedCars";
+import getSearchedCars from "@/actions/get/getSearchedCars";
 import { Filter } from "@/state/FiltersState";
 import { useQuery } from "@tanstack/react-query";
 

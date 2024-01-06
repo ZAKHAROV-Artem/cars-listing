@@ -1,4 +1,4 @@
-import getPaymentPage from "@/actions/client/getPaymentPage";
+import getPaymentPage from "@/actions/get/getPaymentPage";
 import { useQuery } from "@tanstack/react-query";
 
 const usePaymentPage = () => {

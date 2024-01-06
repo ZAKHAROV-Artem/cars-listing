@@ -1,4 +1,4 @@
-import { SocialMediaBody } from "@/actions/client/sendToSocialMedia";
+import { SocialMediaBody } from "@/actions/post/sendToSocialMedia";
 import axios from "axios";
 import { NextResponse } from "next/server";
 

@@ -1,4 +1,4 @@
-import getModels from "@/actions/client/getModels";
+import getModels from "@/actions/get/getModels";
 import { useQuery } from "@tanstack/react-query";
 
 const useModels = ({ id, slug }: { id?: string; slug?: string }) => {

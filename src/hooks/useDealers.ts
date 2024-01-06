@@ -1,10 +1,11 @@
-import getSellers from "@/actions/client/infinity/getSellers";
+import getSellers from "@/actions/get/infinity/getSellers";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 const useDealers = () => {
   const query = useInfiniteQuery({
     queryKey: [`dealerships-infinity`],
-    queryFn: async ({ pageParam = 1 }) => await getSellers("dealership", pageParam),
+    queryFn: async ({ pageParam = 1 }) =>
+      await getSellers("dealership", pageParam),
     getNextPageParam: (res, pages) => {
       return res.data.length < 10 ? undefined : pages.length + 1;
     },

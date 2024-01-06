@@ -8,7 +8,7 @@ import ListCarItem from "@/components/cars/list-car-item";
 import { Separator } from "@/components/ui/separator";
 import Pagination from "@/components/ui/pagination";
 import { Input } from "@/components/ui/input";
-import { QueryParams } from "@/actions/client/getSearchedCars";
+import { QueryParams } from "@/actions/get/getSearchedCars";
 import { Button } from "@/components/ui/button";
 import {
   Select,

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { getMessaging, getToken } from "firebase/messaging";
 import firebaseApp from "@/lib/firebase";
 import { useEffectOnce } from "usehooks-ts";
-import subscribeFcmToken from "@/actions/client/subscribeFcmToken";
+import subscribeFcmToken from "@/actions/post/subscribeFcmToken";
 
 const useFcmToken = () => {
   const [token, setToken] = useState("");

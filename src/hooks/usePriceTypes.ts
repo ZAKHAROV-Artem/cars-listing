@@ -1,4 +1,4 @@
-import getPriceTypes from "@/actions/client/getPriceTypes";
+import getPriceTypes from "@/actions/get/getPriceTypes";
 import { useQuery } from "@tanstack/react-query";
 
 const usePriceTypes = () => {

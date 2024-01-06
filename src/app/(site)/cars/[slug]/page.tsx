@@ -1,31 +1,32 @@
-import getCar from "@/actions/server/getCar";
+import getCar from "@/actions/get/getCar";
 import CarImagesSlider from "./components/car-images-slider";
-import { Separator } from "@/components/ui/separator";
 import SellerInfoFooter from "./components/seller-info-footer";
-import incrementVisits from "@/actions/server/incrementVisits";
-import { formatNumberWithCommas } from "@/lib/utils";
+import incrementVisits from "@/actions/put/server/incrementVisits";
 import ClientOnly from "@/components/client-only";
-import { notFound, redirect } from "next/navigation";
 import dayjs from "dayjs";
-import setCarStatus from "@/actions/server/setCarStatus";
-import { Status } from "@/types/api/car";
-import setCarFetured from "@/actions/server/setCarFeatured";
+import setCarStatus from "@/actions/put/server/setCarStatus";
+import setCarFeatured from "@/actions/put/server/setCarFeatured";
 import CarDetailSliderSkeleton from "@/components/ui/car-detail-slider-skeleton";
 import Breadcrumbs from "./components/breadcrumbs";
 import SecTopCars from "../../components/sections/sec-top-cars";
 import Widget from "@/components/ui/widget";
 import SellerTypeBadge from "@/components/ui/seller-type-badge";
-import type { Metadata } from "next";
 import Link from "next/link";
+import AdminButtons from "./components/admin-buttons";
+import sendEmail from "@/actions/post/sendEmail";
+import { formatNumberWithCommas } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
+import type { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
+import { Status } from "@/types/api/car";
 import { BsTelegram, BsWhatsapp } from "react-icons/bs";
 import { FaViber } from "react-icons/fa";
-import AdminButtons from "./components/admin-buttons";
 import { getServerAuth } from "@/lib/getServerAuth";
-import sendToSocialMedia from "@/actions/client/sendToSocialMedia";
-import sendEmail from "@/actions/client/sendEmail";
+
 type Props = {
   params: { slug: string };
 };
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // read route params
   const slug = params.slug;
@@ -38,37 +39,41 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     });
     if (car) {
       return {
-        title: `${car.attributes.title} - ${car.attributes.price
-          ?.currency}${formatNumberWithCommas(
-          car.attributes.price?.price || 0,
+        title: `${car.data.data.attributes?.title} - ${car.data.data.attributes
+          .price?.currency}${formatNumberWithCommas(
+          car.data.data.attributes.price?.price || 0,
         )}`,
-        description: car.attributes.description,
+        description: car.data.data.attributes.description,
         keywords: [
-          `${car.attributes.title}`,
-          `${car.attributes.car_ch?.brand?.data.attributes.name}`,
-          `${car.attributes.car_ch?.model?.data?.attributes.name || ""}`,
+          `${car.data.data.attributes.title}`,
+          `${car.data.data.attributes.car_ch?.brand?.data.attributes.name}`,
+          `${
+            car.data.data.attributes.car_ch?.model?.data?.attributes.name || ""
+          }`,
           "used car price in ethiopia 2021, car price in ethiopia, car market in ethiopia, car for sale in ethiopia, new car price in ethiopia 2021, buy and sell cars, suzuki car price in ethiopia, car sales in ethiopia, car sell in ethiopia, cars for sale in ethiopia, used car price in ethiopia, diplomatic car for sale in ethiopia 2021",
         ],
         openGraph: {
-          title: `${car.attributes.title} - ${car.attributes.price
-            ?.currency}${formatNumberWithCommas(
-            car.attributes.price?.price || 0,
+          title: `${car.data.data.attributes.title} - ${car.data.data.attributes
+            .price?.currency}${formatNumberWithCommas(
+            car.data.data.attributes.price?.price || 0,
           )}`,
-          description: car.attributes.description,
-          images: [car.attributes.images?.data[0]?.attributes.url || ""],
+          description: car.data.data.attributes.description,
+          images: [
+            car.data.data.attributes.images?.data[0]?.attributes.url || "",
+          ],
           type: "article",
-          url: `${process.env.NEXTAUTH_URL}/cars/${car.attributes.slug}-${car.id}`,
+          url: `${process.env.NEXTAUTH_URL}/cars/${car.data.data.attributes.slug}-${car.data.data.id}`,
           siteName: process.env.DOMAIN,
         },
         twitter: {
-          title: `${car.attributes.title} - ${car.attributes.price
-            ?.currency}${formatNumberWithCommas(
-            car.attributes.price?.price || 0,
+          title: `${car.data.data.attributes.title} - ${car.data.data.attributes
+            .price?.currency}${formatNumberWithCommas(
+            car.data.data.attributes.price?.price || 0,
           )}`,
           site: "@mekinanet",
           creator: "@mekinanet",
-          description: car.attributes.description,
-          images: [car.attributes.images.data[0].attributes.url],
+          description: car.data.data.attributes.description,
+          images: [car.data.data.attributes.images.data[0].attributes.url],
         },
       };
     }
@@ -90,15 +95,15 @@ export default async function CarDetail({ params: { slug } }: Props) {
     notFound();
   });
   if (!car) notFound();
-  if (dayjs() > dayjs(car.attributes.car_expiration_date)) {
-    await setCarStatus(car.id, Status.Inactive);
+  if (dayjs() > dayjs(car.data.data.attributes.car_expiration_date)) {
+    await setCarStatus(car.data.data.id, Status.Inactive);
   }
   if (
-    car.attributes?.featured &&
-    car?.attributes?.car_featured_expiration_date &&
-    dayjs() > dayjs(car.attributes.car_featured_expiration_date)
+    car.data.data.attributes?.featured &&
+    car?.data.data.attributes?.car_featured_expiration_date &&
+    dayjs() > dayjs(car.data.data.attributes.car_featured_expiration_date)
   ) {
-    await setCarFetured(car.id, false);
+    await setCarFeatured(car.data.data.id, false);
     if (user) {
       await sendEmail({
         templateReferenceId: "2",
@@ -109,7 +114,10 @@ export default async function CarDetail({ params: { slug } }: Props) {
       });
     }
   }
-  await incrementVisits(car.id, car.attributes.visits);
+  await incrementVisits(
+    car.data.data.id,
+    car.data.data.attributes.visits,
+  ).catch((err) => console.log(err.response.data));
   return (
     <div className="md:container md:py-10">
       <div className="mb-4 hidden items-center justify-between md:flex">
@@ -120,26 +128,29 @@ export default async function CarDetail({ params: { slug } }: Props) {
               href: "/",
             },
             {
-              label: car.attributes.car_ch?.brand?.data.attributes.name || "",
-              href: `/cars/search?brand=${car.attributes.car_ch?.brand?.data.attributes.slug}`,
+              label:
+                car.data.data.attributes.car_ch?.brand?.data.attributes.name ||
+                "",
+              href: `/cars/search?brand=${car.data.data.attributes.car_ch?.brand?.data.attributes.slug}`,
             },
-            ...(car.attributes.car_ch?.model?.data?.attributes.name
+            ...(car.data.data.attributes.car_ch?.model?.data?.attributes.name
               ? [
                   {
                     label:
-                      car.attributes.car_ch?.model?.data.attributes.name || "",
-                    href: `/cars/search?brand=${car.attributes.car_ch?.brand?.data.attributes.slug}&model=${car.attributes.car_ch?.model?.data.attributes.slug}`,
+                      car.data.data.attributes.car_ch?.model?.data.attributes
+                        .name || "",
+                    href: `/cars/search?brand=${car.data.data.attributes.car_ch?.brand?.data.attributes.slug}&model=${car.data.data.attributes.car_ch?.model?.data.attributes.slug}`,
                   },
                 ]
               : []),
           ]}
-          title={car.attributes.title}
+          title={car.data.data.attributes.title}
         />
       </div>
       <div className="grid grid-cols-1 md:gap-4 lg:grid-cols-[65%_35%]">
         <ClientOnly fallback={<CarDetailSliderSkeleton />}>
           <CarImagesSlider
-            images={car.attributes.images.data.sort((a, b) => {
+            images={car.data.data.attributes.images.data.sort((a, b) => {
               const nameA = a.attributes.name;
               const nameB = b.attributes.name;
               return nameA.localeCompare(nameB);
@@ -149,36 +160,42 @@ export default async function CarDetail({ params: { slug } }: Props) {
         <div className="space-y-3 bg-paper-light p-4 dark:bg-paper-dark md:rounded-2xl lg:h-full lg:p-8">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-x-4">
             <h1 className="text-xl font-semibold text-primary sm:text-3xl">
-              {car.attributes.title}
+              {car.data.data.attributes.title}
             </h1>
             <div className="text-2xl text-md text-light-main dark:text-dark-main  sm:text-xl">
-              {car.attributes.price?.price_type?.data.attributes.slug !==
-                "on-call" && (
+              {car.data.data.attributes.price?.price_type?.data.attributes
+                .slug !== "on-call" && (
                 <>
-                  {formatNumberWithCommas(car.attributes.price?.price || 0)}{" "}
-                  {car.attributes.price?.currency}
+                  {formatNumberWithCommas(
+                    car.data.data.attributes.price?.price || 0,
+                  )}{" "}
+                  {car.data.data.attributes.price?.currency}
                 </>
               )}{" "}
-              ({car.attributes.price?.price_type?.data.attributes.type})
+              (
+              {car.data.data.attributes.price?.price_type?.data.attributes.type}
+              )
             </div>
           </div>
           <div>
             <h2 className="text-xl font-semibold sm:text-2xl">Seller</h2>
             <div className="flex flex-col gap-3 md:pl-5">
               <div className="flex  items-center gap-x-3 lg:block">
-                <div>{car.attributes.seller?.name}</div>
+                <div>{car.data.data.attributes.seller?.name}</div>
                 <Link
                   className="text-violet-700 underline"
-                  href={`tel:${car.attributes.seller?.phone}`}
+                  href={`tel:${car.data.data.attributes.seller?.phone}`}
                 >
-                  {car.attributes.seller?.phone}
+                  {car.data.data.attributes.seller?.phone}
                 </Link>
               </div>
-              {car.attributes.seller?.social_media && (
+              {car.data.data.attributes.seller?.social_media && (
                 <div className="my-3 flex flex-wrap gap-3">
-                  {car.attributes.seller?.social_media.includes("telegram") && (
+                  {car.data.data.attributes.seller?.social_media.includes(
+                    "telegram",
+                  ) && (
                     <Link
-                      href={`https://t.me/${car.attributes.seller?.phone}`}
+                      href={`https://t.me/${car.data.data.attributes.seller?.phone}`}
                       target="_blank"
                       className="flex items-center gap-x-1"
                     >
@@ -186,9 +203,11 @@ export default async function CarDetail({ params: { slug } }: Props) {
                       Telegram
                     </Link>
                   )}
-                  {car.attributes.seller?.social_media.includes("whatsapp") && (
+                  {car.data.data.attributes.seller?.social_media.includes(
+                    "whatsapp",
+                  ) && (
                     <Link
-                      href={`https://wa.me/${car.attributes.seller?.phone}`}
+                      href={`https://wa.me/${car.data.data.attributes.seller?.phone}`}
                       target="_blank"
                       className="flex items-center gap-x-1"
                     >
@@ -196,9 +215,11 @@ export default async function CarDetail({ params: { slug } }: Props) {
                       Whatsapp
                     </Link>
                   )}
-                  {car.attributes.seller?.social_media.includes("viber") && (
+                  {car.data.data.attributes.seller?.social_media.includes(
+                    "viber",
+                  ) && (
                     <Link
-                      href={`viber://contact?number=${car.attributes.seller?.phone}`}
+                      href={`viber://contact?number=${car.data.data.attributes.seller?.phone}`}
                       target="_blank"
                       className="flex items-center gap-x-1"
                     >
@@ -209,13 +230,15 @@ export default async function CarDetail({ params: { slug } }: Props) {
               )}
               <SellerTypeBadge
                 type={
-                  car.attributes.seller?.seller_type?.data.attributes.type || ""
+                  car.data.data.attributes.seller?.seller_type?.data.attributes
+                    .type || ""
                 }
                 slug={
-                  car.attributes.seller?.seller_type?.data.attributes.slug || ""
+                  car.data.data.attributes.seller?.seller_type?.data.attributes
+                    .slug || ""
                 }
               />
-              <AdminButtons car={car} />
+              <AdminButtons car={car.data.data} />
             </div>
           </div>
           <Widget slug="detail-page-widget" />
@@ -229,7 +252,10 @@ export default async function CarDetail({ params: { slug } }: Props) {
                   <div className="flex w-full justify-between">
                     Brand :
                     <span className="text-light-light dark:text-dark-light">
-                      {car.attributes.car_ch?.brand?.data.attributes.name}
+                      {
+                        car.data.data.attributes.car_ch?.brand?.data.attributes
+                          .name
+                      }
                     </span>
                   </div>
                   <Separator className="my-1" />
@@ -238,8 +264,8 @@ export default async function CarDetail({ params: { slug } }: Props) {
                   <div className="flex w-full justify-between">
                     Model :{" "}
                     <span className="text-light-light dark:text-dark-light">
-                      {car.attributes.car_ch?.model?.data?.attributes.name ||
-                        "No model"}
+                      {car.data.data.attributes.car_ch?.model?.data?.attributes
+                        .name || "No model"}
                     </span>
                   </div>
                   <Separator className="my-1" />
@@ -248,7 +274,10 @@ export default async function CarDetail({ params: { slug } }: Props) {
                   <div className="flex w-full justify-between">
                     Body type :{" "}
                     <span className="text-light-light dark:text-dark-light">
-                      {car.attributes.car_ch?.body_type?.data.attributes.type}
+                      {
+                        car.data.data.attributes.car_ch?.body_type?.data
+                          .attributes.type
+                      }
                     </span>
                   </div>
                   <Separator className="my-1" />
@@ -257,17 +286,17 @@ export default async function CarDetail({ params: { slug } }: Props) {
                   <div className="flex w-full justify-between">
                     Year made :{" "}
                     <span className="text-light-light dark:text-dark-light">
-                      {car.attributes.car_ch?.year_made}
+                      {car.data.data.attributes.car_ch?.year_made}
                     </span>
                   </div>
                   <Separator className="my-1" />
                 </div>
-                {Number(car.attributes.car_ch?.mileage) !== -1 && (
+                {Number(car.data.data.attributes.car_ch?.mileage) !== -1 && (
                   <div>
                     <div className="flex w-full justify-between">
                       Mileage :{" "}
                       <span className="text-light-light dark:text-dark-light">
-                        {car.attributes.car_ch?.mileage}
+                        {car.data.data.attributes.car_ch?.mileage}
                       </span>
                     </div>{" "}
                     <Separator className="my-1" />
@@ -279,7 +308,7 @@ export default async function CarDetail({ params: { slug } }: Props) {
                   <div className="flex w-full justify-between">
                     Color :
                     <span className="text-light-light dark:text-dark-light">
-                      {car.attributes.car_ch?.color}
+                      {car.data.data.attributes.car_ch?.color}
                     </span>
                   </div>{" "}
                   <Separator className="my-1" />
@@ -288,7 +317,7 @@ export default async function CarDetail({ params: { slug } }: Props) {
                   <div className="flex w-full justify-between">
                     Fuel :{" "}
                     <span className="text-light-light dark:text-dark-light">
-                      {car.attributes.car_ch?.fuel}
+                      {car.data.data.attributes.car_ch?.fuel}
                     </span>
                   </div>
                   <Separator className="my-1" />
@@ -297,7 +326,7 @@ export default async function CarDetail({ params: { slug } }: Props) {
                   <div className="flex w-full justify-between">
                     Transmission :{" "}
                     <span className="text-light-light dark:text-dark-light">
-                      {car.attributes.car_ch?.transmission}
+                      {car.data.data.attributes.car_ch?.transmission}
                     </span>
                   </div>
                   <Separator className="my-1" />
@@ -306,7 +335,7 @@ export default async function CarDetail({ params: { slug } }: Props) {
                   <div className="flex w-full justify-between">
                     Engine size :{" "}
                     <span className="text-light-light dark:text-dark-light">
-                      {car.attributes.car_ch?.engine_size}
+                      {car.data.data.attributes.car_ch?.engine_size}
                     </span>
                   </div>
                   <Separator className="my-1" />
@@ -315,20 +344,20 @@ export default async function CarDetail({ params: { slug } }: Props) {
                   <div className="flex w-full justify-between">
                     Location :{" "}
                     <span className="text-light-light dark:text-dark-light">
-                      {car.attributes.location}
+                      {car.data.data.attributes.location}
                     </span>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="mt-5">{car.attributes.description}</div>
+            <div className="mt-5">{car.data.data.attributes.description}</div>
           </div>
         </div>
         <div className="bg-paper-light p-4 dark:bg-paper-dark md:rounded-2xl lg:p-8 ">
           <Widget slug="detail-page-widget-2" />
         </div>
       </div>
-      <SellerInfoFooter seller={car.attributes.seller} />
+      <SellerInfoFooter seller={car.data.data.attributes.seller} />
       <SecTopCars className="mt-5" />
     </div>
   );

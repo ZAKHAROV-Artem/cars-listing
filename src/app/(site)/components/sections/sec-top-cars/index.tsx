@@ -1,4 +1,4 @@
-import getTopCars from "@/actions/server/getTopCars";
+import getTopCars from "@/actions/get/getTopCars";
 import CarsSlider from "../../cars-slider";
 import SectionHeading from "@/components/data-display/section-heading";
 import { cn } from "@/lib/utils";

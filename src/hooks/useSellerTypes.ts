@@ -1,4 +1,4 @@
-import getSellerTypes from "@/actions/client/getSellerTypes";
+import getSellerTypes from "@/actions/get/getSellerTypes";
 import { useQuery } from "@tanstack/react-query";
 
 const useSellerTypes = () => {

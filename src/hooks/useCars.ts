@@ -1,5 +1,5 @@
-import { QueryParams } from "@/actions/client/getSearchedCars";
-import getCars from "@/actions/client/infinity/getCars";
+import { QueryParams } from "@/actions/get/getSearchedCars";
+import getCars from "@/actions/get/infinity/getCars";
 import { useQuery } from "@tanstack/react-query";
 
 const useCars = (page: number, filters?: QueryParams) => {

@@ -1,4 +1,4 @@
-import setCarStatus from "@/actions/client/setCarStatus";
+import setCarStatus from "@/actions/put/setCarStatus";
 import { useMutation } from "@tanstack/react-query";
 
 export const useSetCarStatus = () => {

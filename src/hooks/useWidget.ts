@@ -1,4 +1,4 @@
-import getWidget from "@/actions/client/getWidget";
+import getWidget from "@/actions/get/getWidget";
 import { useQuery } from "@tanstack/react-query";
 
 const useWidget = (slug: string) => {

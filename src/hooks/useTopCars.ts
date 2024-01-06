@@ -1,5 +1,5 @@
-import { QueryParams } from "@/actions/client/getSearchedCars";
-import getTopCars from "@/actions/client/getTopCars";
+import { QueryParams } from "@/actions/get/getSearchedCars";
+import getTopCars from "@/actions/get/getTopCars";
 import { useQuery } from "@tanstack/react-query";
 
 const useTopCars = (filters?: QueryParams) => {

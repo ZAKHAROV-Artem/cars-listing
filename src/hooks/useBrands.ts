@@ -1,9 +1,13 @@
-import getBrands from "@/actions/client/getBrands";
+import getBrands from "@/actions/get/getBrands";
 import { useQuery } from "@tanstack/react-query";
 
 const useBrands = () => {
   const query = useQuery({
-    queryFn: getBrands,
+    queryFn: async () =>
+      getBrands({
+        "sort[0]": "name",
+        "pagination[pageSize]": "40",
+      }),
     queryKey: ["brands"],
     retry: false,
     refetchOnMount: false,

@@ -1,4 +1,4 @@
-import sendToSocialMedia from "@/actions/client/sendToSocialMedia";
+import sendToSocialMedia from "@/actions/post/sendToSocialMedia";
 import { useMutation } from "@tanstack/react-query";
 
 export const useSendToSocialMediaMutation = () => {

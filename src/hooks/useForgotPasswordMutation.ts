@@ -1,4 +1,4 @@
-import { forgotPassword } from "@/actions/client/auth/forgotPassword";
+import { forgotPassword } from "@/actions/post/auth/forgotPassword";
 import { useMutation } from "@tanstack/react-query";
 
 export const useForgotPasswordMutation = () => {

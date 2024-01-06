@@ -1,4 +1,4 @@
-import updateSellerPoints from "@/actions/client/updateSellerPoints";
+import updateSellerPoints from "@/actions/put/updateSellerPoints";
 import { useMutation } from "@tanstack/react-query";
 
 const useUpdateSellerPoints = () => {
